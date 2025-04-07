@@ -9,7 +9,12 @@
         android:id="@+id/navigation_home"
         android:name="com.example.a404.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <!-- Dodajemy akcję nawigacyjną do ekranu wyboru języka -->
+        <action
+            android:id="@+id/action_navigation_home_to_languageSelectionFragment"
+            app:destination="@+id/languageSelectionFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -22,4 +27,11 @@
         android:name="com.example.a404.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <!-- Dodajemy nowy fragment wyboru języka -->
+    <fragment
+        android:id="@+id/languageSelectionFragment"
+        android:name="com.example.a404.ui.language.LanguageSelectionFragment"
+        android:label="Wybór języka"
+        tools:layout="@layout/fragment_language_selection" />
 </navigation>

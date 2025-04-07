@@ -47,8 +47,8 @@ dependencies {
     implementation(libs.navigation.ui)
 
 
-    implementation("com.google.firebase:firebase-auth:21.1.0")
-    implementation("com.google.firebase:firebase-firestore:24.2.1")
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
 
 
     testImplementation(libs.junit)
@@ -56,8 +56,18 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
 
-    implementation(platform("com.google.firebase:firebase-bom:30.1.0"))
-    implementation("com.google.firebase:firebase-auth")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.google.firebase.auth)
+
+    implementation(libs.camera.core)
+    implementation (libs.camera.camera2)
+    implementation (libs.camera.lifecycle)
+    implementation (libs.androidx.camera.view)
+    implementation (libs.androidx.camera.extensions)
+
+    implementation (libs.object1.detection )
+    implementation (libs.androidx.navigation.fragment.ktx)
+    implementation (libs.androidx.navigation.ui.ktx)
 }
 
 
