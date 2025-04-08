@@ -5,7 +5,7 @@ public class UserProfile {
     private int points;
     private String selectedLanguageCode;
 
-    // Konstruktor domyślny wymagany przez Firebase
+    // Wymagany pusty konstruktor dla Firestore
     public UserProfile() {}
 
     public UserProfile(String userId, int points, String selectedLanguageCode) {
@@ -14,13 +14,27 @@ public class UserProfile {
         this.selectedLanguageCode = selectedLanguageCode;
     }
 
-    // Gettery i settery
-    public String getUserId() { return userId; }
-    public void setUserId(String userId) { this.userId = userId; }
+    public String getUserId() {
+        return userId;
+    }
 
-    public int getPoints() { return points; }
-    public void setPoints(int points) { this.points = points; }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-    public String getSelectedLanguageCode() { return selectedLanguageCode; }
-    public void setSelectedLanguageCode(String selectedLanguageCode) { this.selectedLanguageCode = selectedLanguageCode; }
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public String getSelectedLanguageCode() {
+        return selectedLanguageCode;
+    }
+
+    public void setSelectedLanguageCode(String selectedLanguageCode) {
+        this.selectedLanguageCode = selectedLanguageCode;
+    }
 }
