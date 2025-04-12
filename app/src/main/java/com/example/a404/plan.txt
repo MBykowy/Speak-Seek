@@ -1,0 +1,256 @@
+High-Level Plan
+
+Setup & Configuration: Integrate necessary libraries and Firebase services.
+
+Core Data Modeling: Define how vocabulary, user progress, and settings will be stored.
+
+Language Selection: Implement functionality for the user to choose their target learning language.
+
+Object Recognition Exercise Implementation: Build the core interactive feature using the camera and ML Kit.
+
+Gamification Implementation: Add points system and display progress.
+
+UI Integration & Navigation: Connect all screens and refine the user experience.
+
+Testing & Refinement: Ensure the app works correctly and polish the details.
+
+Proposed File Structure
+
+
+com.example.a404
+├── App.java                 // Application class (optional, for Dagger/Hilt, initial setup)
+├── data
+│   ├── model                // Data classes (POJOs)
+│   │   ├── UserProfile.java // Stores points, selected language, etc.
+│   │   └── VocabularyItem.java // Maps object label to translation
+│   ├── repository           // Handles data operations (abstracts data sources)
+│   │   ├── AuthRepository.java // (You might already have logic for this implicitly)
+│   │   ├── UserRepository.java // Handles UserProfile data (Firebase)
+│   │   └── VocabularyRepository.java // Handles fetching vocabulary (Firebase/Local)
+│   └── source               // Specific data sources (e.g., Firebase access)
+│       └── FirebaseSource.java // Helper methods for Firestore/Realtime DB
+├── di                       // Dependency Injection (Optional but recommended: Hilt/Dagger)
+│   ├── AppModule.java
+│   └── ViewModelModule.java
+├── ui                       // Activities, Fragments, ViewModels, Adapters
+│   ├── auth                 // Existing authentication screens + ViewModels
+│   │   ├── SignInActivity.java
+│   │   ├── SignUpActivity.java
+│   │   ├── ForgotPasswordActivity.java
+│   │   └── AuthViewModel.java // (If you consolidate ViewModel logic for auth)
+│   ├── home                 // Main screen after login
+│   │   ├── HomeFragment.java
+│   │   └── HomeViewModel.java
+│   ├── profile              // User profile/progress screen
+│   │   ├── ProfileFragment.java
+│   │   └── ProfileViewModel.java
+│   ├── language             // Language selection screen
+│   │   ├── LanguageSelectionFragment.java // Or Activity
+│   │   └── LanguageSelectionViewModel.java
+│   ├── exercise             // Exercise-related screens
+│   │   ├── ExerciseListFragment.java // (Optional: if you have multiple exercises)
+│   │   ├── ObjectRecognitionFragment.java
+│   │   └── ObjectRecognitionViewModel.java
+│   └── adapters             // RecyclerView Adapters (if needed, e.g., for language list)
+├── service                  // Services (e.g., TTS)
+│   └── TextToSpeechService.java // Manages TTS instance and operations
+└── util                     // Utility classes, constants, extensions
+    ├── Constants.java
+    ├── CameraUtil.java      // Helper for CameraX setup
+    └── MlkItUtil.java       // Helper for ML Kit Object Detection setup
+
+
+Detailed Development Steps (Points)
+
+Phase 1: Setup & Configuration
+
+Text-To-Speech (TTS) Setup:
+
+Create service/TextToSpeechService.java. This class will initialize the TextToSpeech engine and provide methods to speak text. Handle initialization state and language setting.
+
+Phase 2: Core Data Modeling & Repository Setup
+
+Create Model Classes (data/model):
+
+UserProfile.java: Include fields like userId (String), points (int), selectedLanguageCode (String, e.g., "en", "pl", "es").
+
+VocabularyItem.java: Include fields like objectLabel (String, e.g., "apple"), languageCode (String), translation (String, e.g., "jabłko").
+
+Create Repositories (data/repository):
+
+UserRepository.java:
+
+Method getUserProfile(userId: String): LiveData<UserProfile> (Fetch user data from Firestore).
+
+Method updateUserProfile(userProfile: UserProfile) (Save user data to Firestore).
+
+Method updatePoints(userId: String, pointsToAdd: Int) (Update points).
+
+Method updateSelectedLanguage(userId: String, languageCode: String).
+
+VocabularyRepository.java:
+
+Method getTranslation(objectLabel: String, languageCode: String): LiveData<String> (Fetch translation from Firestore or a local source).
+
+(Optional) Method loadInitialVocabulary(): To populate Firestore with some basic words if needed.
+
+Implement Firebase Source (data/source):
+
+Create FirebaseSource.java (or similar).
+
+Add methods to interact with Firestore (get documents, set documents, update fields) using the Firebase SDK. These methods will be called by your repositories.
+
+Phase 3: Language Selection
+
+Create UI (ui/language):
+
+fragment_language_selection.xml: Design layout with options (e.g., Buttons, RecyclerView) to select a language (e.g., English, Polish, Spanish).
+
+LanguageSelectionFragment.java:
+
+Inflate the layout using View Binding.
+
+Observe ViewModel for language options (if dynamic) or display static options.
+
+Handle user clicks on language choices.
+
+Create ViewModel (ui/language):
+
+LanguageSelectionViewModel.java:
+
+Inject UserRepository.
+
+Method selectLanguage(userId: String, languageCode: String): Call userRepository.updateSelectedLanguage.
+
+LiveData languageUpdateStatus: To notify the Fragment about success/failure.
+
+Navigation:
+
+Modify HomeFragment or navigation graph: If the user hasn't selected a language yet (check via UserRepository), navigate them to LanguageSelectionFragment first.
+
+Phase 4: Object Recognition Exercise
+
+Create UI (ui/exercise):
+
+fragment_object_recognition.xml:
+
+Include a PreviewView from CameraX (androidx.camera.view.PreviewView) to display the camera feed.
+
+Add a Button (e.g., "Identify Object").
+
+Add TextViews to display instructions, the detected object name, the translation, and feedback.
+
+ObjectRecognitionFragment.java:
+
+Use View Binding.
+
+Request camera permissions.
+
+Initialize CameraX using CameraUtil.java (helper class recommended for boilerplate). Set up Preview and ImageAnalysis use cases.
+
+Handle the "Identify Object" button click: Trigger image capture or analysis of the current frame.
+
+Observe ViewModel LiveData for results (detected object, translation, points update).
+
+Display results in TextViews.
+
+Use TextToSpeechService to speak the translated word.
+
+Create ViewModel (ui/exercise):
+
+ObjectRecognitionViewModel.java:
+
+Inject VocabularyRepository, UserRepository, TextToSpeechService.
+
+LiveData detectedObjectLabel: MutableLiveData<String>
+
+LiveData translation: MutableLiveData<String>
+
+LiveData feedbackMessage: MutableLiveData<String>
+
+LiveData userPoints: LiveData<Int> (fetched via UserRepository)
+
+Method processImage(image: InputImage) (from ML Kit):
+
+Call ML Kit Object Detection (use MlkItUtil.java helper).
+
+On success, get the label of the most confident detection. Update detectedObjectLabel.
+
+Call vocabularyRepository.getTranslation using the label and the user's selected language. Update translation LiveData.
+
+Call textToSpeechService.speak(translation).
+
+Call userRepository.updatePoints to award points. Update feedbackMessage.
+
+Method loadCurrentUser(userId: String): To get initial user data like points and selected language.
+
+Implement CameraX (util/CameraUtil.java): Create a helper to manage ProcessCameraProvider, bind use cases (Preview, ImageAnalysis) to the lifecycle owner (Fragment), and provide frames to the ViewModel for analysis.
+
+Implement ML Kit (util/MlkItUtil.java): Create a helper to configure the ObjectDetector and process InputImage objects.
+
+Phase 5: Gamification & Progress Display
+
+Award Points: In ObjectRecognitionViewModel, after successfully identifying an object and getting its translation, call the userRepository.updatePoints method.
+
+Create Profile UI (ui/profile):
+
+fragment_profile.xml: Design layout to display user information, total points, maybe streaks or badges later. Use TextViews.
+
+ProfileFragment.java:
+
+Use View Binding.
+
+Observe ProfileViewModel LiveData.
+
+Display the user's points and other relevant info.
+
+Create Profile ViewModel (ui/profile):
+
+ProfileViewModel.java:
+
+Inject UserRepository.
+
+LiveData userProfile: LiveData<UserProfile>.
+
+Method loadUserProfile(userId: String): Call userRepository.getUserProfile. Expose the result via userProfile LiveData.
+
+Integrate Profile Access: Add navigation from HomeFragment (e.g., a profile icon/button) to ProfileFragment.
+
+(Optional) Display Points on Home: Modify HomeViewModel and HomeFragment to fetch and display the current user's points.
+
+Phase 6: UI Integration & Navigation
+
+Navigation Graph: If using the Navigation Component, define all destinations (Fragments) and actions (navigation paths) between them in res/navigation/nav_graph.xml.
+
+Start destination: HomeFragment (or LanguageSelectionFragment if needed).
+
+Actions: Home -> Object Recognition, Home -> Profile, Home -> Language Selection (if needed again), Auth -> Home, etc.
+
+Setup Navigation: Set up the NavController in your main Activity (likely the one hosting the fragments) and connect it to a BottomNavigationView or Toolbar if applicable.
+
+Refine Layouts: Ensure all layouts are user-friendly, responsive, and visually appealing. Add loading indicators where necessary (e.g., while fetching data). Handle empty states (e.g., no vocabulary found).
+
+Phase 7: Testing & Refinement
+
+Manual Testing: Test all features thoroughly on different devices/emulators and Android versions.
+
+Test registration, login, password reset.
+
+Test language selection and saving.
+
+Test camera permission requests.
+
+Test object recognition with various objects.
+
+Test TTS output.
+
+Test point updates and display.
+
+Test navigation flow.
+
+Error Handling: Implement robust error handling (e.g., Firebase errors, network issues, camera errors, ML Kit errors, TTS initialization failures). Show informative messages to the user.
+
+Code Cleanup: Refactor code, remove unused imports, add comments where necessary.
+
+(Optional) Unit/Integration Tests: Write tests for ViewModels, Repositories, and utility classes if required or if time permits.
+

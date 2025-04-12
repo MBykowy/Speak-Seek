@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "84479209086",
+    "project_id": "oleksandra-chekalina",
+    "storage_bucket": "oleksandra-chekalina.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84479209086:android:8cce0775faae7db289322f",
+        "android_client_info": {
+          "package_name": "com.example.a404"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRrjmELLuzzBBm0tqfFxHdKEv9Aol3mu8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
