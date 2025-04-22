@@ -31,6 +31,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.words.WordsActivity"
+            android:exported="false" />
+
         <!-- SignInActivity -->
         <activity
             android:name=".ui.SignInActivity"

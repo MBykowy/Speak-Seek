@@ -1,286 +1,256 @@
 High-Level Plan
----------------
-	Setup & Configuration:
-		Integrate necessary libraries and Firebase services.
 
-	Core Data Modeling:
-		Define how vocabulary, user progress, and settings will be stored.
+Setup & Configuration: Integrate necessary libraries and Firebase services.
 
-	Language Selection:
-		Implement functionality for the user to choose their target learning language.
+Core Data Modeling: Define how vocabulary, user progress, and settings will be stored.
 
-	Object Recognition Exercise Implementation:
-		Build the core interactive feature using the camera and ML Kit.
+Language Selection: Implement functionality for the user to choose their target learning language.
 
-	Gamification Implementation:
-		Add points system and display progress.
+Object Recognition Exercise Implementation: Build the core interactive feature using the camera and ML Kit.
 
-	UI Integration & Navigation:
-		Connect all screens and refine the user experience.
+Gamification Implementation: Add points system and display progress.
 
-	Testing & Refinement:
-		Ensure the app works correctly and polish the details.
+UI Integration & Navigation: Connect all screens and refine the user experience.
 
+Testing & Refinement: Ensure the app works correctly and polish the details.
 
 Proposed File Structure
------------------------
-	com.example.a404
-	├── App.java
-	├── data
-	│   ├── model
-	│   │   ├── UserProfile.java
-	│   │   └── VocabularyItem.java
-	│   ├── repository
-	│   │   ├── AuthRepository.java
-	│   │   ├── UserRepository.java
-	│   │   └── VocabularyRepository.java
-	│   └── source
-	│       └── FirebaseSource.java
-	├── di
-	│   ├── AppModule.java
-	│   └── ViewModelModule.java
-	├── ui
-	│   ├── auth
-	│   │   ├── SignInActivity.java
-	│   │   ├── SignUpActivity.java
-	│   │   ├── ForgotPasswordActivity.java
-	│   │   └── AuthViewModel.java
-	│   ├── home
-	│   │   ├── HomeFragment.java
-	│   │   └── HomeViewModel.java
-	│   ├── profile
-	│   │   ├── ProfileFragment.java
-	│   │   └── ProfileViewModel.java
-	│   ├── language
-	│   │   ├── LanguageSelectionFragment.java
-	│   │   └── LanguageSelectionViewModel.java
-	│   ├── exercise
-	│   │   ├── ExerciseListFragment.java
-	│   │   ├── ObjectRecognitionFragment.java
-	│   │   └── ObjectRecognitionViewModel.java
-	│   └── adapters
-	├── service
-	│   └── TextToSpeechService.java
-	└── util
-	    ├── Constants.java
-	    ├── CameraUtil.java
-	    └── MlkItUtil.java
+
+
+com.example.a404
+├── App.java                 // Application class (optional, for Dagger/Hilt, initial setup)
+├── data
+│   ├── model                // Data classes (POJOs)
+│   │   ├── UserProfile.java // Stores points, selected language, etc.
+│   │   └── VocabularyItem.java // Maps object label to translation
+│   ├── repository           // Handles data operations (abstracts data sources)
+│   │   ├── AuthRepository.java // (You might already have logic for this implicitly)
+│   │   ├── UserRepository.java // Handles UserProfile data (Firebase)
+│   │   └── VocabularyRepository.java // Handles fetching vocabulary (Firebase/Local)
+│   └── source               // Specific data sources (e.g., Firebase access)
+│       └── FirebaseSource.java // Helper methods for Firestore/Realtime DB
+├── di                       // Dependency Injection (Optional but recommended: Hilt/Dagger)
+│   ├── AppModule.java
+│   └── ViewModelModule.java
+├── ui                       // Activities, Fragments, ViewModels, Adapters
+│   ├── auth                 // Existing authentication screens + ViewModels
+│   │   ├── SignInActivity.java
+│   │   ├── SignUpActivity.java
+│   │   ├── ForgotPasswordActivity.java
+│   │   └── AuthViewModel.java // (If you consolidate ViewModel logic for auth)
+│   ├── home                 // Main screen after login
+│   │   ├── HomeFragment.java
+│   │   └── HomeViewModel.java
+│   ├── profile              // User profile/progress screen
+│   │   ├── ProfileFragment.java
+│   │   └── ProfileViewModel.java
+│   ├── language             // Language selection screen
+│   │   ├── LanguageSelectionFragment.java // Or Activity
+│   │   └── LanguageSelectionViewModel.java
+│   ├── exercise             // Exercise-related screens
+│   │   ├── ExerciseListFragment.java // (Optional: if you have multiple exercises)
+│   │   ├── ObjectRecognitionFragment.java
+│   │   └── ObjectRecognitionViewModel.java
+│   └── adapters             // RecyclerView Adapters (if needed, e.g., for language list)
+├── service                  // Services (e.g., TTS)
+│   └── TextToSpeechService.java // Manages TTS instance and operations
+└── util                     // Utility classes, constants, extensions
+    ├── Constants.java
+    ├── CameraUtil.java      // Helper for CameraX setup
+    └── MlkItUtil.java       // Helper for ML Kit Object Detection setup
 
 
 Detailed Development Steps (Points)
------------------------------------
 
 Phase 1: Setup & Configuration
-------------------------------
-	Text-To-Speech (TTS) Setup:
-		- Create service/TextToSpeechService.java
-		- Initialize TTS engine, handle language, provide speak() method
+
+Text-To-Speech (TTS) Setup:
+
+Create service/TextToSpeechService.java. This class will initialize the TextToSpeech engine and provide methods to speak text. Handle initialization state and language setting.
 
 Phase 2: Core Data Modeling & Repository Setup
-----------------------------------------------
-	Model Classes (data/model):
-		- UserProfile.java
-			• userId: String
-			• points: int
-			• selectedLanguageCode: String
 
-		- VocabularyItem.java
-			• objectLabel: String
-			• languageCode: String
-			• translation: String
+Create Model Classes (data/model):
 
-	Repositories (data/repository):
-		- UserRepository.java
-			• getUserProfile(String): LiveData<UserProfile>
-			• updateUserProfile(UserProfile)
-			• updatePoints(String, int)
-			• updateSelectedLanguage(String, String)
+UserProfile.java: Include fields like userId (String), points (int), selectedLanguageCode (String, e.g., "en", "pl", "es").
 
-		- VocabularyRepository.java
-			• getTranslation(String, String): LiveData<String>
-			• loadInitialVocabulary() (optional)
+VocabularyItem.java: Include fields like objectLabel (String, e.g., "apple"), languageCode (String), translation (String, e.g., "jabłko").
 
-	Firebase Source (data/source):
-		- FirebaseSource.java
-			• Helpers for Firestore (get/set/update)
+Create Repositories (data/repository):
+
+UserRepository.java:
+
+Method getUserProfile(userId: String): LiveData<UserProfile> (Fetch user data from Firestore).
+
+Method updateUserProfile(userProfile: UserProfile) (Save user data to Firestore).
+
+Method updatePoints(userId: String, pointsToAdd: Int) (Update points).
+
+Method updateSelectedLanguage(userId: String, languageCode: String).
+
+VocabularyRepository.java:
+
+Method getTranslation(objectLabel: String, languageCode: String): LiveData<String> (Fetch translation from Firestore or a local source).
+
+(Optional) Method loadInitialVocabulary(): To populate Firestore with some basic words if needed.
+
+Implement Firebase Source (data/source):
+
+Create FirebaseSource.java (or similar).
+
+Add methods to interact with Firestore (get documents, set documents, update fields) using the Firebase SDK. These methods will be called by your repositories.
 
 Phase 3: Language Selection
----------------------------
-	UI (ui/language):
-		- fragment_language_selection.xml
-			• Layout for choosing language
 
-		- LanguageSelectionFragment.java
-			• Inflate layout, observe ViewModel, handle clicks
+Create UI (ui/language):
 
-		- LanguageSelectionViewModel.java
-			• Inject UserRepository
-			• Method: selectLanguage(userId, languageCode)
-			• LiveData: languageUpdateStatus
+fragment_language_selection.xml: Design layout with options (e.g., Buttons, RecyclerView) to select a language (e.g., English, Polish, Spanish).
 
-	Navigation:
-		- If no language selected → redirect to LanguageSelectionFragment
+LanguageSelectionFragment.java:
 
-Phase 4: Translation Quiz Exercise Implementation
----------------------------
+Inflate the layout using View Binding.
+
+Observe ViewModel for language options (if dynamic) or display static options.
+
+Handle user clicks on language choices.
+
+Create ViewModel (ui/language):
+
+LanguageSelectionViewModel.java:
+
+Inject UserRepository.
+
+Method selectLanguage(userId: String, languageCode: String): Call userRepository.updateSelectedLanguage.
+
+LiveData languageUpdateStatus: To notify the Fragment about success/failure.
+
+Navigation:
+
+Modify HomeFragment or navigation graph: If the user hasn't selected a language yet (check via UserRepository), navigate them to LanguageSelectionFragment first.
+
+Phase 4: Object Recognition Exercise
 
 Create UI (ui/exercise):
 
-    Rename/Create layout file: fragment_translation_quiz.xml (instead of fragment_object_recognition.xml)
+fragment_object_recognition.xml:
 
-    Layout Elements:
+Include a PreviewView from CameraX (androidx.camera.view.PreviewView) to display the camera feed.
 
-        - TextView (textView_instruction): To show instructions (e.g., "Translate this word:")
-        - TextView (textView_sourceWord): To display the word that needs translating
-        - Button (button_choice1), Button (button_choice2), Button (button_choice3), Button (button_choice4): Four translation options
-        - TextView (textView_feedback): To display "Correct!" or "Incorrect. The answer was..."
-        - Button (button_nextQuestion): To move to the next word (initially hidden or disabled)
-        - (Optional) TextView (textView_score): To show current quiz score or progress
+Add a Button (e.g., "Identify Object").
 
-    Note: No PreviewView needed
+Add TextViews to display instructions, the detected object name, the translation, and feedback.
 
-Create Fragment (ui/exercise):
+ObjectRecognitionFragment.java:
 
-    - Rename/Create class: TranslationQuizFragment.java
-    - Use View Binding to access layout elements
-    - Inject/get instance of TranslationQuizViewModel
-    - Inject/get instance of TextToSpeechService
+Use View Binding.
 
-    Observe ViewModel LiveData:
+Request camera permissions.
 
-        - currentSourceWord: Update textView_sourceWord
-        - answerChoices: Update button_choice1 to button_choice4, reset button styles, enable buttons
-        - feedbackMessage: Update textView_feedback
-        - isAnswerCorrect: Style clicked button (green/red), optionally highlight correct answer, trigger TTS if correct
-        - showNextButton: Control visibility/enabled state of button_nextQuestion
-        - quizFinished: (Optional) Navigate away or show summary when quiz ends
+Initialize CameraX using CameraUtil.java (helper class recommended for boilerplate). Set up Preview and ImageAnalysis use cases.
 
-    Setup Button Listeners:
+Handle the "Identify Object" button click: Trigger image capture or analysis of the current frame.
 
-        - For each choice button:
-            - Set OnClickListener
-            - Call viewModel.submitAnswer(selectedText)
-            - Disable all choice buttons
+Observe ViewModel LiveData for results (detected object, translation, points update).
 
-        - For "Next Question" button:
-            - Set OnClickListener
-            - Call viewModel.loadNextQuestion()
-            - Hide/disable next button
-            - Clear feedback text
+Display results in TextViews.
 
-    TTS Integration:
-
-        - If isAnswerCorrect is true, call textToSpeechService.speak(correctAnswerText)
-        - Ensure TTS is initialized and language is correct
-
-    Initial Loading:
-
-        - On fragment start, call viewModel.startQuiz(userId, selectedLanguage)
+Use TextToSpeechService to speak the translated word.
 
 Create ViewModel (ui/exercise):
 
-    - Rename/Create class: TranslationQuizViewModel.java
-    - Inject VocabularyRepository, UserRepository, TextToSpeechService
+ObjectRecognitionViewModel.java:
 
-    LiveData:
+Inject VocabularyRepository, UserRepository, TextToSpeechService.
 
-        - currentSourceWord: MutableLiveData<String>
-        - answerChoices: MutableLiveData<List<String>>
-        - feedbackMessage: MutableLiveData<String>
-        - isAnswerCorrect: MutableLiveData<Boolean?> (nullable)
-        - showNextButton: MutableLiveData<Boolean>
-        - correctAnswer: MutableLiveData<String>
-        - userPoints: LiveData<Int> (from UserRepository)
-        - quizFinished: MutableLiveData<Boolean> (optional)
+LiveData detectedObjectLabel: MutableLiveData<String>
 
-    Internal State:
+LiveData translation: MutableLiveData<String>
 
-        - quizWordList: List<VocabularyItem>
-        - currentQuestionIndex: int
-        - currentCorrectAnswer: String
-        - userId: String
+LiveData feedbackMessage: MutableLiveData<String>
 
-    Methods:
+LiveData userPoints: LiveData<Int> (fetched via UserRepository)
 
-        startQuiz(userId: String, languageCode: String, numberOfQuestions: Int = 10):
+Method processImage(image: InputImage) (from ML Kit):
 
-            - Store userId
-            - Fetch numberOfQuestions * 4 words from vocabularyRepository
-            - Store in quizWordList, shuffle
-            - Reset index to 0
-            - Call loadNextQuestion()
+Call ML Kit Object Detection (use MlkItUtil.java helper).
 
-        loadNextQuestion():
+On success, get the label of the most confident detection. Update detectedObjectLabel.
 
-            - If out of bounds, set quizFinished to true and return
-            - Get item at currentQuestionIndex
-            - Assume native -> target translation direction
-            - Set currentSourceWord LiveData
-            - Set currentCorrectAnswer and post to correctAnswer LiveData
-            - Generate 3 unique distractors
-            - Shuffle correct + distractors, post to answerChoices
-            - Reset isAnswerCorrect to null
-            - Reset feedbackMessage to ""
-            - Set showNextButton to false
+Call vocabularyRepository.getTranslation using the label and the user's selected language. Update translation LiveData.
 
-        submitAnswer(selectedAnswer: String):
+Call textToSpeechService.speak(translation).
 
-            - Compare with currentCorrectAnswer
+Call userRepository.updatePoints to award points. Update feedbackMessage.
 
-            - If correct:
-                - Set isAnswerCorrect to true
-                - Set feedbackMessage to "Correct!"
-                - Call userRepository.updatePoints(userId, 1)
+Method loadCurrentUser(userId: String): To get initial user data like points and selected language.
 
-            - If incorrect:
-                - Set isAnswerCorrect to false
-                - Set feedbackMessage to "Incorrect. The answer was: " + currentCorrectAnswer
+Implement CameraX (util/CameraUtil.java): Create a helper to manage ProcessCameraProvider, bind use cases (Preview, ImageAnalysis) to the lifecycle owner (Fragment), and provide frames to the ViewModel for analysis.
 
-            - Set showNextButton to true
-            - Increment currentQuestionIndex
-
-Update Repositories (if needed):
-
-    - VocabularyRepository should have: getRandomVocabularyItems(languageCode: String, count: Int): LiveData<List<VocabularyItem>>
+Implement ML Kit (util/MlkItUtil.java): Create a helper to configure the ObjectDetector and process InputImage objects.
 
 Phase 5: Gamification & Progress Display
----------------------------
 
-    - Points are awarded in TranslationQuizViewModel.submitAnswer
-    - ProfileFragment/ProfileViewModel already display user points
-    - HomeFragment/HomeViewModel can continue showing points from UserRepository
+Award Points: In ObjectRecognitionViewModel, after successfully identifying an object and getting its translation, call the userRepository.updatePoints method.
+
+Create Profile UI (ui/profile):
+
+fragment_profile.xml: Design layout to display user information, total points, maybe streaks or badges later. Use TextViews.
+
+ProfileFragment.java:
+
+Use View Binding.
+
+Observe ProfileViewModel LiveData.
+
+Display the user's points and other relevant info.
+
+Create Profile ViewModel (ui/profile):
+
+ProfileViewModel.java:
+
+Inject UserRepository.
+
+LiveData userProfile: LiveData<UserProfile>.
+
+Method loadUserProfile(userId: String): Call userRepository.getUserProfile. Expose the result via userProfile LiveData.
+
+Integrate Profile Access: Add navigation from HomeFragment (e.g., a profile icon/button) to ProfileFragment.
+
+(Optional) Display Points on Home: Modify HomeViewModel and HomeFragment to fetch and display the current user's points.
 
 Phase 6: UI Integration & Navigation
----------------------------
 
-    - Navigation Graph (res/navigation/nav_graph.xml):
-        - Rename destination ID to translationQuizFragment
-        - Update action ID (e.g., action_homeFragment_to_translationQuizFragment)
+Navigation Graph: If using the Navigation Component, define all destinations (Fragments) and actions (navigation paths) between them in res/navigation/nav_graph.xml.
 
-    - In HomeFragment (or wherever start happens):
-        - Update button/item click listener to use new action ID
+Start destination: HomeFragment (or LanguageSelectionFragment if needed).
+
+Actions: Home -> Object Recognition, Home -> Profile, Home -> Language Selection (if needed again), Auth -> Home, etc.
+
+Setup Navigation: Set up the NavController in your main Activity (likely the one hosting the fragments) and connect it to a BottomNavigationView or Toolbar if applicable.
+
+Refine Layouts: Ensure all layouts are user-friendly, responsive, and visually appealing. Add loading indicators where necessary (e.g., while fetching data). Handle empty states (e.g., no vocabulary found).
 
 Phase 7: Testing & Refinement
----------------------------
 
-    Manual Testing:
+Manual Testing: Test all features thoroughly on different devices/emulators and Android versions.
 
-        - Fetch vocab for different languages
-        - Quiz logic: display, choice variety, checking, feedback
-        - Point awarding and display
-        - TTS pronunciation
-        - "Next Question" and quiz completion
-        - Edge cases (e.g., not enough vocab)
+Test registration, login, password reset.
 
-    Error Handling:
+Test language selection and saving.
 
-        - Check for empty lists, Firebase fetch issues, TTS errors
+Test camera permission requests.
 
-    Final Cleanup:
+Test object recognition with various objects.
 
-        - Code refactor and cleanup
+Test TTS output.
 
-    (Optional) Unit/Integration Tests:
+Test point updates and display.
 
-        - Test ViewModel logic: quiz flow, answer checking, point system
-        - Test Repository methods
+Test navigation flow.
+
+Error Handling: Implement robust error handling (e.g., Firebase errors, network issues, camera errors, ML Kit errors, TTS initialization failures). Show informative messages to the user.
+
+Code Cleanup: Refactor code, remove unused imports, add comments where necessary.
+
+(Optional) Unit/Integration Tests: Write tests for ViewModels, Repositories, and utility classes if required or if time permits.
+
