@@ -13,7 +13,7 @@ import com.example.a404.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUpActivity extends AppCompatActivity {
-    private EditText etEmail, etPassword, etConfirmPassword;
+    private EditText etEmail, etPassword, etConfirmPassword, etUsername;
     private Button btnSignUp;
     private FirebaseAuth auth;
 
@@ -24,16 +24,18 @@ public class SignUpActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         etEmail = findViewById(R.id.etEmailSignUp);
+        etUsername = findViewById(R.id.etUsernameSignUp);
         etPassword = findViewById(R.id.etPasswordSignUp);
         etConfirmPassword = findViewById(R.id.etConfirmPasswordSignUp);
         btnSignUp = findViewById(R.id.btnSignUp);
 
         btnSignUp.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
+            String username = etUsername.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
             String confirmPassword = etConfirmPassword.getText().toString().trim();
 
-            if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            if (email.isEmpty() || username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "Proszę wypełnić wszystkie pola.", Toast.LENGTH_SHORT).show();
                 return;
             }

@@ -26,6 +26,14 @@
         android:minHeight="48dp"/>
 
     <EditText
+        android:id="@+id/etUsernameSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nazwa użytkownika"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"/>
+
+    <EditText
         android:id="@+id/etPasswordSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

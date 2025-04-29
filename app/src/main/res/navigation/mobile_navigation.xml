@@ -34,4 +34,10 @@
         android:name="com.example.a404.ui.language.LanguageSelectionFragment"
         android:label="Wybór języka"
         tools:layout="@layout/fragment_language_selection" />
+
+    <fragment
+        android:id="@+id/navigation_ranking"
+        android:name="com.example.a404.ui.ranking.RankingFragment"
+        android:label="@string/title_ranking"
+        tools:layout="@layout/fragment_ranking" />
 </navigation>

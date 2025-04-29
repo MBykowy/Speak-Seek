@@ -2,15 +2,20 @@ package com.example.a404.data.repository;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.a404.data.model.UserProfile;
 import com.example.a404.data.source.FirebaseSource;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserRepository {
@@ -54,9 +59,27 @@ public class UserRepository {
     }
 
     private void createDefaultProfile(String userId, MutableLiveData<UserProfile> liveData) {
-        UserProfile newProfile = new UserProfile(userId, 0, "en");
-        saveUserProfile(userId, newProfile);
-        liveData.setValue(newProfile);
+        UserProfile newProfile = new UserProfile(userId, null, 0, "en");
+        saveUserProfile(userId, newProfile, liveData);
+    }
+
+
+    private void saveUserProfile(String userId, UserProfile profile, @Nullable MutableLiveData<UserProfile> liveDataToUpdate) {
+        firebaseSource.getFirestore()
+                .collection("users")
+                .document(userId)
+                .set(profile)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Profil zapisany pomyślnie dla: " + userId);
+                    if (liveDataToUpdate != null) {
+                        // Aktualizuj LiveData TYLKO po sukcesie i jeśli zostało przekazane
+                        liveDataToUpdate.setValue(profile);
+                        Log.d(TAG, "LiveData zaktualizowane po zapisie profilu dla: " + userId);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Błąd zapisu profilu dla: " + userId, e);
+                });
     }
 
     public void updateSelectedLanguage(String userId, String languageCode) {
@@ -78,15 +101,38 @@ public class UserRepository {
     }
 
     private void saveUserProfile(String userId, UserProfile profile) {
+        saveUserProfile(userId, profile, null);
+    }
+
+    public LiveData<List<UserProfile>> getRankedUsers(int limit) {
+        Log.d(TAG, "Pobieranie rankingu użytkowników, limit: " + limit);
+        MutableLiveData<List<UserProfile>> rankedUsersLiveData = new MutableLiveData<>();
+
         firebaseSource.getFirestore()
                 .collection("users")
-                .document(userId)
-                .set(profile)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d(TAG, "Profil zapisany pomyślnie");
+                .orderBy("points", Query.Direction.DESCENDING)
+                .limit(limit)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<UserProfile> users = new ArrayList<>();
+                    if (queryDocumentSnapshots != null) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            UserProfile user = document.toObject(UserProfile.class);
+                            user.setUserId(document.getId());
+                            users.add(user);
+                        }
+                        Log.d(TAG, "Pomyślnie pobrano " + users.size() + " użytkowników do rankingu.");
+                        rankedUsersLiveData.setValue(users);
+                    } else {
+                        Log.d(TAG, "QuerySnapshot był null podczas pobierania rankingu.");
+                        rankedUsersLiveData.setValue(new ArrayList<>()); // Set empty list
+                    }
                 })
                 .addOnFailureListener(e -> {
-                    Log.e(TAG, "Błąd zapisu profilu: " + e.toString());
+                    Log.e(TAG, "Błąd pobierania rankingu użytkowników", e);
+                    rankedUsersLiveData.setValue(null); // Indicate error state
                 });
+
+        return rankedUsersLiveData;
     }
 }
