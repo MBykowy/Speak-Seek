@@ -25,7 +25,7 @@ public class RankingAdapter extends ListAdapter<UserProfile, RankingAdapter.Rank
 
         @Override
         public boolean areContentsTheSame(@NonNull UserProfile oldItem, @NonNull UserProfile newItem) {
-            return oldItem.getName().equals(newItem.getName()) && oldItem.getPoints() == newItem.getPoints();
+            return oldItem.getUsername().equals(newItem.getUsername()) && oldItem.getPoints() == newItem.getPoints();
         }
     };
 
@@ -57,7 +57,7 @@ public class RankingAdapter extends ListAdapter<UserProfile, RankingAdapter.Rank
 
         public void bind(UserProfile user, int rank) {
             rankNumberTextView.setText(String.format("%d.", rank));
-            usernameTextView.setText(user.getName());
+            usernameTextView.setText(user.getUsername());
             pointsTextView.setText(String.format("%d pts", user.getPoints()));
         }
     }

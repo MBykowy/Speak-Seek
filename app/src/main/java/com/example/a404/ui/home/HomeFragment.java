@@ -95,7 +95,6 @@ public class HomeFragment extends Fragment {
             Log.d(TAG, "Kliknięto fabStartExercise");
             try {
                 NavController navController = Navigation.findNavController(v); // Użyj widoku 'v'
-                navController.navigate(R.id.action_navigation_home_to_objectRecognitionFragment); // Użyj R.id
                 Log.d(TAG, "Nawigacja do ObjectRecognitionFragment zainicjowana");
             } catch (IllegalArgumentException e) {
                 Log.e(TAG, "Nie można znaleźć NavController dla fabStartExercise lub akcja jest nieprawidłowa", e);
