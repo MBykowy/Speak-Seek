@@ -7,9 +7,8 @@ public class UserProfile {
     private String username; // Dodane pole
     private int points;
     private String selectedLanguageCode;
-    // Dodaj inne pola, jeśli istnieją, np. currentStreak, lastActivityDate, earnedAchievementIds
 
-    // Konstruktor domyślny wymagany przez Firebase
+    // Wymagany pusty konstruktor dla Firestore
     public UserProfile() {}
 
     // Zaktualizowany konstruktor
@@ -18,7 +17,6 @@ public class UserProfile {
         this.username = username; // Ustawienie nazwy użytkownika
         this.points = points;
         this.selectedLanguageCode = selectedLanguageCode;
-        // Inicjalizuj inne pola, jeśli istnieją
     }
 
     // Gettery i Settery
