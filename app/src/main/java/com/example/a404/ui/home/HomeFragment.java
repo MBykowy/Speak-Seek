@@ -1,7 +1,7 @@
 package com.example.a404.ui.home;
 
 import android.os.Bundle;
-import android.os.Debug;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation; // Upewnij się, że ten import jest obecny
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.a404.MainActivity;
 import com.example.a404.R;
 import com.example.a404.data.dao.CourseDao;
 import com.example.a404.data.model.Course;
 import com.example.a404.data.model.WordDbHelper;
 import com.example.a404.databinding.FragmentHomeBinding;
-import com.example.a404.data.repository.UserRepository;
 import com.example.a404.ui.adapters.CourseAdapter;
-import com.example.a404.ui.adapters.LanguageAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -31,63 +29,136 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
+    private static final String TAG = "HomeFragment";
     private FragmentHomeBinding binding;
     private HomeViewModel homeViewModel;
-
-    private WordDbHelper dbHelper;
+    private CourseAdapter courseAdapter;
     private CourseDao courseDao;
+    private WordDbHelper dbHelper;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-
+        Log.d(TAG, "onCreateView wywołane");
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        loadCourses();
-
-        return root;
-    }
-
-    private void loadCourses() {
-
-        dbHelper = new WordDbHelper(getContext());
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        dbHelper = new WordDbHelper(requireContext());
         courseDao = new CourseDao(dbHelper);
-        List<Course> courses = courseDao.getAllCourses();
-        CourseAdapter adapter = new CourseAdapter(this.getContext(), courses);
-        binding.recyclerViewCourses.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.recyclerViewCourses.setAdapter(adapter);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "onViewCreated wywołane");
 
-        // Sprawdź, czy użytkownik ma wybrany język
-        checkLanguageSelection();
-    }
+        setupRecyclerView();
+        setupNavigation(); // Ustaw nawigację
 
-    private void checkLanguageSelection() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
+            Log.d(TAG, "Użytkownik zalogowany, ID: " + userId);
+            homeViewModel.loadUserProfile(userId); // Załaduj profil użytkownika
+        } else {
+            Log.w(TAG, "Użytkownik nie jest zalogowany");
+            // Możesz tutaj dodać logikę przekierowania do ekranu logowania
+        }
 
-            homeViewModel.getUserProfile(userId).observe(getViewLifecycleOwner(), userProfile -> {
-                if (userProfile != null) {
-                    String selectedLanguage = userProfile.getSelectedLanguageCode();
-                    if (selectedLanguage == null || selectedLanguage.isEmpty()) {
-                        // Przekieruj do ekranu wyboru języka
-                        Navigation.findNavController(requireView())
-                                .navigate(R.id.action_navigation_home_to_languageSelectionFragment);
-                    }
-                }
-            });
+        // Obserwuj zmiany w wybranym języku
+        homeViewModel.getSelectedLanguageCode().observe(getViewLifecycleOwner(), languageCode -> {
+            if (languageCode != null) {
+                Log.d(TAG, "Obserwator: Wybrany język zmieniony na: " + languageCode);
+                loadCourses(languageCode); // Załaduj kursy dla nowego języka
+            } else {
+                Log.d(TAG, "Obserwator: Kod języka jest null");
+                // Obsłuż przypadek, gdy język nie jest jeszcze ustawiony (np. pokaż komunikat)
+                binding.textViewNoCourses.setVisibility(View.VISIBLE);
+                binding.textViewNoCourses.setText(R.string.language_not_selected); // Dodaj odpowiedni string
+                binding.recyclerViewCourses.setVisibility(View.GONE);
+            }
+        });
+    }
+
+
+    private void setupRecyclerView() {
+        Log.d(TAG, "setupRecyclerView wywołane");
+        binding.recyclerViewCourses.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.recyclerViewCourses.setHasFixedSize(true); // Poprawia wydajność, jeśli rozmiar elementów jest stały
+    }
+
+    private void setupNavigation() {
+        Log.d(TAG, "setupNavigation wywołane");
+
+        // Nawigacja dla przycisku rozpoczęcia ćwiczenia
+        binding.fabStartExercise.setOnClickListener(v -> {
+            Log.d(TAG, "Kliknięto fabStartExercise");
+            try {
+                NavController navController = Navigation.findNavController(v); // Użyj widoku 'v'
+                navController.navigate(R.id.action_navigation_home_to_objectRecognitionFragment); // Użyj R.id
+                Log.d(TAG, "Nawigacja do ObjectRecognitionFragment zainicjowana");
+            } catch (IllegalArgumentException e) {
+                Log.e(TAG, "Nie można znaleźć NavController dla fabStartExercise lub akcja jest nieprawidłowa", e);
+                // Możesz pokazać Toast lub inny komunikat użytkownikowi
+            } catch (IllegalStateException e) {
+                Log.e(TAG, "NavController nie jest ustawiony poprawnie", e);
+            }
+        });
+
+        // Nawigacja dla przycisku zmiany języka
+        binding.buttonChangeLanguage.setOnClickListener(v -> {
+            Log.d(TAG, "Kliknięto buttonChangeLanguage");
+            try {
+                NavController navController = Navigation.findNavController(v); // Użyj widoku 'v'
+                navController.navigate(R.id.action_navigation_home_to_languageSelectionFragment); // Użyj R.id
+                Log.d(TAG, "Nawigacja do LanguageSelectionFragment zainicjowana");
+            } catch (IllegalArgumentException e) {
+                Log.e(TAG, "Nie można znaleźć NavController dla buttonChangeLanguage lub akcja jest nieprawidłowa", e);
+            } catch (IllegalStateException e) {
+                Log.e(TAG, "NavController nie jest ustawiony poprawnie", e);
+            }
+        });
+    }
+
+
+    // Zmodyfikowana metoda przyjmująca kod języka
+    private void loadCourses(String languageCode) {
+        Log.d(TAG, "loadCourses wywołane dla języka: " + languageCode);
+        if (courseDao == null) {
+            Log.e(TAG, "courseDao nie został zainicjalizowany!");
+            return;
+        }
+
+        List<Course> courses = courseDao.getAllCourses(languageCode);
+        Log.d(TAG, "Pobrano " + courses.size() + " kursów dla języka: " + languageCode);
+
+        if (courses.isEmpty()) {
+            Log.d(TAG, "Brak kursów dla języka: " + languageCode + ". Wyświetlanie komunikatu.");
+            binding.textViewNoCourses.setVisibility(View.VISIBLE); // Użyj binding
+            // Użyj getString z formatowaniem, jeśli Twój string tego wymaga
+            binding.textViewNoCourses.setText(getString(R.string.no_courses_available, languageCode)); // Użyj R.string
+            binding.recyclerViewCourses.setVisibility(View.GONE);
+        } else {
+            Log.d(TAG, "Znaleziono kursy. Ukrywanie komunikatu i ustawianie adaptera.");
+            binding.textViewNoCourses.setVisibility(View.GONE); // Użyj binding
+            binding.recyclerViewCourses.setVisibility(View.VISIBLE);
+            // TODO: Zamiast tworzyć nowy adapter za każdym razem, rozważ implementację metody
+            //       updateCourses(List<Course> newCourses) w CourseAdapter i wywołanie notifyDataSetChanged()
+            //       dla lepszej wydajności.
+            courseAdapter = new CourseAdapter(requireContext(), courses);
+            binding.recyclerViewCourses.setAdapter(courseAdapter);
         }
     }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        Log.d(TAG, "onDestroyView wywołane");
+        // Nie zamykaj dbHelper tutaj, jego cyklem życia zarządza system.
+        // Zamykanie bazy danych w onDestroyView fragmentu może prowadzić do błędów,
+        // jeśli inne komponenty (np. inny fragment, aktywność) nadal jej używają.
+        // dbHelper.close(); // Usunięto
+        binding = null; // Ważne, aby zapobiec wyciekom pamięci związanych z widokiem
     }
 }

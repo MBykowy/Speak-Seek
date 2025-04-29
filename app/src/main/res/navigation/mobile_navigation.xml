@@ -10,10 +10,15 @@
         android:name="com.example.a404.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
-        <!-- Dodajemy akcję nawigacyjną do ekranu wyboru języka -->
+        <!-- Akcja do ekranu wyboru języka -->
         <action
             android:id="@+id/action_navigation_home_to_languageSelectionFragment"
             app:destination="@+id/languageSelectionFragment" />
+        <!-- Dodana akcja do ekranu rozpoznawania obiektów -->
+        <action
+            android:id="@+id/action_navigation_home_to_objectRecognitionFragment"
+            app:destination="@+id/objectRecognitionFragment" />
+        <!-- Pamiętaj, aby dodać fragment o id 'objectRecognitionFragment' poniżej -->
     </fragment>
 
     <fragment
@@ -28,10 +33,20 @@
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 
-    <!-- Dodajemy nowy fragment wyboru języka -->
+    <!-- Fragment wyboru języka -->
     <fragment
         android:id="@+id/languageSelectionFragment"
         android:name="com.example.a404.ui.language.LanguageSelectionFragment"
         android:label="Wybór języka"
         tools:layout="@layout/fragment_language_selection" />
+
+    <!-- Dodaj tutaj definicję fragmentu dla rozpoznawania obiektów, np.: -->
+    <!--
+    <fragment
+        android:id="@+id/objectRecognitionFragment"
+        android:name="com.example.a404.ui.exercise.ObjectRecognitionFragment"
+        android:label="Rozpoznawanie Obiektów"
+        tools:layout="@layout/fragment_object_recognition" />
+    -->
+
 </navigation>

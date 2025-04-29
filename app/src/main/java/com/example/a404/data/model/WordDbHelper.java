@@ -1,13 +1,15 @@
 package com.example.a404.data.model;
 
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log; // Import dla Log
 
 public class WordDbHelper extends SQLiteOpenHelper {
+    private static final String TAG = "WordDbHelper"; // Dodaj TAG
     private static final String DATABASE_NAME = "wordlearning.db";
-    private static final int DATABASE_VERSION = 1;
+    // Wersja bazy danych pozostaje 2, ponieważ schemat (kolumny) się nie zmienia
+    private static final int DATABASE_VERSION = 3;
 
     // Table names
     public static final String TABLE_COURSES = "courses";
@@ -19,6 +21,7 @@ public class WordDbHelper extends SQLiteOpenHelper {
     // Course table columns
     public static final String COLUMN_COURSE_NAME = "name";
     public static final String COLUMN_COURSE_DESCRIPTION = "description";
+    public static final String COLUMN_COURSE_LANGUAGE_CODE = "language_code"; // Kolumna kodu języka
 
     // Word table columns
     public static final String COLUMN_WORD_TEXT = "word_text";
@@ -29,7 +32,8 @@ public class WordDbHelper extends SQLiteOpenHelper {
     private static final String CREATE_COURSES_TABLE = "CREATE TABLE " + TABLE_COURSES + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_COURSE_NAME + " TEXT NOT NULL, "
-            + COLUMN_COURSE_DESCRIPTION + " TEXT);";
+            + COLUMN_COURSE_DESCRIPTION + " TEXT, "
+            + COLUMN_COURSE_LANGUAGE_CODE + " TEXT NOT NULL DEFAULT 'en');"; // Domyślnie 'en'
 
     private static final String CREATE_WORDS_TABLE = "CREATE TABLE " + TABLE_WORDS + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -45,28 +49,46 @@ public class WordDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.i(TAG, "Tworzenie tabel bazy danych...");
         db.execSQL(CREATE_COURSES_TABLE);
         db.execSQL(CREATE_WORDS_TABLE);
-
-        // Insert some sample data
+        Log.i(TAG, "Tabele utworzone, wstawianie przykładowych danych...");
         insertSampleData(db);
+        Log.i(TAG, "Przykładowe dane wstawione.");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.w(TAG, "Aktualizacja bazy danych z wersji " + oldVersion + " do " + newVersion);
+        // Prosta strategia migracji: usuń stare tabele i utwórz nowe
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORDS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_COURSES);
         onCreate(db);
     }
 
+    // Updated sample data with German, Polish, Spanish, French
     private void insertSampleData(SQLiteDatabase db) {
-        // Insert courses
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ") VALUES ('Basic Vocabulary', 'Essential everyday English words for beginners')");
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ") VALUES ('Travel English', 'Useful words and phrases for travelers')");
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ") VALUES ('Business English', 'Professional vocabulary for workplace settings')");
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ") VALUES ('Academic English', 'Terms commonly used in educational contexts')");
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ") VALUES ('Idioms & Expressions', 'Common English idioms and their meanings')");
+        // === English Courses (IDs 1-5) ===
+        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Basic Vocabulary', 'Essential everyday English words for beginners', 'en')"); // ID 1
+        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Travel English', 'Useful words and phrases for travelers', 'en')");     // ID 2
+        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Business English', 'Professional vocabulary for workplace settings', 'en')"); // ID 3
+        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Academic English', 'Terms commonly used in educational contexts', 'en')");  // ID 4
+        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Idioms & Expressions', 'Common English idioms and their meanings', 'en')"); // ID 5
 
+        // === German Course (ID 6) ===
+        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Grundwortschatz Deutsch', 'Wichtige deutsche Wörter für Anfänger', 'de')"); // ID 6
+
+        // === Polish Course (ID 7) ===
+        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Podstawowe Słownictwo Polskie', 'Niezbędne polskie słowa na co dzień', 'pl')"); // ID 7
+
+        // === Spanish Course (ID 8) ===
+        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Vocabulario Básico Español', 'Palabras esenciales en español para principiantes', 'es')"); // ID 8
+
+        // === French Course (ID 9) ===
+        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Vocabulaire de Base Français', 'Mots français essentiels pour débutants', 'fr')"); // ID 9
+
+
+        // === English Words (IDs 1-5) ===
         // Basic Vocabulary words (Course ID: 1)
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hello', 'A greeting used when meeting someone', 1)");
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Goodbye', 'A farewell used when leaving', 1)");
@@ -91,40 +113,65 @@ public class WordDbHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Tourist', 'A person who travels for pleasure', 2)");
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Map', 'A diagrammatic representation of an area', 2)");
 
-        // Business English words (Course ID: 3)
+        // Business English words (Course ID: 3) - Keeping these as placeholders, add more if needed
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Meeting', 'An assembly of people for a particular purpose', 3)");
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Deadline', 'A time or date by which something must be completed', 3)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Budget', 'An estimate of income and expenditure', 3)");
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Contract', 'A written or spoken agreement', 3)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Presentation', 'A formal talk on a particular topic', 3)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Negotiate', 'To discuss with a view to reaching an agreement', 3)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Strategy', 'A plan of action designed to achieve a long-term goal', 3)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Investment', 'The action of investing money for profit', 3)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Revenue', 'Income from business activities', 3)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Stakeholder', 'A person with an interest in a business', 3)");
 
-        // Academic English words (Course ID: 4)
+        // Academic English words (Course ID: 4) - Keeping these as placeholders, add more if needed
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Thesis', 'A statement or theory put forward to be maintained or proved', 4)");
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Research', 'Systematic investigation to establish facts', 4)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Analysis', 'Detailed examination of something', 4)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Critique', 'A detailed analysis and assessment', 4)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Methodology', 'A system of methods used in a discipline', 4)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hypothesis', 'A supposition made on evidence as a starting point for investigation', 4)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Theory', 'A supposition or system of ideas explaining something', 4)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Citation', 'A quotation from or reference to a book or author', 4)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Abstract', 'A summary of a research paper or article', 4)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Plagiarism', 'The practice of taking someone else''s work and passing it off as one''s own', 4)");
 
-        // Idioms & Expressions (Course ID: 5)
+        // Idioms & Expressions (Course ID: 5) - Keeping these as placeholders, add more if needed
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Break a leg', 'Good luck (often said to performers)', 5)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Cost an arm and a leg', 'To be very expensive', 5)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hit the nail on the head', 'To describe exactly what is causing a situation or problem', 5)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Under the weather', 'Feeling ill', 5)");
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Piece of cake', 'Something very easy to do', 5)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Raining cats and dogs', 'Raining very heavily', 5)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('The ball is in your court', 'It''s your turn to take action or make a decision', 5)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Speak of the devil', 'Said when a person appears just after being mentioned', 5)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Beat around the bush', 'To avoid getting to the point of an issue', 5)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Once in a blue moon', 'Very rarely', 5)");
+
+        // === German Words (Course ID: 6) ===
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hallo', 'Hello', 6)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Tschüss', 'Goodbye (informal)', 6)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Danke', 'Thank you', 6)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Bitte', 'Please / You''re welcome', 6)"); // Escaped quote
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Ja', 'Yes', 6)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Nein', 'No', 6)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Wasser', 'Water', 6)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Essen', 'Food / To eat', 6)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Flughafen', 'Airport', 6)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hotel', 'Hotel', 6)");
+
+        // === Polish Words (Course ID: 7) ===
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Cześć', 'Hello / Hi', 7)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Do widzenia', 'Goodbye', 7)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Dziękuję', 'Thank you', 7)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Proszę', 'Please / Here you are', 7)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Tak', 'Yes', 7)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Nie', 'No', 7)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Woda', 'Water', 7)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Jedzenie', 'Food', 7)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Lotnisko', 'Airport', 7)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hotel', 'Hotel', 7)");
+
+        // === Spanish Words (Course ID: 8) ===
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hola', 'Hello', 8)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Adiós', 'Goodbye', 8)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Gracias', 'Thank you', 8)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Por favor', 'Please', 8)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Sí', 'Yes', 8)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('No', 'No', 8)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Agua', 'Water', 8)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Comida', 'Food', 8)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Aeropuerto', 'Airport', 8)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hotel', 'Hotel', 8)");
+
+        // === French Words (Course ID: 9) ===
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Bonjour', 'Hello', 9)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Au revoir', 'Goodbye', 9)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Merci', 'Thank you', 9)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('S''il vous plaît', 'Please', 9)"); // Escaped quote
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Oui', 'Yes', 9)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Non', 'No', 9)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Eau', 'Water', 9)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Nourriture', 'Food', 9)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Aéroport', 'Airport', 9)"); // Note: Often written l'aéroport
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hôtel', 'Hotel', 9)");
     }
 }
