@@ -8,4 +8,5 @@
     <string name="title_ranking">Ranking</string>
     <string name="language_not_selected">Wybierz język, aby zobaczyć kursy.</string>
     <string name="no_courses_available">Brak dostępnych kursów dla języka: %s</string>
+    <string name="ranking_is_empty">Ranking jest pusty lub nie udało się go załadować.</string>
 </resources>
