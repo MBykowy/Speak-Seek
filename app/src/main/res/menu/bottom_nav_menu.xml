@@ -23,9 +23,8 @@
         android:title="@string/title_ranking"/>
 
     <item
-        android:id="@+id/action_logout"
-        android:title="Log out"
-        android:icon="@drawable/ic_logout_black_24dp"
-        app:showAsAction="never" />
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_achievement_default"
+        android:title="@string/title_profile" />
 
 </menu>
