@@ -89,7 +89,7 @@ public class WordDbHelper extends SQLiteOpenHelper {
 
 
         // === English Words (IDs 1-5) ===
-        // Basic Vocabulary words (Course ID: 1)
+        // Basic Vocabulary words (Course ID: 1)0
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hello', 'A greeting used when meeting someone', 1)");
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Goodbye', 'A farewell used when leaving', 1)");
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Thank you', 'Expression of gratitude', 1)");

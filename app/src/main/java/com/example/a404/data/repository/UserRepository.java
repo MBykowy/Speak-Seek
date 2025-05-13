@@ -159,6 +159,26 @@ public class UserRepository {
         return rankedUsersLiveData;
     }
 
+    /**
+     * Aktualizuje punkty użytkownika, dodając określoną wartość do bieżącej liczby punktów.
+     * Używa FieldValue.increment() dla atomowej operacji na serwerze Firestore.
+     *
+     * @param userId ID użytkownika, którego punkty mają być zaktualizowane
+     * @param pointsToAdd liczba punktów do dodania (może być również ujemna)
+     */
+    public void updatePoints(String userId, int pointsToAdd) {
+        Log.d(TAG, "Aktualizacja punktów: +" + pointsToAdd + " dla użytkownika: " + userId);
+
+        firebaseSource.getFirestore()
+                .collection("users")
+                .document(userId)
+                .update("points", com.google.firebase.firestore.FieldValue.increment(pointsToAdd))
+                .addOnSuccessListener(aVoid ->
+                        Log.d(TAG, "Punkty zaktualizowane pomyślnie o: " + pointsToAdd))
+                .addOnFailureListener(e ->
+                        Log.e(TAG, "Błąd aktualizacji punktów dla " + userId, e));
+    }
+
     // Metoda do jawnego tworzenia profilu użytkownika, np. po rejestracji
     public void createUserProfile(String userId, String username) {
         Log.d(TAG, "Tworzenie nowego profilu dla użytkownika: " + userId + " z nazwą: " + username);

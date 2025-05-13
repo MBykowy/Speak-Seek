@@ -16,12 +16,21 @@
             app:destination="@+id/languageSelectionFragment" />
     </fragment>
 
+    <!-- Dodaj te akcje w elemencie fragmentu navigation_dashboard w mobile_navigation.xml -->
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.a404.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
 
+        <action
+            android:id="@+id/action_navigation_dashboard_to_languageSelectionFragment"
+            app:destination="@id/languageSelectionFragment" />
+
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.a404.ui.notifications.NotificationsFragment"
@@ -47,4 +56,6 @@
         android:name="com.example.a404.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+    <!-- Dodaj te akcje w elemencie fragmentu navigation_dashboard w mobile_navigation.xml -->
+
 </navigation>
