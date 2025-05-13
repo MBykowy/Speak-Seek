@@ -40,4 +40,11 @@
         android:name="com.example.a404.ui.ranking.RankingFragment"
         android:label="@string/title_ranking"
         tools:layout="@layout/fragment_ranking" />
+
+    <!-- Dodaj to do mobile_navigation.xml -->
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.a404.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
