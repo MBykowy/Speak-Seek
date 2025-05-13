@@ -89,34 +89,6 @@ public class HomeFragment extends Fragment {
 
     private void setupNavigation() {
         Log.d(TAG, "setupNavigation wywołane");
-
-        // Nawigacja dla przycisku rozpoczęcia ćwiczenia
-        binding.fabStartExercise.setOnClickListener(v -> {
-            Log.d(TAG, "Kliknięto fabStartExercise");
-            try {
-                NavController navController = Navigation.findNavController(v); // Użyj widoku 'v'
-                Log.d(TAG, "Nawigacja do ObjectRecognitionFragment zainicjowana");
-            } catch (IllegalArgumentException e) {
-                Log.e(TAG, "Nie można znaleźć NavController dla fabStartExercise lub akcja jest nieprawidłowa", e);
-                // Możesz pokazać Toast lub inny komunikat użytkownikowi
-            } catch (IllegalStateException e) {
-                Log.e(TAG, "NavController nie jest ustawiony poprawnie", e);
-            }
-        });
-
-        // Nawigacja dla przycisku zmiany języka
-        binding.buttonChangeLanguage.setOnClickListener(v -> {
-            Log.d(TAG, "Kliknięto buttonChangeLanguage");
-            try {
-                NavController navController = Navigation.findNavController(v); // Użyj widoku 'v'
-                navController.navigate(R.id.action_navigation_home_to_languageSelectionFragment); // Użyj R.id
-                Log.d(TAG, "Nawigacja do LanguageSelectionFragment zainicjowana");
-            } catch (IllegalArgumentException e) {
-                Log.e(TAG, "Nie można znaleźć NavController dla buttonChangeLanguage lub akcja jest nieprawidłowa", e);
-            } catch (IllegalStateException e) {
-                Log.e(TAG, "NavController nie jest ustawiony poprawnie", e);
-            }
-        });
     }
 
 
