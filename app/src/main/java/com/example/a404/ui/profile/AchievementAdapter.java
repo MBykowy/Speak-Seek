@@ -56,20 +56,17 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
         private final ImageView imageAchievement;
         private final TextView textAchievementName;
         private final TextView textAchievementDescription;
-        private final TextView textAchievementPoints;
 
         public AchievementViewHolder(@NonNull View itemView) {
             super(itemView);
             imageAchievement = itemView.findViewById(R.id.image_achievement);
             textAchievementName = itemView.findViewById(R.id.text_achievement_name);
             textAchievementDescription = itemView.findViewById(R.id.text_achievement_description);
-            textAchievementPoints = itemView.findViewById(R.id.text_achievement_points);
         }
 
         public void bind(Achievement achievement) {
             textAchievementName.setText(achievement.getName());
             textAchievementDescription.setText(achievement.getDescription());
-            textAchievementPoints.setText(String.format(Locale.getDefault(), "+%d punktów", achievement.getPointsAwarded()));
 
             // Ładowanie obrazu (ikony) - przykład z Glide, jeśli iconUrl jest dostępny
             // Jeśli masz domyślną ikonę w drawable, możesz ją ustawić tutaj

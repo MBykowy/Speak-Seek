@@ -12,6 +12,7 @@
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_dashboard" />
 
+
     <item
         android:id="@+id/languageSelectionFragment"
         android:icon="@drawable/ic_language_black_24dp"
@@ -27,4 +28,10 @@
         android:icon="@drawable/ic_achievement_default"
         android:title="@string/title_profile" />
 
+    <!--
+    <item
+        android:id="@+id/navigation_achievements"
+        android:icon="@drawable/ic_achievements_nav"
+        android:title="@string/title_achievements" />
+    -->
 </menu>

@@ -1,0 +1,51 @@
+<!-- Ścieżka: res/layout/item_achievement.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:gravity="center_vertical"
+    android:background="?android:attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/achievement_item_icon"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="12dp"
+        tools:srcCompat="@mipmap/ic_launcher_round" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/achievement_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"
+            tools:text="Nazwa Osiągnięcia Bardzo Długa" />
+
+        <TextView
+            android:id="@+id/achievement_item_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            tools:text="Krótki opis tego, jak można zdobyć to wspaniałe osiągnięcie." />
+    </LinearLayout>
+
+    <!-- Opcjonalnie: ikona statusu (np. kłódka lub галочка) -->
+    <ImageView
+        android:id="@+id/achievement_item_status_indicator"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:visibility="visible"
+        tools:srcCompat="@android:drawable/ic_lock_lock"  />
+</LinearLayout>
