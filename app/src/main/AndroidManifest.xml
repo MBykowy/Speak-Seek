@@ -39,19 +39,24 @@
         <activity
             android:name=".ui.SignInActivity"
             android:exported="true"
-            android:label="Вхід" />
+            android:label="Login" />
 
         <!-- SignUpActivity -->
         <activity
             android:name=".ui.SignUpActivity"
             android:exported="true"
-            android:label="Реєстрація" />
+            android:label="Registration" />
 
         <!-- ForgotPasswordActivity -->
         <activity
             android:name=".ui.ForgotPasswordActivity"
             android:exported="true"
-            android:label="Відновлення паролю" />
+            android:label="Password reset" />
+
+        <activity
+            android:name=".ui.home.WordGameActivity"
+            android:exported="true"
+            android:label="Password reset" />
 
     </application>
 
