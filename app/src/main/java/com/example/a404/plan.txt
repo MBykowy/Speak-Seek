@@ -1,0 +1,197 @@
+    com.example.a404
+    ├── data
+    │   ├── model
+    │   │   ├── UserProfile.java       # Stores user info, points, language, streak, achievements list
+    │   │   ├── VocabularyItem.java    # Stores word data (original, translation, category link)
+    │   │   ├── Category.java          # Stores category ID and name
+    │   │   ├── Achievement.java       # Stores achievement definition (ID, name, description, points)
+    │   │   └── UserWordProgress.java  # Optional: Stores user-specific SRS data per word (ease, interval, due date) - Alternatively, add SRS fields to VocabularyItem if structure allows or duplicate VocabularyItems per user.
+    │   │
+    │   ├── repository
+    │   │   ├── AuthRepository.java      # Handles Auth interactions (if abstracted from ViewModel/Activity)
+    │   │   ├── UserRepository.java      # Handles UserProfile CRUD, points, language updates
+    │   │   ├── VocabularyRepository.java# Handles Category/VocabularyItem fetching, SRS data updates
+    │   │   └── GamificationRepository.java# Handles Streak updates, Achievement checking/awarding
+    │   │
+    │   └── source
+    │       └── FirebaseSource.java      # Helper methods for Firestore read/write/query operations
+    │
+    ├── ui
+    │   ├── auth                     # Existing Authentication screens
+    │   │   ├── SignInActivity.java
+    │   │   ├── SignUpActivity.java
+    │   │   ├── ForgotPasswordActivity.java
+    │   │   └── AuthViewModel.java       # Optional: Consolidates auth logic
+    │   │
+    │   ├── home                     # Main screen after login
+    │   │   ├── HomeFragment.java
+    │   │   └── HomeViewModel.java
+    │   │
+    │   ├── profile                  # User profile screen
+    │   │   ├── ProfileFragment.java
+    │   │   ├── ProfileViewModel.java
+    │   │   └── AchievementAdapter.java # Adapter for displaying achievements in profile
+    │   │
+    │   ├── language                 # Language selection screen
+    │   │   ├── LanguageSelectionFragment.java
+    │   │   └── LanguageSelectionViewModel.java
+    │   │
+    │   ├── category                 # Vocabulary category list screen
+    │   │   ├── CategoryListFragment.java
+    │   │   ├── CategoryViewModel.java
+    │   │   └── CategoryAdapter.java     # Adapter for displaying categories
+    │   │
+    │   ├── exercise                 # Package containing all exercise types
+    │   │   ├── flashcard
+    │   │   │   ├── FlashcardFragment.java
+    │   │   │   └── FlashcardViewModel.java
+    │   │   ├── quiz
+    │   │   │   ├── QuizFragment.java
+    │   │   │   └── QuizViewModel.java
+    │   │   ├── gapfill
+    │   │   │   ├── GapFillFragment.java
+    │   │   │   └── GapFillViewModel.java
+    │   │   ├── matching
+    │   │   │   ├── MatchingFragment.java
+    │   │   │   └── MatchingViewModel.java
+    │   │   ├── scramble
+    │   │   │   ├── WordScrambleFragment.java
+    │   │   │   └── WordScrambleViewModel.java
+    │   │
+    │   ├── ranking                  # Leaderboard screen
+    │   │   ├── RankingFragment.java
+    │   │   ├── RankingViewModel.java
+    │   │   └── RankingAdapter.java      # Adapter for displaying ranking list
+    │   │
+    │   └── adapters                 # Common adapters (if any) - Usually empty if adapters are feature-specific
+    │
+    ├── service                      # Background services, external integrations
+    │   └── TextToSpeechService.java   # Optional: Manages Text-to-Speech engine if needed later
+    │
+    └── util                         # Utility classes, constants, helpers
+        ├── Constants.java             # App-wide constants (e.g., points values, Firestore collection names)
+        └── SpacedRepetitionUtil.java  # Contains the SRS algorithm logic
+
+    res
+    ├── layout
+    │   ├── activity_sign_in.xml     # (Assuming from old structure)
+    │   ├── activity_sign_up.xml     # (Assuming from old structure)
+    │   ├── activity_forgot_password.xml # (Assuming from old structure)
+    │   ├── fragment_home.xml
+    │   ├── fragment_profile.xml
+    │   ├── fragment_language_selection.xml
+    │   ├── fragment_category_list.xml
+    │   ├── item_category.xml          # Layout for a single category row
+    │   ├── fragment_flashcard.xml
+    │   ├── fragment_quiz.xml
+    │   ├── fragment_gap_fill.xml
+    │   ├── fragment_matching.xml
+    │   ├── fragment_word_scramble.xml
+    │   ├── fragment_ranking.xml
+    │   ├── item_ranking.xml           # Layout for a single ranking row
+    │   └── item_achievement.xml       # Layout for a single achievement row in the profile
+    │
+    ├── navigation
+    │   └── nav_graph.xml              # Defines navigation destinations and actions
+    │
+    └── ... (other resource folders like drawable, values, menu, etc.)
+**Revised Development Plan (Coding Tasks Only with Assignees)**
+
+**Phase 1: Initial Setup & Core Structure**
+
+1.  **(Wszyscy)** Create Base Project Structure: Create packages: `com.example.a404.data`, `data.model`, `data.repository`, `data.source`, `ui`, `ui.auth`, `ui.home`, `util`, `service`, `navigation`. (Corresponds to 'Przemyślenie struktury projektu')
+2.  **(Michał Bykowy)** Add Core Dependencies: Ensure `app/build.gradle` includes dependencies for AndroidX AppCompat, Material Components, ConstraintLayout, Lifecycle (ViewModel, LiveData), Fragment KTX. (Corresponds to 'Konfiguracja narzędzi')
+3.  **(Oleksandra Chekalina)** Add Firebase Dependencies: Add Firebase BOM, `firebase-auth-ktx`, and `firebase-firestore-ktx` dependencies to `app/build.gradle`. Configure `google-services.json`. (Corresponds to 'Konfiguracja połączenia FireBase')
+4.  **(Dawid Herfurth)** Configure Firestore: Enable Firestore in Firebase Console. Set initial permissive Security Rules. (Corresponds to 'Stworzenie bazy danych')
+5.  **(Michał Bykowy)** Implement Core Data Models: Create `data/model/UserProfile.java` (with initial fields: `userId`, `points`, `selectedLanguageCode`). (Part of 'Strona główna - Backend')
+6.  **(Michał Bykowy)** Implement Firebase Source Helper: Create `data/source/FirebaseSource.java` with placeholder methods for Firestore interactions (get, set, update documents). (Part of 'Strona główna - Backend')
+7.  **(Michał Bykowy)** Implement User Repository (Initial): Create `data/repository/UserRepository.java`. Inject `FirebaseSource`. Implement `getUserProfile(userId)` and `createUserProfile(userId, email)` methods interacting with `FirebaseSource`. (Part of 'Strona główna - Backend')
+8.  **(Michał Bykowy)** Implement Home ViewModel: Create `ui/home/HomeViewModel.java`. Inject `UserRepository`. Implement `loadUserData(userId)` method and expose `LiveData<UserProfile>`. (Part of 'Strona główna - Backend')
+
+**Phase 2: Authentication, Home Screen & Basic Data**
+
+9.  **(Oleksandra Chekalina)** Verify/Implement Auth Activities: Review existing `SignInActivity`, `SignUpActivity`, `ForgotPasswordActivity`. Ensure they interact correctly with `FirebaseAuth`. (Corresponds to 'Strona rejestracji i logowania - Firebase')
+10. **(Oleksandra Chekalina)** Implement User Profile Creation: In `SignUpActivity`'s success logic, add a call to `userRepository.createUserProfile()`. (Part of 'Strona rejestracji i logowania - Firebase')
+11. **(Oleksandra Chekalina)** Implement UID Retrieval: Ensure login logic retrieves the `FirebaseUser`'s UID for subsequent use. (Part of 'Strona rejestracji i logowania - Firebase')
+12. **(Dawid Herfurth)** Implement Home Screen Layout: Create `res/layout/fragment_home.xml` with basic UI elements (TextViews, Button placeholders). Use ViewBinding. (Corresponds to 'Strona główna - Frontend')
+13. **(Dawid Herfurth)** Implement Home Screen Fragment: Create `ui/home/HomeFragment.java`. Inflate layout with ViewBinding. Get `HomeViewModel` instance. Observe `UserProfile` LiveData and update UI elements. Handle loading state. (Corresponds to 'Strona główna - Frontend')
+14. **(Oleksandr Demenkov)** Implement Auth ViewModel (Optional): If needed, create `ui/auth/AuthViewModel.java` to consolidate common auth logic (loading/error states). Inject `AuthRepository` or `FirebaseAuth`. (Corresponds to 'Strona rejestracji i logowania - Backend')
+
+**Phase 3: Vocabulary Categories & Language Selection**
+
+15. **(Michał Bykowy)** Implement Vocabulary Data Models: Create `data/model/Category.java` (`categoryId`, `name`, `languageCode`). Create/Update `data/model/VocabularyItem.java` (`wordId`, `categoryId`, `languageCode`, `originalWord`, `translation`). (Corresponds to 'Kategorie Słownictwa - Struktura Danych Firebase')
+16. **(Michał Bykowy)** Populate Sample Data: Manually add sample categories and vocabulary items to Firestore via the console. (Part of 'Kategorie Słownictwa - Struktura Danych Firebase')
+17. **(Michał Bykowy)** Implement Vocabulary Repository: Create/Update `data/repository/VocabularyRepository.java`. Inject `FirebaseSource`. Implement `getCategories(languageCode): LiveData<List<Category>>` and `getWordsInCategory(categoryId): LiveData<List<VocabularyItem>>`. (Corresponds to 'Kategorie Słownictwa - Podstawowe Repozytorium')
+18. **(Oleksandra Chekalina)** Implement Language Update Logic: Add `updateSelectedLanguage(userId: String, languageCode: String)` method to `UserRepository` to update Firestore. (Part of 'Wybór Języka - Logika Zapisu (ViewModel/Repo)')
+19. **(Oleksandra Chekalina)** Implement Language Selection ViewModel: Create `ui/language/LanguageSelectionViewModel.java`. Inject `UserRepository`. Implement `selectLanguage(userId, languageCode)` method calling the repository. Add `MutableLiveData<Boolean>` for status updates. (Part of 'Wybór Języka - Logika Zapisu (ViewModel/Repo)')
+20. **(Dawid Herfurth)** Implement Language Selection Layout: Create `res/layout/fragment_language_selection.xml` with UI elements for selection (Buttons, RadioGroup, etc.). (Corresponds to 'Wybór Języka - Layout UI (XML)')
+21. **(Dawid Herfurth)** Implement Language Selection Fragment: Create `ui/language/LanguageSelectionFragment.java`. Use ViewBinding. Get ViewModel instance. Set listeners on UI elements to call `viewModel.selectLanguage()`. Observe status LiveData for feedback/navigation. (Part of 'Wybór Języka - Layout UI (XML)')
+22. **(Dawid Herfurth)** Implement Category List Layout: Create `res/layout/fragment_category_list.xml` containing a `RecyclerView`. (Part of 'Kategorie Słownictwa - Layout UI (XML)')
+23. **(Dawid Herfurth)** Implement Category Item Layout: Create `res/layout/item_category.xml` for RecyclerView rows. (Part of 'Kategorie Słownictwa - Layout UI (XML)')
+24. **(Dawid Herfurth)** Implement Category Adapter: Create `ui/category/CategoryAdapter.java` to bind `Category` data to `item_category.xml`. (Part of 'Kategorie Słownictwa - Layout UI (XML)')
+25. **(Michał Bykowy)** Implement Category ViewModel: Create `ui/category/CategoryViewModel.java`. Inject `VocabularyRepository` and `UserRepository`. Fetch user's language, then fetch categories via `vocabularyRepository.getCategories()`. Expose `LiveData<List<Category>>`. (Part of 'Kategorie Słownictwa - Podstawowe Repozytorium')
+26. **(Dawid Herfurth)** Implement Category List Fragment: Create `ui/category/CategoryListFragment.java`. Use ViewBinding. Get ViewModel instance. Observe category LiveData. Setup `RecyclerView` with `CategoryAdapter`. Implement item click handling (e.g., for navigation). (Part of 'Kategorie Słownictwa - Layout UI (XML)')
+
+**Phase 4: Gamification Basics & Navigation Setup**
+
+*   **(Oleksandra Chekalina)** Task: Sprawdzenie integracji systemu Auth (Perform end-to-end auth tests)
+27. **(Michał Bykowy)** Implement Points Update Logic: Implement `updatePoints(userId: String, pointsToAdd: Int)` method in `UserRepository`. Ensure it reads, increments, and writes the points field in Firestore. (Corresponds to 'System Punktacji - Logika Backend (aktualizacja w Firebase)')
+28. **(Michał Bykowy)** Implement Gamification Data Models: Create `data/model/Achievement.java` (`achievementId`, `name`, `description`, `pointsAwarded`). Modify `UserProfile.java` to include `currentStreak: Int`, `lastActivityDate: Timestamp`, `earnedAchievementIds: List<String>`. (Corresponds to 'Serie i Osiągnięcia - Struktura Danych')
+29. **(Michał Bykowy)** Update Firestore Structure: Add new fields (`currentStreak`, `lastActivityDate`, `earnedAchievementIds`) to the user document structure in Firestore. Create an `achievements` collection and add sample achievement definitions. (Part of 'Serie i Osiągnięcia - Struktura Danych')
+30. **(Oleksandra Chekalina)** Add Navigation Component Dependencies: Add `navigation-fragment-ktx` and `navigation-ui-ktx` dependencies. (Part of 'Nawigacja - Podstawowy Graf (Nav Component)')
+31. **(Oleksandra Chekalina)** Create Navigation Graph: Create `res/navigation/nav_graph.xml`. Define destinations (`HomeFragment`, `LanguageSelectionFragment`, `CategoryListFragment`, etc.) and basic navigation actions between them. Set the start destination. (Part of 'Nawigacja - Podstawowy Graf (Nav Component)')
+32. **(Oleksandra Chekalina)** Setup NavController: In the main hosting Activity, find the `NavController` and configure basic setup (e.g., with Toolbar or BottomNavigationView if applicable). (Part of 'Nawigacja - Podstawowy Graf (Nav Component)')
+
+**Phase 5: Core Exercise - Flashcards & Profile UI**
+
+*   **(Oleksandr Demenkov)** Task: Architektura - Szkic ViewModeli Ćwiczeń (Plan/Document Exercise ViewModel structure)
+33. **(Dawid Herfurth)** Implement Flashcard Layout: Create `res/layout/fragment_flashcard.xml` with CardView, TextViews (word, translation), and Buttons (Show, Correct, Incorrect, Next). (Corresponds to 'Fiszki - Layout UI (XML)')
+34. **(Dawid Herfurth)** Implement Profile Layout Skeleton: Create `res/layout/fragment_profile.xml` with placeholder TextViews (Username, Points, Streak) and a RecyclerView placeholder for achievements. (Corresponds to 'UI Główne - Layout Dashboard/Profil (XML - szkielet)')
+35. **(Dawid Herfurth)** Implement Profile ViewModel: Create `ui/profile/ProfileViewModel.java`. Inject `UserRepository`. Implement `loadUserProfile(userId)` and expose `LiveData<UserProfile>`. (Part of 'UI Główne - Layout Dashboard/Profil (XML - szkielet)')
+36. **(Dawid Herfurth)** Implement Profile Fragment (Initial): Create `ui/profile/ProfileFragment.java`. Use ViewBinding. Get ViewModel instance. Observe `UserProfile` LiveData and update basic TextViews. (Part of 'UI Główne - Layout Dashboard/Profil (XML - szkielet)')
+37. **(Oleksandr Demenkov)** Implement Flashcard ViewModel: Create `ui/exercise/flashcard/FlashcardViewModel.java`. Inject `VocabularyRepository`, `UserRepository`. Implement `loadWords(categoryId)`/`loadReviewWords()`. Implement logic for `showNextWord()`, `revealTranslation()`. Add LiveData for `currentWord` and `showTranslationState`. (Corresponds to 'Fiszki - Logika (ViewModel, integracja z Repo)')
+38. **(Oleksandr Demenkov)** Implement Flashcard Fragment: Create `ui/exercise/flashcard/FlashcardFragment.java`. Use ViewBinding. Get ViewModel instance. Observe ViewModel LiveData (`currentWord`, `showTranslationState`) and update UI. Handle button clicks ("Show Answer", "Next") by calling ViewModel methods. (Part of 'Fiszki - Logika (ViewModel, integracja z Repo)')
+39. **(Oleksandr Demenkov)** Integrate Scoring with Flashcards: Implement `markCorrect()`/`markIncorrect()` in `FlashcardViewModel`. In `markCorrect()`, call `userRepository.updatePoints()`. Wire "Correct"/"Incorrect" buttons in `FlashcardFragment` to these methods. (Corresponds to 'System Punktacji - Integracja z Fiszkami')
+
+**Phase 6: Gamification - Streaks, Achievements, Ranking**
+
+40. **(Michał Bykowy)** Implement Gamification Repository Logic: Create `GamificationRepository.java` (or add to `UserRepository`). Implement `updateStreak(userId)` logic (fetch, check date, update streak/date, save). Implement `checkAndAwardAchievements(userId, userProfile)` logic (fetch definitions, check conditions, update profile, award points, save). (Corresponds to 'Serie i Osiągnięcia - Logika Backend')
+41. **(Michał Bykowy)** Integrate Gamification Calls: Add calls to `updateStreak()` and `checkAndAwardAchievements()` after relevant user actions (e.g., `markCorrect` in exercises). (Part of 'Serie i Osiągnięcia - Logika Backend')
+42. **(Michał Bykowy)** Implement Ranking Backend Logic: Implement `getRanking(limit: Int): LiveData<List<UserProfile>>` in `UserRepository` using a Firestore query (`orderBy("points", DESCENDING)`, `limit(limit)`). (Corresponds to 'Ranking - Logika Backend (query w Firebase)')
+43. **(Oleksandra Chekalina)** Implement Ranking Layout: Create `res/layout/fragment_ranking.xml` with a `RecyclerView`. (Part of 'Ranking - Layout UI i Adapter')
+44. **(Oleksandra Chekalina)** Implement Ranking Item Layout: Create `res/layout/item_ranking.xml` (rank, username, points TextViews). (Part of 'Ranking - Layout UI i Adapter')
+45. **(Oleksandra Chekalina)** Implement Ranking Adapter: Create `ui/ranking/RankingAdapter.java` to bind `UserProfile` data to `item_ranking.xml`. (Part of 'Ranking - Layout UI i Adapter')
+
+**Phase 7: Additional Exercise Types**
+
+46. **(Dawid Herfurth)** Implement Quiz Layout: Create `res/layout/fragment_quiz.xml` (question TextView, choice Buttons/RadioButtons). (Part of 'Ćw. Wybór/Wpis - Layout UI (Quiz + Luki)')
+47. **(Dawid Herfurth)** Implement Gap Fill Layout: Create `res/layout/fragment_gap_fill.xml` (sentence TextView with blank, EditText, Check Button). (Part of 'Ćw. Wybór/Wpis - Layout UI (Quiz + Luki)')
+48. **(Dawid Herfurth)** Implement Matching Layout: Create `res/layout/fragment_matching.xml` (columns/RecyclerViews for words/translations, interaction logic UI). (Part of 'Ćw. Strukturalne - Layout UI (Matching + Scramble)')
+49. **(Dawid Herfurth)** Implement Word Scramble Layout: Create `res/layout/fragment_word_scramble.xml` (scrambled TextView, EditText, Check Button). (Part of 'Ćw. Strukturalne - Layout UI (Matching + Scramble)')
+50. **(Oleksandr Demenkov)** Implement Quiz/Gap Fill ViewModels: Create `QuizViewModel` and `GapFillViewModel`. Inject Repos. Implement data fetching, question/sentence presentation, `checkAnswer()` logic (including calls to `updatePoints`, `updateStreak`, `checkAndAwardAchievements`). (Corresponds to 'Ćw. Wybór/Wpis - Logika (ViewModel, integracja Repo)')
+51. **(Oleksandr Demenkov)** Implement Quiz/Gap Fill Fragments: Create `QuizFragment` and `GapFillFragment`. Use ViewBinding. Wire UI elements to ViewModels. (Part of 'Ćw. Wybór/Wpis - Logika (ViewModel, integracja Repo)')
+52. **(Oleksandr Demenkov)** Implement Matching/Scramble ViewModels: Create `MatchingViewModel` and `WordScrambleViewModel`. Inject Repos. Implement data fetching, shuffling/scrambling logic, answer checking logic (including gamification calls). (Corresponds to 'Ćw. Strukturalne - Logika (ViewModel, integracja Repo)')
+53. **(Oleksandr Demenkov)** Implement Matching/Scramble Fragments: Create `MatchingFragment` and `WordScrambleFragment`. Use ViewBinding. Wire UI elements to ViewModels. (Part of 'Ćw. Strukturalne - Logika (ViewModel, integracja Repo)')
+
+**Phase 8: Spaced Repetition & Integration**
+
+54. **(Michał Bykowy)** Update Data Model for SRS: Modify `VocabularyItem.java` or create `UserWordProgress.java` to include `easeFactor: Double`, `intervalDays: Int`, `dueDate: Timestamp`. (Part of 'Spaced Repetition - Logika Algorytmu i Zapis Postępów')
+55. **(Michał Bykowy)** Implement SRS Utility: Create `util/SpacedRepetitionUtil.java`. Implement SRS calculation logic (e.g., `calculateNextReview(ease, interval, quality)`). (Part of 'Spaced Repetition - Logika Algorytmu i Zapis Postępów')
+56. **(Michał Bykowy)** Implement SRS Data Persistence: Add methods to `UserRepository`/`VocabularyRepository` to save/update SRS fields per user per word in Firestore (likely requires a new `userWordProgress` collection). (Part of 'Spaced Repetition - Logika Algorytmu i Zapis Postępów')
+57. **(Michał Bykowy)** Implement Review Word Fetching: Implement `getWordsDueForReview(userId): LiveData<List<VocabularyItem>>` in `VocabularyRepository` using Firestore query on `dueDate`. (Part of 'Spaced Repetition - Logika Algorytmu i Zapis Postępów')
+58. **(Oleksandra Chekalina)** Implement Ranking ViewModel: Create `ui/ranking/RankingViewModel.java`. Inject `UserRepository`. Call `getRanking()` and expose `LiveData<List<UserProfile>>`. (Corresponds to 'Ranking - Logika ViewModel i integracja UI')
+59. **(Oleksandra Chekalina)** Implement Ranking Fragment: Create `ui/ranking/RankingFragment.java`. Use ViewBinding. Get ViewModel instance. Observe ranking LiveData and setup `RecyclerView` with `RankingAdapter`. (Part of 'Ranking - Logika ViewModel i integracja UI')
+60. **(Oleksandra Chekalina)** Finalize Navigation Graph: Add all new exercise Fragments, Profile, Ranking to `nav_graph.xml`. Define all necessary navigation actions. Implement navigation triggers in Fragments/Activities. (Corresponds to 'Nawigacja - Finalizacja i Testowanie')
+61. **(Dawid Herfurth)** Implement Streak/Achievement Display: Update `ProfileViewModel` to fetch streak data and detailed achievement info. Implement `RecyclerView` and `AchievementAdapter` in `ProfileFragment` for achievements. Update `ProfileFragment` UI to display streak and the achievements list. (Corresponds to 'Serie i Osiągnięcia - Wyświetlanie na UI')
+
+**Phase 9: Polishing & Testing Code**
+
+62. **(Dawid Herfurth)** Implement Loading/Empty States: Add ProgressBar visibility toggles during data loads and display TextViews/Views for empty states in lists (Categories, Ranking, Exercises). (Part of 'UI - Drobne Poprawki i Polerowanie')
+63. **(Dawid Herfurth)** Add Accessibility Content Descriptions: Add `android:contentDescription` to ImageButtons, Buttons without clear text, and important decorative elements. (Part of 'UI - Drobne Poprawki i Polerowanie')
+64. **(Oleksandr Demenkov)** Integrate SRS with Exercises: Modify Exercise ViewModels (e.g., `FlashcardViewModel`) to optionally load words using `getWordsDueForReview()`. Implement calls to `SpacedRepetitionUtil` and repository save methods after answers are marked. (Corresponds to 'Spaced Repetition - Integracja z Ćwiczeniami')
+65. **(Wszyscy)** Perform Code Testing (Manual): Execute key user flows manually, verifying UI updates, data persistence in Firestore, and navigation logic. (Corresponds to 'Testowanie Integracyjne - Przepływy Użytkownika')
+66. **(Wszyscy)** Perform Data Verification (Manual): Directly inspect Firestore data after app actions to confirm correctness of points, language, streaks, achievements, and SRS data. (Corresponds to 'Testowanie Integracyjne - Backend i Baza Danych')
+67. **(Wszyscy)** Implement Bug Fixes: Code the solutions for any bugs identified during testing. (Corresponds to 'Poprawki Błędów')
+68. **(Wszyscy)** Refactor and Comment Code: Clean up codebase (remove logs, unused code), add clarifying comments, and ensure consistent formatting. (Corresponds to 'Przygotowanie Wersji Finalnej')
+
+    

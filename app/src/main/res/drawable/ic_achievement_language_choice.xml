@@ -1,0 +1,13 @@
+<!-- Ścieżka: res/drawable/ic_achievement_language_choice.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24.0"
+    android:viewportHeight="24.0"
+    android:tint="?attr/colorControlNormal"> <!-- Możesz zmienić kolor -->
+
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M12.87,15.07l-2.54,-2.51.03,-0.03c1.74,-1.94 2.98,-4.17 3.71,-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5,7.92 10.44,9.75 9,11.35 8.07,10.32 7.3,9.19 6.69,8h-2c0.73,1.63 1.73,3.17 2.98,4.56l-5.09,5.02L4.84,19l5.05,-5.05 3.42,3.42zM13.5,8c0,-0.83 -0.67,-1.5 -1.5,-1.5s-1.5,0.67 -1.5,1.5S11.17,9.5 12,9.5s1.5,-0.67 1.5,-1.5zM20,4h-5v1.99h2.38c-0.35,0.99 -0.83,1.92 -1.41,2.76l1.42,1.42C18.27,9.23 19.17,7.9 20,6.42V4zM20.71,14.29l-1.41,1.41L18.5,14.9C17.94,15.38 17.29,15.77 16.5,16.02V14h-2v3.5c0,0.83 0.67,1.5 1.5,1.5 0.99,0 1.88,-0.49 2.44,-1.26l1.27,1.26 1.41,-1.41L19.29,16L20.71,14.29z"/>
+    <!-- Powyższa ścieżka jest dla ikony "Translate" z Material Icons -->
+</vector>

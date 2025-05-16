@@ -1,0 +1,29 @@
+<!-- Ścieżka: res/drawable/ic_achievements_nav.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24.0"
+    android:viewportHeight="24.0"
+    android:tint="?attr/colorControlNormal"> <!-- Domyślny kolor ikony nawigacji, dostosuje się do motywu -->
+
+    <!-- Główna część medalu (okrąg) -->
+    <path
+        android:fillColor="@android:color/white"
+    android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM12,20c-4.41,0 -8,-3.59 -8,-8s3.59,-8 8,-8 8,3.59 8,8 -3.59,8 -8,8z"/>
+
+    <!-- Gwiazdka wewnątrz medalu -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M12,15.39l-3.76,2.27 1,-4.24 -3.07,-2.65 4.24,-0.36L12,6.5l1.59,3.91 4.24,0.36 -3.07,2.65 1,4.24z"/>
+
+    <!-- Wstążka (uproszczona) - dwa trójkąty u góry -->
+    <!-- Lewa część wstążki -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M8.46,5.46L7,4l-3,3 1.46,1.46z"/>
+    <!-- Prawa część wstążki -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M15.54,5.46L17,4l3,3 -1.46,1.46z"/>
+
+</vector>

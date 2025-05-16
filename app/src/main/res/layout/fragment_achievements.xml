@@ -1,0 +1,30 @@
+<!-- Ścieżka: res/layout/fragment_achievements.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/achievements_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        android:visibility="gone"/> <!-- Początkowo ukryty -->
+
+    <ProgressBar
+        android:id="@+id/achievements_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible" /> <!-- Początkowo widoczny -->
+
+    <TextView
+        android:id="@+id/achievements_message_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ładowanie osiągnięć..."
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:gravity="center"
+        android:padding="16dp"/>
+</RelativeLayout>
