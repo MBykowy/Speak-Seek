@@ -44,8 +44,7 @@ public class ProfileViewModel extends AndroidViewModel {
 
     private final MutableLiveData<String> userIdLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
-
-    private final LiveData<UserProfile> userProfileLiveData; // Zmieniono nazwę dla spójności
+    private final LiveData<UserProfile> userProfileLiveData;
 
     private final MediatorLiveData<List<DisplayAchievementProfile>> allDisplayAchievements = new MediatorLiveData<>();
     private final MutableLiveData<List<Achievement>> _allAchievementDefinitions = new MutableLiveData<>();
@@ -57,28 +56,27 @@ public class ProfileViewModel extends AndroidViewModel {
         this.firebaseSource = new FirebaseSource();
 
         userProfileLiveData = Transformations.switchMap(userIdLiveData, id -> {
-            Log.d(TAG_PROFILE_VM, "SwitchMap triggered for UserProfile with id: " + id);
-            // isLoading.setValue(true); // isLoading jest teraz zarządzane w load... metodach
-            if (id == null) { // Obsługa przypadku, gdy ID jest null (np. po wylogowaniu)
+            Log.d(TAG_PROFILE_VM, "SwitchMap for UserProfile triggered with id: " + id);
+            isLoading.setValue(true); // Rozpocznij ładowanie
+            if (id == null) {
                 MutableLiveData<UserProfile> emptyProfile = new MutableLiveData<>();
                 emptyProfile.setValue(null);
-                isLoading.setValue(false); // Upewnij się, że isLoading jest false
+                // isLoading.setValue(false); // Zarządzane przez addSource
                 return emptyProfile;
             }
-            return userRepository.getUserProfile(id); // Zakładamy, że to zwraca LiveData
+            return userRepository.getUserProfile(id); // To powinno zawsze robić zapytanie lub zwracać aktualne LiveData
         });
 
         allDisplayAchievements.addSource(_allAchievementDefinitions, definitions -> {
-            Log.d(TAG_PROFILE_VM, "Achievement definitions updated. Count: " + (definitions != null ? definitions.size() : "null"));
-            if (_userUnlockedAchievements.getValue() != null && definitions != null) { // Sprawdź też definicje
+            Log.d(TAG_PROFILE_VM, "Definitions updated. Unlocked: " + (_userUnlockedAchievements.getValue() != null));
+            if (_userUnlockedAchievements.getValue() != null && definitions != null) {
                 isLoading.setValue(false);
             }
             combineAllAchievementsData(definitions, _userUnlockedAchievements.getValue());
         });
-
         allDisplayAchievements.addSource(_userUnlockedAchievements, unlocked -> {
-            Log.d(TAG_PROFILE_VM, "User unlocked achievements updated. Count: " + (unlocked != null ? unlocked.size() : "null"));
-            if (_allAchievementDefinitions.getValue() != null && unlocked != null) { // Sprawdź też odblokowane
+            Log.d(TAG_PROFILE_VM, "Unlocked updated. Definitions: " + (_allAchievementDefinitions.getValue() != null));
+            if (_allAchievementDefinitions.getValue() != null && unlocked != null) {
                 isLoading.setValue(false);
             }
             combineAllAchievementsData(_allAchievementDefinitions.getValue(), unlocked);
@@ -88,11 +86,9 @@ public class ProfileViewModel extends AndroidViewModel {
     private void combineAllAchievementsData(List<Achievement> definitions, List<UnlockedAchievement> unlocked) {
         // ... (kod tej metody bez zmian - sortowanie itd.)
         if (definitions == null) {
-            Log.d(TAG_PROFILE_VM, "combineAllAchievementsData: Definitions are null, setting empty list.");
             allDisplayAchievements.setValue(new ArrayList<>());
             return;
         }
-        Log.d(TAG_PROFILE_VM, "combineAllAchievementsData: Combining " + definitions.size() + " definitions with " + (unlocked != null ? unlocked.size() : "null") + " unlocked achievements.");
         Set<String> unlockedIdsSet = new HashSet<>();
         java.util.Map<String, com.google.firebase.Timestamp> unlockedAtMap = new java.util.HashMap<>();
         if (unlocked != null) {
@@ -122,51 +118,26 @@ public class ProfileViewModel extends AndroidViewModel {
         allDisplayAchievements.setValue(resultList);
     }
 
-    public void init() {
-        Log.d(TAG_PROFILE_VM, "init() called.");
+    // Zmieniamy nazwę z init() na loadDataForCurrentUser() lub zostawiamy init()
+    // i upewniamy się, że zawsze ładuje dane
+    public void loadDataForCurrentUser() {
+        Log.i(TAG_PROFILE_VM, "loadDataForCurrentUser() called. Forcing data refresh.");
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String currentUserId = currentUser.getUid();
-            // Ustaw userIdLiveData tylko jeśli jest null lub się zmieniło,
-            // aby uniknąć niepotrzebnego triggerowania switchMap, jeśli refreshData sobie z tym poradzi.
-            if (userIdLiveData.getValue() == null || !userIdLiveData.getValue().equals(currentUserId)) {
-                userIdLiveData.setValue(currentUserId);
-            }
-            // Odświeżenie danych jest teraz głównie w refreshData,
-            // ale init może załadować je po raz pierwszy, jeśli userIdLiveData był null.
-            if (_allAchievementDefinitions.getValue() == null || _userUnlockedAchievements.getValue() == null) {
-                loadAllDefinitionsAndUserUnlocked(currentUserId);
-            }
-        } else {
-            Log.w(TAG_PROFILE_VM, "init: No current user.");
-            userIdLiveData.setValue(null); // Informuje switchMap, że nie ma użytkownika
-            _allAchievementDefinitions.postValue(new ArrayList<>());
-            _userUnlockedAchievements.postValue(new ArrayList<>());
-            isLoading.setValue(false);
-        }
-    }
+            isLoading.setValue(true); // Pokaż wskaźnik ładowania
 
-    // === NOWA METODA DO WYMUSZENIA ODŚWIEŻENIA ===
-    public void refreshData() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            String currentUserId = currentUser.getUid();
-            Log.d(TAG_PROFILE_VM, "refreshData() called for user: " + currentUserId);
-
-            // Wymuś ponowne załadowanie UserProfile przez chwilowe ustawienie ID na null,
-            // a potem z powrotem na właściwe ID. To powinno "obudzić" switchMap.
-            // Ta technika jest trochę "hackiem", ale często działa.
-            String previousUserId = userIdLiveData.getValue();
-            if (currentUserId.equals(previousUserId)) { // Jeśli ID jest to samo
-                userIdLiveData.setValue(null); // Triggeruj zmianę
-            }
-            userIdLiveData.setValue(currentUserId); // Ustaw właściwe ID, co uruchomi switchMap
+            // Zawsze ustawiaj userIdLiveData, aby potencjalnie odświeżyć profil,
+            // jeśli implementacja repozytorium na to pozwala przy ponownym ustawieniu tej samej wartości
+            // lub jeśli switchMap zawsze reaguje.
+            // Jeśli nie, to UserProfile może nie zostać odświeżony, ale osiągnięcia tak.
+            userIdLiveData.setValue(currentUserId);
 
             // Zawsze ładuj ponownie definicje osiągnięć i odblokowane przez użytkownika
             loadAllDefinitionsAndUserUnlocked(currentUserId);
         } else {
-            Log.w(TAG_PROFILE_VM, "refreshData: No current user.");
-            userIdLiveData.setValue(null);
+            Log.w(TAG_PROFILE_VM, "loadDataForCurrentUser: No current user. Clearing data.");
+            userIdLiveData.setValue(null); // To triggeruje switchMap do ustawienia profilu na null
             _allAchievementDefinitions.postValue(new ArrayList<>());
             _userUnlockedAchievements.postValue(new ArrayList<>());
             isLoading.setValue(false);
@@ -175,15 +146,17 @@ public class ProfileViewModel extends AndroidViewModel {
 
     private void loadAllDefinitionsAndUserUnlocked(String currentUserId) {
         if (currentUserId == null) {
-            Log.w(TAG_PROFILE_VM, "loadAllDefinitionsAndUserUnlocked: currentUserId is null, aborting load.");
+            Log.w(TAG_PROFILE_VM, "loadAllDefinitionsAndUserUnlocked: currentUserId is null.");
             _allAchievementDefinitions.postValue(new ArrayList<>());
             _userUnlockedAchievements.postValue(new ArrayList<>());
-            isLoading.setValue(false);
+            // isLoading.setValue(false); // isLoading jest zarządzane przez MediatorLiveData
             return;
         }
         Log.d(TAG_PROFILE_VM, "Executing loadAllDefinitionsAndUserUnlocked for " + currentUserId);
-        isLoading.setValue(true);
-        _allAchievementDefinitions.setValue(null); // Wyczyść, aby MediatorLiveData wiedziało, że dane są ładowane
+        // isLoading.setValue(true); // Ustawiane w loadDataForCurrentUser
+
+        // Resetuj LiveData, aby MediatorLiveData wiedziało, że dane są przeładowywane
+        _allAchievementDefinitions.setValue(null);
         _userUnlockedAchievements.setValue(null);
 
         firebaseSource.getAllAchievementDefinitions((definitions, e1) -> {
@@ -191,7 +164,6 @@ public class ProfileViewModel extends AndroidViewModel {
                 Log.e(TAG_PROFILE_VM, "Error loading achievement definitions", e1);
                 _allAchievementDefinitions.postValue(new ArrayList<>());
             } else {
-                Log.d(TAG_PROFILE_VM, "Definitions loaded: " + definitions.size());
                 _allAchievementDefinitions.postValue(definitions);
             }
         });
@@ -201,10 +173,8 @@ public class ProfileViewModel extends AndroidViewModel {
                 Log.e(TAG_PROFILE_VM, "Error loading user's unlocked achievements for " + currentUserId, e2);
                 _userUnlockedAchievements.postValue(new ArrayList<>());
             } else {
-                Log.d(TAG_PROFILE_VM, "Unlocked achievements loaded: " + (unlockedList != null ? unlockedList.size() : "null"));
                 _userUnlockedAchievements.postValue(unlockedList != null ? unlockedList : new ArrayList<>());
             }
-            // isLoading zostanie ustawione na false przez MediatorLiveData, gdy oba źródła będą gotowe
         });
     }
 
@@ -212,5 +182,4 @@ public class ProfileViewModel extends AndroidViewModel {
     public LiveData<UserProfile> getUserProfile() { return userProfileLiveData; }
     public LiveData<List<DisplayAchievementProfile>> getAllDisplayAchievements() { return allDisplayAchievements; }
     public LiveData<Boolean> getIsLoading() { return isLoading; }
-    // public void setUserIdToDisplay(String newUserId) { ... } // Jeśli potrzebne
 }
