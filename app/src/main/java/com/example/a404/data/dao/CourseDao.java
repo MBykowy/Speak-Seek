@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.a404.data.model.Course;
+import com.example.a404.data.model.Word;
 import com.example.a404.data.model.WordDbHelper;
 
 import java.util.ArrayList;
@@ -44,8 +45,46 @@ public class CourseDao {
             }
         }
     }
+    public List<Word> getWordsForCourse(long courseId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        List<Word> words = new ArrayList<>();
 
+        Cursor cursor = db.query(
+                WordDbHelper.TABLE_WORDS,
+                null,
+                WordDbHelper.COLUMN_WORD_COURSE_ID + " = ?",
+                new String[]{String.valueOf(courseId)},
+                null,
+                null,
+                null
+        );
 
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                Word word = new Word();
+                word.setId(cursor.getLong(cursor.getColumnIndexOrThrow(WordDbHelper.COLUMN_ID)));
+                word.setText(cursor.getString(cursor.getColumnIndexOrThrow(WordDbHelper.COLUMN_WORD_TEXT)));
+                word.setTranslation(cursor.getString(cursor.getColumnIndexOrThrow(WordDbHelper.COLUMN_WORD_TRANSLATION)));
+                word.setCourseId(cursor.getLong(cursor.getColumnIndexOrThrow(WordDbHelper.COLUMN_WORD_COURSE_ID)));
+
+                // Sprawdź, czy kolumny kategorii i dystraktorów istnieją
+                int categoryIndex = cursor.getColumnIndex(WordDbHelper.COLUMN_WORD_CATEGORY);
+                if (categoryIndex != -1) {
+                    word.setCategory(cursor.getString(categoryIndex));
+                }
+
+                int distractorsIndex = cursor.getColumnIndex(WordDbHelper.COLUMN_WORD_DISTRACTORS);
+                if (distractorsIndex != -1) {
+                    word.setPredefinedDistractorsString(cursor.getString(distractorsIndex));
+                }
+
+                words.add(word);
+            }
+            cursor.close();
+        }
+
+        return words;
+    }
     public long insertCourse(Course course) {
         if (database == null || !database.isOpen()) {
             open(); // Spróbuj otworzyć, jeśli zamknięta
