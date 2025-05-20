@@ -6,11 +6,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable; // <<< DODAJ, jeśli UserOperationCallback używa @Nullable
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.a404.R; // <<< DODAJ IMPORT DLA R.drawable
 import com.example.a404.data.model.Achievement;
 import com.example.a404.data.model.Language;
 import com.example.a404.data.model.UserProfile;
@@ -39,9 +40,8 @@ public class LanguageSelectionViewModel extends AndroidViewModel {
         this.firebaseSource = new FirebaseSource();
         this.userRepository = new UserRepository(firebaseSource);
         this.achievementHelper = new AchievementHelper(application.getApplicationContext(), firebaseSource);
-        loadAvailableLanguages();
+        loadAvailableLanguages(); // Ta metoda zostanie zaktualizowana
         Log.d(TAG, "ViewModel utworzony.");
-        // Rozważ wywołanie loadUserLanguageOnStart() tutaj lub upewnij się, że fragment to robi przy starcie
     }
 
     public LiveData<Boolean> getLanguageUpdateStatus() {
@@ -58,38 +58,30 @@ public class LanguageSelectionViewModel extends AndroidViewModel {
 
     public void selectLanguage(String userId, String languageCode) {
         Log.d(TAG, "Zapisuję język dla użytkownika: " + userId + ", język: " + languageCode);
-
-        // Krok 1: Wywołaj aktualizację w UserRepository Z CALLBACKIEM
         userRepository.updateSelectedLanguage(userId, languageCode, new UserRepository.UserOperationCallback() {
             @Override
             public void onComplete(boolean success, @Nullable Exception e) {
                 if (success) {
                     Log.d(TAG, "Selected language updated in Firestore successfully.");
-                    // Krok 2: Lokalnie zaktualizuj wybrany język i status
                     currentSelectedLanguage.postValue(languageCode);
-                    languageUpdateStatus.postValue(true); // Ustaw status sukcesu
-
-                    // Krok 3: Dodaj ten język do listy 'languagesStartedIds' w Firestore
+                    languageUpdateStatus.postValue(true);
                     firebaseSource.addUserStartedLanguage(userId, languageCode, (opSuccess, opError) -> {
                         if (opSuccess) {
                             Log.d(TAG, "Language " + languageCode + " successfully added/ensured in languagesStartedIds.");
                         } else {
                             Log.e(TAG, "Failed to add language " + languageCode + " to languagesStartedIds.", opError);
                         }
-                        // Niezależnie od wyniku addUserStartedLanguage, pobierz profil i sprawdź osiągnięcia
                         fetchProfileAndCheckAchievements(userId, "Po próbie wyboru języka");
                     });
                 } else {
                     Log.e(TAG, "Failed to update selected language in Firestore.", e);
-                    languageUpdateStatus.postValue(false); // Ustaw status błędu
-                    // Możesz tu dodać Toast informujący o błędzie zapisu języka
+                    languageUpdateStatus.postValue(false);
                     Toast.makeText(getApplication(), "Błąd zapisu wybranego języka.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    // Metoda pomocnicza do pobierania profilu i sprawdzania osiągnięć (bez zmian)
     private void fetchProfileAndCheckAchievements(String userId, String contextMessage) {
         firebaseSource.getUserProfile(userId, (profile, e) -> {
             if (e != null || profile == null) {
@@ -97,7 +89,6 @@ public class LanguageSelectionViewModel extends AndroidViewModel {
                 return;
             }
             _currentUserProfile.postValue(profile);
-
             Log.d(TAG, contextMessage + " - Checking achievements for user: " + profile.getUsername());
             achievementHelper.checkAndUnlockAchievements(profile, (newlyUnlocked, error) -> {
                 if (error != null) {
@@ -120,13 +111,12 @@ public class LanguageSelectionViewModel extends AndroidViewModel {
         });
     }
 
-    // loadUserLanguage (lub loadUserLanguageOnStart) i loadAvailableLanguages (bez zmian)
     public void loadUserLanguage(String userId) {
         Log.d(TAG, "Próba wczytania profilu i języka dla użytkownika: " + userId);
         firebaseSource.getUserProfile(userId, (profile, e) -> {
             if (e != null) {
                 Log.e(TAG, "Error loading user profile on start.", e);
-                currentSelectedLanguage.postValue("en");
+                currentSelectedLanguage.postValue("en"); // Domyślny język
                 _currentUserProfile.postValue(null);
                 return;
             }
@@ -137,12 +127,12 @@ public class LanguageSelectionViewModel extends AndroidViewModel {
                 if (languageCode != null && !languageCode.isEmpty()) {
                     currentSelectedLanguage.postValue(languageCode);
                 } else {
-                    currentSelectedLanguage.postValue("en");
+                    currentSelectedLanguage.postValue("en"); // Domyślny język, jeśli brak
                     Log.d(TAG, "User has no selected language, defaulting to 'en'.");
                 }
             } else {
                 Log.d(TAG, "Brak profilu użytkownika przy starcie, UID: " + userId);
-                currentSelectedLanguage.postValue("en");
+                currentSelectedLanguage.postValue("en"); // Domyślny język
                 _currentUserProfile.postValue(null);
             }
         });
@@ -150,11 +140,15 @@ public class LanguageSelectionViewModel extends AndroidViewModel {
 
     private void loadAvailableLanguages() {
         List<Language> languages = new ArrayList<>();
-        languages.add(new Language("en", "Angielski"));
-        languages.add(new Language("pl", "Polski"));
-        languages.add(new Language("de", "Niemiecki"));
-        languages.add(new Language("es", "Hiszpański"));
-        languages.add(new Language("fr", "Francuski"));
+        // <<< ZAKTUALIZOWANA SEKCJA - DODAJEMY ID ZASOBÓW FLAG >>>
+        languages.add(new Language("en", "Angielski", R.drawable.ic_flag_uk)); // Zakładając, że masz ic_flag_uk
+        languages.add(new Language("pl", "Polski", R.drawable.ic_flag_poland));
+        languages.add(new Language("de", "Niemiecki", R.drawable.ic_flag_germany));
+        languages.add(new Language("es", "Hiszpański", R.drawable.ic_flag_spain));
+        languages.add(new Language("fr", "Francuski", R.drawable.ic_flag_france));
+        // Dodaj więcej języków z odpowiednimi flagami, jeśli są dostępne
+        // Jeśli jakaś flaga nie istnieje, możesz przekazać 0 lub ID placeholdera
+        // np. languages.add(new Language("it", "Włoski", R.drawable.ic_flag_placeholder));
         availableLanguages.setValue(languages);
         Log.d(TAG, "Załadowano " + languages.size() + " języków do nauki");
     }

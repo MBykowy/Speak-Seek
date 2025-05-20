@@ -1,0 +1,36 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="20dp"
+    android:viewportWidth="1200"
+    android:viewportHeight="600">
+
+    <!-- Tło - niebieskie -->
+    <path
+        android:fillColor="#012169"
+        android:pathData="M0,0h1200v600H0z"/>
+
+    <!-- Krzyż św. Andrzeja (Szkocja) - biały X -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M0,0 L1200,600 M0,600 L1200,0"
+        android:strokeWidth="120"
+        android:strokeColor="#FFFFFF"/>
+
+    <!-- Krzyż św. Patryka (Irlandia Płn.) - czerwony X, węższy, na białym X -->
+    <path
+        android:fillColor="#C8102E"
+        android:pathData="M0,0 L1200,600 M0,600 L1200,0"
+        android:strokeWidth="80"
+        android:strokeColor="#C8102E"/>
+
+
+    <!-- Krzyż św. Jerzego (Anglia) - białe obramowanie dla czerwonego krzyża -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M500,0h200v600H500V0z M0,200h1200v200H0V200z"/>
+
+    <!-- Krzyż św. Jerzego (Anglia) - czerwony krzyż -->
+    <path
+        android:fillColor="#C8102E"
+        android:pathData="M540,0h120v600H540V0z M0,240h1200v120H0V240z"/>
+</vector>

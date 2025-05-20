@@ -15,5 +15,7 @@
     <string name="error_not_logged_in">You are not logged in\n</string>
     <string name="view_words">View words</string>
     <string name="ranking_medal_icon">Ikona medalu</string>
+    <string name="select_language_prompt">Wybierz język, którego chcesz się uczyć:</string>
+    <string name="language_flag_description">Flaga języka</string>
 
 </resources>
