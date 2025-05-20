@@ -14,5 +14,6 @@
     <string name="title_word_game">Gra Słów</string>
     <string name="error_not_logged_in">You are not logged in\n</string>
     <string name="view_words">View words</string>
+    <string name="ranking_medal_icon">Ikona medalu</string>
 
 </resources>
