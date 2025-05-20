@@ -46,6 +46,21 @@ public class CourseDao {
         }
     }
 
+    public int getWordCountForCourse(long courseId) {
+        if (database == null || !database.isOpen()) {
+            open();
+            if (database == null || !database.isOpen()) {
+                Log.e(TAG, "Database is not open in getWordCountForCourse.");
+                return 0;
+            }
+        }
+
+        WordDao wordDao = new WordDao(dbHelper);
+        List<Word> words = wordDao.getWordsByCourseId(courseId);
+        wordDao.close();
+        return words != null ? words.size() : 0;
+    }
+
     public boolean addWordToCourse(long courseId, Word word) {
         if (database == null || !database.isOpen()) {
             open();

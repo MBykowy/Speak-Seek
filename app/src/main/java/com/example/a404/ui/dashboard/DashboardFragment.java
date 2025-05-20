@@ -2,6 +2,7 @@
 package com.example.a404.ui.dashboard;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +46,8 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
     private DashboardViewModel viewModel;
     private CourseAdapter courseAdapter;
     private AchievementsAdapter achievementAdapterDashboard;
+    private CourseDao courseDao;
+    private WordDbHelper dbHelper;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +60,10 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
         UserRepository userRepository = new UserRepository(firebaseSource);
         VocabularyRepository vocabularyRepository = new VocabularyRepository(firebaseSource);
         GamificationRepository gamificationRepository = new GamificationRepository(firebaseSource, requireActivity().getApplication());
+
+
+        dbHelper = new WordDbHelper(this.getContext());
+        courseDao = new CourseDao(dbHelper);
 
         viewModel = new ViewModelProvider(
                 this,
@@ -220,12 +227,11 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
 
     private void updateReviewWordsUI(List<VocabularyItem> wordsForReview) {
 
-        WordDbHelper dbHelper = new WordDbHelper(requireContext());
-        CourseDao courseDao = new CourseDao(dbHelper);
-        if (!courseDao.getCourseById(10000).getWords().isEmpty()) {
-            int reviewCount = wordsForReview.size();
+
+        long id = 10000;
+        if (courseDao.getWordCountForCourse(id) > 0) {
             binding.textReviewCount.setText(
-                    String.format(Locale.getDefault(), "%d słów czeka na powtórkę", reviewCount));
+                    String.format(Locale.getDefault(), "%d słów czeka na powtórkę", courseDao.getWordCountForCourse(id)));
             binding.buttonStartReview.setEnabled(true);
         } else {
             binding.textReviewCount.setText("0 słów czeka na powtórkę");
