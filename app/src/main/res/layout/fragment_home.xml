@@ -4,16 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_light"
     tools:context=".ui.home.HomeFragment">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Learning Courses"
-        android:textSize="24sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Available Learning Courses"
+        android:textSize="28sp"
         android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="Choose one of the courses below to start learning"
+        android:textSize="16sp"
+        android:textColor="@color/text_secondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,24 +47,30 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_courses"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        app:layout_constraintTop_toBottomOf="@+id/subtitle" />
 
     <TextView
         android:id="@+id/text_view_no_courses"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/language_not_selected"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="No language selected"
+        android:textSize="18sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/recycler_view_courses"
-        app:layout_constraintEnd_toEndOf="@+id/recycler_view_courses"
-        app:layout_constraintStart_toStartOf="@+id/recycler_view_courses"
-        app:layout_constraintTop_toTopOf="@+id/recycler_view_courses"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtitle"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

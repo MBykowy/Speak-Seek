@@ -9,4 +9,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="incorrect_answer_red">#FF1500</color>
     <color name="correct_answer_green">#23C205</color>
+
+    <!-- Dodane brakujące kolory -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="primary">#6200EE</color>
+    <color name="background_light">#F5F5F5</color>
 </resources>

@@ -12,6 +12,7 @@
     <string name="ranking_is_empty">Ranking jest pusty lub nie udało się go załadować.</string>
     <string name="title_achievements">Osiągnięcia</string>
     <string name="title_word_game">Gra Słów</string>
-    <string name="ranking_medal_icon">Ikona medalu</string>
+    <string name="error_not_logged_in">You are not logged in\n</string>
+    <string name="view_words">View words</string>
 
 </resources>
