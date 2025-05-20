@@ -56,7 +56,7 @@
         <activity
             android:name=".ui.home.WordGameActivity"
             android:exported="true"
-            android:label="Password reset" />
+            android:label="@string/title_word_game"/>
 
         <activity
             android:name=".ui.home.SentenceGameActivity"

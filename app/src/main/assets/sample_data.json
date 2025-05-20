@@ -1,0 +1,1288 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "name": "Basic Vocabulary",
+      "description": "Essential everyday English words for beginners",
+      "language_code": "en",
+      "words": [
+        {
+          "text": "Hello",
+          "translation": "A greeting used when meeting someone",
+          "category": "greeting",
+          "distractors": "Goodbye,Thank you,Please"
+        },
+        {
+          "text": "Goodbye",
+          "translation": "A farewell used when leaving",
+          "category": "farewell",
+          "distractors": "Hello,Welcome,See you later"
+        },
+        {
+          "text": "Thank you",
+          "translation": "Expression of gratitude",
+          "category": "gratitude",
+          "distractors": "Sorry,Please,Excuse me"
+        },
+        {
+          "text": "Please",
+          "translation": "Used when requesting something politely",
+          "category": "politeness",
+          "distractors": "Thank you,Sorry,You're welcome"
+        },
+        {
+          "text": "Sorry",
+          "translation": "Used to express regret or apologize",
+          "category": "apology",
+          "distractors": "Thank you,Please,Congratulations"
+        },
+        {
+          "text": "Friend",
+          "translation": "A person you like and enjoy spending time with",
+          "category": "people",
+          "distractors": "Enemy,Stranger,Colleague"
+        },
+        {
+          "text": "Family",
+          "translation": "A group of related people",
+          "category": "people",
+          "distractors": "Team,Crowd,Audience"
+        },
+        {
+          "text": "Food",
+          "translation": "Things that people or animals eat",
+          "category": "food_drink",
+          "distractors": "Drink,Water,Book"
+        },
+        {
+          "text": "Water",
+          "translation": "Clear liquid that falls as rain and forms rivers and seas",
+          "category": "food_drink",
+          "distractors": "Juice,Milk,Soda"
+        },
+        {
+          "text": "House",
+          "translation": "A building where people live",
+          "category": "place",
+          "distractors": "Car,Office,Park"
+        },
+        {
+          "text": "Yes",
+          "translation": "Used to express affirmation or agreement",
+          "category": "affirmation",
+          "distractors": "No,Maybe,Perhaps"
+        },
+        {
+          "text": "No",
+          "translation": "Used to express negation or disagreement",
+          "category": "negation",
+          "distractors": "Yes,Alright,Okay"
+        },
+        {
+          "text": "Big",
+          "translation": "Of considerable size or extent",
+          "category": "adjective_size",
+          "distractors": "Small,Tiny,Narrow"
+        },
+        {
+          "text": "Small",
+          "translation": "Of less than average size",
+          "category": "adjective_size",
+          "distractors": "Big,Large,Huge"
+        },
+        {
+          "text": "Good",
+          "translation": "To be desired or approved of",
+          "category": "adjective_quality",
+          "distractors": "Bad,Poor,Awful"
+        },
+        {
+          "text": "Bad",
+          "translation": "Of poor quality or a low standard",
+          "category": "adjective_quality",
+          "distractors": "Good,Excellent,Fine"
+        },
+        {
+          "text": "Happy",
+          "translation": "Feeling or showing pleasure or contentment",
+          "category": "adjective_emotion",
+          "distractors": "Sad,Angry,Tired"
+        },
+        {
+          "text": "Sad",
+          "translation": "Feeling or showing sorrow; unhappy",
+          "category": "adjective_emotion",
+          "distractors": "Happy,Excited,Joyful"
+        },
+        {
+          "text": "Eat",
+          "translation": "Put food into the mouth and chew and swallow it",
+          "category": "verb_action",
+          "distractors": "Drink,Sleep,Run"
+        },
+        {
+          "text": "Drink",
+          "translation": "Take (a liquid) into the mouth and swallow",
+          "category": "verb_action",
+          "distractors": "Eat,Speak,Write"
+        },
+        {
+          "text": "Sleep",
+          "translation": "A condition of body and mind such as that which typically recurs for several hours every night",
+          "category": "verb_action",
+          "distractors": "Wake up,Work,Play"
+        },
+        {
+          "text": "Run",
+          "translation": "Move at a speed faster than a walk",
+          "category": "verb_action",
+          "distractors": "Walk,Sit,Stand"
+        },
+        {
+          "text": "Walk",
+          "translation": "Move at a regular pace by lifting and setting down each foot in turn",
+          "category": "verb_action",
+          "distractors": "Run,Fly,Swim"
+        },
+        {
+          "text": "Read",
+          "translation": "Look at and comprehend the meaning of (written or printed matter)",
+          "category": "verb_activity",
+          "distractors": "Write,Listen,Speak"
+        },
+        {
+          "text": "Write",
+          "translation": "Mark (letters, words, or other symbols) on a surface, typically paper, with a pen or pencil",
+          "category": "verb_activity",
+          "distractors": "Read,Draw,Type"
+        },
+        {
+          "text": "School",
+          "translation": "An institution for educating children",
+          "category": "place",
+          "distractors": "Hospital,Library,Market"
+        },
+        {
+          "text": "Teacher",
+          "translation": "A person who teaches, especially in a school",
+          "category": "people_occupation",
+          "distractors": "Student,Doctor,Farmer"
+        },
+        {
+          "text": "Student",
+          "translation": "A person who is studying at a school or college",
+          "category": "people_occupation",
+          "distractors": "Teacher,Principal,Librarian"
+        },
+        {
+          "text": "Book",
+          "translation": "A written or printed work consisting of pages glued or sewn together along one side and bound in covers",
+          "category": "object",
+          "distractors": "Magazine,Newspaper,Computer"
+        },
+        {
+          "text": "Pen",
+          "translation": "An instrument for writing or drawing with ink",
+          "category": "object",
+          "distractors": "Pencil,Crayon,Brush"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Travel English",
+      "description": "Useful words and phrases for travelers",
+      "language_code": "en",
+      "words": [
+        {
+          "text": "Airport",
+          "translation": "A place where aircraft take off and land",
+          "category": "travel_place",
+          "distractors": "Train station,Bus station,Harbor"
+        },
+        {
+          "text": "Hotel",
+          "translation": "A place providing accommodation and meals for travelers",
+          "category": "travel_place",
+          "distractors": "Hospital,School,Office"
+        },
+        {
+          "text": "Passport",
+          "translation": "An official document for international travel and identity",
+          "category": "travel_document",
+          "distractors": "Driver's license,Credit card,Library card"
+        },
+        {
+          "text": "Ticket",
+          "translation": "A paper or digital pass for travel or entry",
+          "category": "travel_document",
+          "distractors": "Receipt,Invoice,Map"
+        },
+        {
+          "text": "Luggage",
+          "translation": "Suitcases and bags for belongings when traveling",
+          "category": "travel_item",
+          "distractors": "Groceries,Furniture,Equipment"
+        },
+        {
+          "text": "Flight",
+          "translation": "A journey made by air",
+          "category": "travel_transport",
+          "distractors": "Road trip,Cruise,Train ride"
+        },
+        {
+          "text": "Train",
+          "translation": "A form of rail transport",
+          "category": "travel_transport",
+          "distractors": "Car,Bicycle,Boat"
+        },
+        {
+          "text": "Bus",
+          "translation": "A large motor vehicle for passengers by road",
+          "category": "travel_transport",
+          "distractors": "Airplane,Motorcycle,Scooter"
+        },
+        {
+          "text": "Taxi",
+          "translation": "A car for hire with a driver",
+          "category": "travel_transport",
+          "distractors": "Private car,Rental car,Limousine"
+        },
+        {
+          "text": "Reservation",
+          "translation": "An arrangement to have something kept for you",
+          "category": "travel_booking",
+          "distractors": "Cancellation,Purchase,Inquiry"
+        },
+        {
+          "text": "Map",
+          "translation": "A diagrammatic representation of an area",
+          "category": "travel_navigation",
+          "distractors": "Book,Photo,Compass"
+        },
+        {
+          "text": "Currency",
+          "translation": "The money system used in a particular country",
+          "category": "travel_money",
+          "distractors": "Language,Culture,Food"
+        },
+        {
+          "text": "Restaurant",
+          "translation": "A place where meals are prepared and served to customers",
+          "category": "travel_food",
+          "distractors": "Supermarket,Kitchen,Bakery"
+        },
+        {
+          "text": "Tourist",
+          "translation": "A person traveling for pleasure",
+          "category": "travel_people",
+          "distractors": "Resident,Commuter,Employee"
+        },
+        {
+          "text": "Souvenir",
+          "translation": "A thing kept as a reminder of a place visited",
+          "category": "travel_item",
+          "distractors": "Necessity,Tool,Document"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Grundwortschatz Deutsch",
+      "description": "Wichtige deutsche Wörter für Anfänger",
+      "language_code": "de",
+      "words": [
+        {
+          "text": "Hallo",
+          "translation": "Hello",
+          "category": "greeting",
+          "distractors": "Goodbye,Thank you,Water"
+        },
+        {
+          "text": "Tschüss",
+          "translation": "Bye",
+          "category": "farewell",
+          "distractors": "Hello,Please,Yes"
+        },
+        {
+          "text": "Danke",
+          "translation": "Thank you",
+          "category": "gratitude",
+          "distractors": "Sorry,No,Good morning"
+        },
+        {
+          "text": "Bitte",
+          "translation": "Please / You're welcome",
+          "category": "politeness",
+          "distractors": "Goodbye,Yes,Excuse me"
+        },
+        {
+          "text": "Ja",
+          "translation": "Yes",
+          "category": "affirmation",
+          "distractors": "No,Maybe,Thank you"
+        },
+        {
+          "text": "Nein",
+          "translation": "No",
+          "category": "negation",
+          "distractors": "Yes,Please,Hello"
+        },
+        {
+          "text": "Entschuldigung",
+          "translation": "Excuse me / Sorry",
+          "category": "apology",
+          "distractors": "Thank you,Hello,Goodbye"
+        },
+        {
+          "text": "Mann",
+          "translation": "Man",
+          "category": "people",
+          "distractors": "Woman,Child,House"
+        },
+        {
+          "text": "Frau",
+          "translation": "Woman",
+          "category": "people",
+          "distractors": "Man,Boy,Cat"
+        },
+        {
+          "text": "Kind",
+          "translation": "Child",
+          "category": "people",
+          "distractors": "Adult,Parent,Teacher"
+        },
+        {
+          "text": "Essen",
+          "translation": "Food / To eat",
+          "category": "food_drink",
+          "distractors": "Water,To drink,To sleep"
+        },
+        {
+          "text": "Trinken",
+          "translation": "To drink",
+          "category": "food_drink",
+          "distractors": "To eat,Juice,To read"
+        },
+        {
+          "text": "Wasser",
+          "translation": "Water",
+          "category": "food_drink",
+          "distractors": "Milk,Bread,Juice"
+        },
+        {
+          "text": "Haus",
+          "translation": "House",
+          "category": "place",
+          "distractors": "Car,Street,Garden"
+        },
+        {
+          "text": "Schule",
+          "translation": "School",
+          "category": "place",
+          "distractors": "Home,Park,Shop"
+        },
+        {
+          "text": "Buch",
+          "translation": "Book",
+          "category": "object",
+          "distractors": "Pen,Table,Computer"
+        },
+        {
+          "text": "Freund",
+          "translation": "Friend (male)",
+          "category": "people",
+          "distractors": "Enemy,Brother,Father"
+        },
+        {
+          "text": "Guten Morgen",
+          "translation": "Good morning",
+          "category": "greeting",
+          "distractors": "Good night,Good evening,Hello"
+        },
+        {
+          "text": "Guten Abend",
+          "translation": "Good evening",
+          "category": "greeting",
+          "distractors": "Good morning,Good day,Goodbye"
+        },
+        {
+          "text": "Auf Wiedersehen",
+          "translation": "Goodbye (formal)",
+          "category": "farewell",
+          "distractors": "Hello,See you soon,Welcome"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Podstawowe Słownictwo Polskie",
+      "description": "Niezbędne polskie słowa na co dzień",
+      "language_code": "pl",
+      "words": [
+        {
+          "text": "Cześć",
+          "translation": "Hi / Hello / Bye (informal)",
+          "category": "greeting_farewell",
+          "distractors": "Good morning,Thank you,Please"
+        },
+        {
+          "text": "Dzień dobry",
+          "translation": "Good morning / Good day",
+          "category": "greeting",
+          "distractors": "Good night,Goodbye,Sorry"
+        },
+        {
+          "text": "Do widzenia",
+          "translation": "Goodbye (formal)",
+          "category": "farewell",
+          "distractors": "Hello,Yes,Thank you"
+        },
+        {
+          "text": "Dziękuję",
+          "translation": "Thank you",
+          "category": "gratitude",
+          "distractors": "Please,Sorry,No"
+        },
+        {
+          "text": "Proszę",
+          "translation": "Please / You're welcome",
+          "category": "politeness",
+          "distractors": "Thank you,Goodbye,Yes"
+        },
+        {
+          "text": "Tak",
+          "translation": "Yes",
+          "category": "affirmation",
+          "distractors": "No,Maybe,Perhaps"
+        },
+        {
+          "text": "Nie",
+          "translation": "No",
+          "category": "negation",
+          "distractors": "Yes,Okay,Sure"
+        },
+        {
+          "text": "Przepraszam",
+          "translation": "Sorry / Excuse me",
+          "category": "apology",
+          "distractors": "Thank you,You're welcome,Hello"
+        },
+        {
+          "text": "Mężczyzna",
+          "translation": "Man",
+          "category": "people",
+          "distractors": "Woman,Boy,Girl"
+        },
+        {
+          "text": "Kobieta",
+          "translation": "Woman",
+          "category": "people",
+          "distractors": "Man,Girl,Child"
+        },
+        {
+          "text": "Dziecko",
+          "translation": "Child",
+          "category": "people",
+          "distractors": "Adult,Teenager,Baby"
+        },
+        {
+          "text": "Jedzenie",
+          "translation": "Food",
+          "category": "food_drink",
+          "distractors": "Drink,Water,Book"
+        },
+        {
+          "text": "Woda",
+          "translation": "Water",
+          "category": "food_drink",
+          "distractors": "Juice,Milk,Tea"
+        },
+        {
+          "text": "Dom",
+          "translation": "House / Home",
+          "category": "place",
+          "distractors": "School,Shop,Street"
+        },
+        {
+          "text": "Szkoła",
+          "translation": "School",
+          "category": "place",
+          "distractors": "House,Park,Hospital"
+        },
+        {
+          "text": "Książka",
+          "translation": "Book",
+          "category": "object",
+          "distractors": "Newspaper,Pen,Table"
+        },
+        {
+          "text": "Kot",
+          "translation": "Cat",
+          "category": "animal",
+          "distractors": "Dog,Bird,Fish"
+        },
+        {
+          "text": "Pies",
+          "translation": "Dog",
+          "category": "animal",
+          "distractors": "Cat,Mouse,Horse"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Vocabulario Básico Español",
+      "description": "Palabras esenciales en español para principiantes",
+      "language_code": "es",
+      "words": [
+        {
+          "text": "Hola",
+          "translation": "Hello",
+          "category": "greeting",
+          "distractors": "Goodbye,Good night,Thanks"
+        },
+        {
+          "text": "Adiós",
+          "translation": "Goodbye",
+          "category": "farewell",
+          "distractors": "Hello,Welcome,Yes"
+        },
+        {
+          "text": "Gracias",
+          "translation": "Thank you",
+          "category": "gratitude",
+          "distractors": "Please,Sorry,No"
+        },
+        {
+          "text": "Por favor",
+          "translation": "Please",
+          "category": "politeness",
+          "distractors": "Thank you,You're welcome,Goodbye"
+        },
+        {
+          "text": "De nada",
+          "translation": "You're welcome",
+          "category": "politeness_response",
+          "distractors": "Thank you,Sorry,Okay"
+        },
+        {
+          "text": "Sí",
+          "translation": "Yes",
+          "category": "affirmation",
+          "distractors": "No,Maybe,Never"
+        },
+        {
+          "text": "No",
+          "translation": "No",
+          "category": "negation",
+          "distractors": "Yes,Always,Sure"
+        },
+        {
+          "text": "Perdón",
+          "translation": "Sorry / Excuse me",
+          "category": "apology",
+          "distractors": "Hello,Thank you,Congratulations"
+        },
+        {
+          "text": "Hombre",
+          "translation": "Man",
+          "category": "people",
+          "distractors": "Woman,Child,Dog"
+        },
+        {
+          "text": "Mujer",
+          "translation": "Woman",
+          "category": "people",
+          "distractors": "Man,Boy,Table"
+        },
+        {
+          "text": "Niño",
+          "translation": "Boy / Child (male)",
+          "category": "people",
+          "distractors": "Girl,Adult,Man"
+        },
+        {
+          "text": "Niña",
+          "translation": "Girl / Child (female)",
+          "category": "people",
+          "distractors": "Boy,Woman,Adult"
+        },
+        {
+          "text": "Comida",
+          "translation": "Food",
+          "category": "food_drink",
+          "distractors": "Water,Drink,Hunger"
+        },
+        {
+          "text": "Agua",
+          "translation": "Water",
+          "category": "food_drink",
+          "distractors": "Wine,Milk,Fire"
+        },
+        {
+          "text": "Casa",
+          "translation": "House / Home",
+          "category": "place",
+          "distractors": "Car,Road,Building"
+        },
+        {
+          "text": "Escuela",
+          "translation": "School",
+          "category": "place",
+          "distractors": "Hospital,Market,Park"
+        },
+        {
+          "text": "Libro",
+          "translation": "Book",
+          "category": "object",
+          "distractors": "Pencil,Paper,Movie"
+        },
+        {
+          "text": "Gato",
+          "translation": "Cat",
+          "category": "animal",
+          "distractors": "Dog,Horse,Bird"
+        },
+        {
+          "text": "Perro",
+          "translation": "Dog",
+          "category": "animal",
+          "distractors": "Cat,Lion,Fish"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Vocabulaire de Base Français",
+      "description": "Mots français essentiels pour débutants",
+      "language_code": "fr",
+      "words": [
+        {
+          "text": "Bonjour",
+          "translation": "Hello / Good morning",
+          "category": "greeting",
+          "distractors": "Goodbye,Good night,Thank you"
+        },
+        {
+          "text": "Au revoir",
+          "translation": "Goodbye",
+          "category": "farewell",
+          "distractors": "Hello,Welcome,Yes"
+        },
+        {
+          "text": "Merci",
+          "translation": "Thank you",
+          "category": "gratitude",
+          "distractors": "Please,Sorry,No"
+        },
+        {
+          "text": "S'il vous plaît",
+          "translation": "Please",
+          "category": "politeness",
+          "distractors": "Thank you,You're welcome,Excuse me"
+        },
+        {
+          "text": "De rien",
+          "translation": "You're welcome",
+          "category": "politeness_response",
+          "distractors": "Thank you,Okay,Sorry"
+        },
+        {
+          "text": "Oui",
+          "translation": "Yes",
+          "category": "affirmation",
+          "distractors": "No,Perhaps,Never"
+        },
+        {
+          "text": "Non",
+          "translation": "No",
+          "category": "negation",
+          "distractors": "Yes,Always,Of course"
+        },
+        {
+          "text": "Pardon",
+          "translation": "Sorry / Excuse me",
+          "category": "apology",
+          "distractors": "Thank you,Hello,Good day"
+        },
+        {
+          "text": "Homme",
+          "translation": "Man",
+          "category": "people",
+          "distractors": "Woman,Child,Table"
+        },
+        {
+          "text": "Femme",
+          "translation": "Woman",
+          "category": "people",
+          "distractors": "Man,Boy,Chair"
+        },
+        {
+          "text": "Enfant",
+          "translation": "Child",
+          "category": "people",
+          "distractors": "Adult,Parent,Animal"
+        },
+        {
+          "text": "Nourriture",
+          "translation": "Food",
+          "category": "food_drink",
+          "distractors": "Drink,Water,Book"
+        },
+        {
+          "text": "Eau",
+          "translation": "Water",
+          "category": "food_drink",
+          "distractors": "Wine,Milk,Coffee"
+        },
+        {
+          "text": "Maison",
+          "translation": "House",
+          "category": "place",
+          "distractors": "Apartment,Street,Car"
+        },
+        {
+          "text": "École",
+          "translation": "School",
+          "category": "place",
+          "distractors": "University,Office,Shop"
+        },
+        {
+          "text": "Livre",
+          "translation": "Book",
+          "category": "object",
+          "distractors": "Notebook,Pen,Movie"
+        },
+        {
+          "text": "Chat",
+          "translation": "Cat",
+          "category": "animal",
+          "distractors": "Dog,Mouse,Bird"
+        },
+        {
+          "text": "Chien",
+          "translation": "Dog",
+          "category": "animal",
+          "distractors": "Cat,Wolf,Fish"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Sentence with a gap",
+      "description": "Choose the correct word that fits the sentence",
+      "language_code": "en",
+      "words": [
+        {
+          "text": "She ___ to school every day.",
+          "translation": "goes",
+          "category": "verb_present_simple",
+          "distractors": "go,going,went"
+        },
+        {
+          "text": "He ___ football every weekend.",
+          "translation": "plays",
+          "category": "verb_present_simple",
+          "distractors": "play,playing,played"
+        },
+        {
+          "text": "They ___ watching TV right now.",
+          "translation": "are",
+          "category": "verb_present_continuous",
+          "distractors": "is,am,be"
+        },
+        {
+          "text": "I ___ a great movie last night.",
+          "translation": "saw",
+          "category": "verb_past_simple",
+          "distractors": "see,seen,seeing"
+        },
+        {
+          "text": "We ___ to the park tomorrow.",
+          "translation": "will go",
+          "category": "verb_future_simple",
+          "distractors": "go,went,are going"
+        },
+        {
+          "text": "The cat is ___ the table.",
+          "translation": "on",
+          "category": "preposition_place",
+          "distractors": "in,at,under"
+        },
+        {
+          "text": "This is ___ apple.",
+          "translation": "an",
+          "category": "article",
+          "distractors": "a,the,some"
+        },
+        {
+          "text": "My car is ___ than yours.",
+          "translation": "faster",
+          "category": "comparative_adjective",
+          "distractors": "fast,fastest,more fast"
+        },
+        {
+          "text": "She sings ___.",
+          "translation": "beautifully",
+          "category": "adverb_manner",
+          "distractors": "beautiful,beauty,more beautiful"
+        },
+        {
+          "text": "___ many people at the party.",
+          "translation": "There were",
+          "category": "existence_past",
+          "distractors": "There was,There are,It was"
+        },
+        {
+          "text": "Can you help ___?",
+          "translation": "me",
+          "category": "object_pronoun",
+          "distractors": "I,my,mine"
+        },
+        {
+          "text": "This book is ___.",
+          "translation": "hers",
+          "category": "possessive_pronoun",
+          "distractors": "her,she,shes"
+        },
+        {
+          "text": "If I ___ you, I would study more.",
+          "translation": "were",
+          "category": "conditional",
+          "distractors": "am,was,be"
+        },
+        {
+          "text": "He has ___ to London many times.",
+          "translation": "been",
+          "category": "verb_present_perfect",
+          "distractors": "went,gone,be"
+        },
+        {
+          "text": "The window was ___ by the wind.",
+          "translation": "broken",
+          "category": "passive_voice",
+          "distractors": "broke,break,breaking"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "English for Shopping",
+      "description": "Vocabulary related to shopping",
+      "language_code": "en",
+      "words": [
+        {
+          "text": "Price",
+          "translation": "The amount of money for an item",
+          "category": "shopping_term",
+          "distractors": "Size,Color,Weight"
+        },
+        {
+          "text": "Discount",
+          "translation": "A reduction in price",
+          "category": "shopping_term",
+          "distractors": "Increase,Tax,Fee"
+        },
+        {
+          "text": "Cash",
+          "translation": "Money in coins or notes",
+          "category": "payment_method",
+          "distractors": "Credit card,Check,Loan"
+        },
+        {
+          "text": "Credit Card",
+          "translation": "A plastic card for buying on credit",
+          "category": "payment_method",
+          "distractors": "Debit card,Gift card,Cash"
+        },
+        {
+          "text": "Receipt",
+          "translation": "Proof of purchase",
+          "category": "shopping_document",
+          "distractors": "Warranty,Manual,Advertisement"
+        },
+        {
+          "text": "Fitting Room",
+          "translation": "A room to try on clothes",
+          "category": "shopping_place",
+          "distractors": "Stockroom,Cashier,Entrance"
+        },
+        {
+          "text": "Size",
+          "translation": "How large or small something is (S, M, L)",
+          "category": "clothing_attribute",
+          "distractors": "Color,Material,Brand"
+        },
+        {
+          "text": "Sale",
+          "translation": "A period of reduced prices",
+          "category": "shopping_event",
+          "distractors": "New arrivals,Full price,Auction"
+        },
+        {
+          "text": "Customer",
+          "translation": "A person buying goods or services",
+          "category": "people",
+          "distractors": "Seller,Manager,Employee"
+        },
+        {
+          "text": "Shop Assistant",
+          "translation": "A person who helps customers in a shop",
+          "category": "people",
+          "distractors": "Customer,Security guard,Owner"
+        },
+        {
+          "text": "Bargain",
+          "translation": "Something bought for a good price",
+          "category": "shopping_term",
+          "distractors": "Luxury item,Expensive,Overpriced"
+        },
+        {
+          "text": "Refund",
+          "translation": "Money returned for a returned item",
+          "category": "shopping_action",
+          "distractors": "Exchange,Purchase,Discount"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Vocabolario di Base Italiano",
+      "description": "Parole italiane essenziali per principianti",
+      "language_code": "it",
+      "words": [
+        {
+          "text": "Ciao",
+          "translation": "Hello / Hi / Bye (informal)",
+          "category": "greeting_farewell",
+          "distractors": "Good morning,Thank you,Yes"
+        },
+        {
+          "text": "Grazie",
+          "translation": "Thank you",
+          "category": "gratitude",
+          "distractors": "Please,Sorry,No"
+        },
+        {
+          "text": "Prego",
+          "translation": "You're welcome / Please (when offering)",
+          "category": "politeness",
+          "distractors": "Goodbye,Thanks,Excuse me"
+        },
+        {
+          "text": "Sì",
+          "translation": "Yes",
+          "category": "affirmation",
+          "distractors": "No,Maybe,Water"
+        },
+        {
+          "text": "No",
+          "translation": "No",
+          "category": "negation",
+          "distractors": "Yes,Please,Hello"
+        },
+        {
+          "text": "Buongiorno",
+          "translation": "Good morning",
+          "category": "greeting",
+          "distractors": "Good evening,Good night,Goodbye"
+        },
+        {
+          "text": "Arrivederci",
+          "translation": "Goodbye (formal)",
+          "category": "farewell",
+          "distractors": "Hello,Welcome,See you later"
+        },
+        {
+          "text": "Per favore",
+          "translation": "Please",
+          "category": "politeness",
+          "distractors": "Thank you,Sorry,You're welcome"
+        },
+        {
+          "text": "Scusa / Scusi",
+          "translation": "Sorry / Excuse me",
+          "category": "apology",
+          "distractors": "Thank you,Hello,Congratulations"
+        },
+        {
+          "text": "Acqua",
+          "translation": "Water",
+          "category": "food_drink",
+          "distractors": "Wine,Milk,Bread"
+        },
+        {
+          "text": "Mangiare",
+          "translation": "To eat",
+          "category": "verb_action",
+          "distractors": "To drink,To sleep,To read"
+        },
+        {
+          "text": "Casa",
+          "translation": "House / Home",
+          "category": "place",
+          "distractors": "School,Car,Street"
+        },
+        {
+          "text": "Uomo",
+          "translation": "Man",
+          "category": "people",
+          "distractors": "Woman,Child,Dog"
+        },
+        {
+          "text": "Donna",
+          "translation": "Woman",
+          "category": "people",
+          "distractors": "Man,Boy,Cat"
+        },
+        {
+          "text": "Libro",
+          "translation": "Book",
+          "category": "object",
+          "distractors": "Pen,Table,Chair"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Common English Phrasal Verbs",
+      "description": "Learn frequently used phrasal verbs",
+      "language_code": "en",
+      "words": [
+        {
+          "text": "Get up",
+          "translation": "To rise from bed",
+          "category": "phrasal_verb_daily_routine",
+          "distractors": "Get down,Go to bed,Sit down"
+        },
+        {
+          "text": "Look for",
+          "translation": "To try to find something",
+          "category": "phrasal_verb_action",
+          "distractors": "Look at,Discover,Ignore"
+        },
+        {
+          "text": "Turn on",
+          "translation": "To start a device (e.g., light, TV)",
+          "category": "phrasal_verb_operation",
+          "distractors": "Turn off,Break,Fix"
+        },
+        {
+          "text": "Give up",
+          "translation": "To stop trying; to quit",
+          "category": "phrasal_verb_decision",
+          "distractors": "Continue,Start,Achieve"
+        },
+        {
+          "text": "Put off",
+          "translation": "To postpone; to delay",
+          "category": "phrasal_verb_scheduling",
+          "distractors": "Bring forward,Do now,Cancel"
+        },
+        {
+          "text": "Take off (clothes)",
+          "translation": "To remove clothing",
+          "category": "phrasal_verb_action",
+          "distractors": "Put on,Wear,Wash"
+        },
+        {
+          "text": "Take off (plane)",
+          "translation": "For an aircraft to leave the ground",
+          "category": "phrasal_verb_action",
+          "distractors": "Land,Crash,Fly"
+        },
+        {
+          "text": "Run out of",
+          "translation": "To have no more of something left",
+          "category": "phrasal_verb_quantity",
+          "distractors": "Have plenty,Stock up,Find more"
+        },
+        {
+          "text": "Work out (exercise)",
+          "translation": "To do physical exercise",
+          "category": "phrasal_verb_activity",
+          "distractors": "Rest,Relax,Sit"
+        },
+        {
+          "text": "Work out (solve)",
+          "translation": "To find a solution to a problem",
+          "category": "phrasal_verb_solution",
+          "distractors": "Create a problem,Ignore,Complicate"
+        },
+        {
+          "text": "Come across",
+          "translation": "To find or meet by chance",
+          "category": "phrasal_verb_discovery",
+          "distractors": "Search for,Avoid,Plan to meet"
+        },
+        {
+          "text": "Look forward to",
+          "translation": "To anticipate with pleasure",
+          "category": "phrasal_verb_anticipation",
+          "distractors": "Dread,Regret,Forget"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Business English Basics",
+      "description": "Essential vocabulary for the workplace",
+      "language_code": "en",
+      "words": [
+        {
+          "text": "Meeting",
+          "translation": "A formal assembly of people",
+          "category": "business_event",
+          "distractors": "Party,Holiday,Lunch break"
+        },
+        {
+          "text": "Email",
+          "translation": "Electronic mail message",
+          "category": "business_communication",
+          "distractors": "Phone call,Letter,Fax"
+        },
+        {
+          "text": "Presentation",
+          "translation": "A formal talk to an audience",
+          "category": "business_communication",
+          "distractors": "Conversation,Discussion,Debate"
+        },
+        {
+          "text": "Deadline",
+          "translation": "A time limit for completion",
+          "category": "business_term",
+          "distractors": "Starting time,Holiday,Proposal"
+        },
+        {
+          "text": "Colleague",
+          "translation": "A person one works with",
+          "category": "business_people",
+          "distractors": "Client,Boss,Competitor"
+        },
+        {
+          "text": "Client",
+          "translation": "A customer or someone receiving services",
+          "category": "business_people",
+          "distractors": "Employee,Supplier,Manager"
+        },
+        {
+          "text": "Project",
+          "translation": "A planned piece of work with a specific aim",
+          "category": "business_work",
+          "distractors": "Routine task,Hobby,Meeting"
+        },
+        {
+          "text": "Agenda",
+          "translation": "A list of items for discussion at a meeting",
+          "category": "business_document",
+          "distractors": "Minutes,Report,Invoice"
+        },
+        {
+          "text": "Contract",
+          "translation": "A legally binding agreement",
+          "category": "business_document",
+          "distractors": "Memo,Email,Suggestion"
+        },
+        {
+          "text": "Invoice",
+          "translation": "A bill for goods or services provided",
+          "category": "business_finance",
+          "distractors": "Receipt,Quotation,Order form"
+        },
+        {
+          "text": "Salary",
+          "translation": "Fixed regular payment from an employer",
+          "category": "business_finance",
+          "distractors": "Bonus,Expense,Investment"
+        },
+        {
+          "text": "Marketing",
+          "translation": "Promoting and selling products or services",
+          "category": "business_department",
+          "distractors": "Accounting,Human Resources,Production"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Food and Cooking Vocabulary",
+      "description": "Words related to food, ingredients, and cooking methods",
+      "language_code": "en",
+      "words": [
+        {
+          "text": "Recipe",
+          "translation": "Instructions for preparing a dish",
+          "category": "cooking_term",
+          "distractors": "Shopping list,Menu,Review"
+        },
+        {
+          "text": "Ingredient",
+          "translation": "A food item used in a recipe",
+          "category": "food_item",
+          "distractors": "Utensil,Appliance,Dish"
+        },
+        {
+          "text": "Kitchen",
+          "translation": "A room for preparing and cooking food",
+          "category": "place",
+          "distractors": "Dining room,Bedroom,Garden"
+        },
+        {
+          "text": "Oven",
+          "translation": "Appliance for baking or roasting",
+          "category": "kitchen_appliance",
+          "distractors": "Refrigerator,Microwave,Blender"
+        },
+        {
+          "text": "Fry",
+          "translation": "To cook in hot fat or oil",
+          "category": "cooking_method",
+          "distractors": "Boil,Bake,Steam"
+        },
+        {
+          "text": "Boil",
+          "translation": "To cook in bubbling hot water",
+          "category": "cooking_method",
+          "distractors": "Fry,Grill,Roast"
+        },
+        {
+          "text": "Bake",
+          "translation": "To cook by dry heat in an oven",
+          "category": "cooking_method",
+          "distractors": "Boil,Steam,Sauté"
+        },
+        {
+          "text": "Vegetable",
+          "translation": "A plant or part of a plant used as food (e.g., carrot)",
+          "category": "food_type",
+          "distractors": "Fruit,Meat,Dairy"
+        },
+        {
+          "text": "Fruit",
+          "translation": "Sweet, fleshy product of a tree or plant (e.g., apple)",
+          "category": "food_type",
+          "distractors": "Vegetable,Grain,Nut"
+        },
+        {
+          "text": "Meat",
+          "translation": "Animal flesh as food (e.g., beef, chicken)",
+          "category": "food_type",
+          "distractors": "Fish,Vegetable,Fruit"
+        },
+        {
+          "text": "Spice",
+          "translation": "Aromatic substance to flavor food (e.g., cinnamon)",
+          "category": "ingredient_type",
+          "distractors": "Herb,Sugar,Salt"
+        },
+        {
+          "text": "Dessert",
+          "translation": "Sweet course at the end of a meal",
+          "category": "meal_course",
+          "distractors": "Appetizer,Main course,Side dish"
+        }
+      ]
+    }
+  ]
+}

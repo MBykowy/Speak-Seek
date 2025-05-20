@@ -1,187 +1,202 @@
 package com.example.a404.data.model;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log; // Import dla Log
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class WordDbHelper extends SQLiteOpenHelper {
-    private static final String TAG = "WordDbHelper"; // Dodaj TAG
+    private static final String TAG = "WordDbHelper";
     private static final String DATABASE_NAME = "wordlearning.db";
-    // Wersja bazy danych pozostaje 2, ponieważ schemat (kolumny) się nie zmienia
-    private static final int DATABASE_VERSION = 3;
+    // Wersja bazy danych może pozostać taka sama, jeśli tylko zmieniasz sposób wstawiania danych
+    // ale jeśli poprzednio były dane, a teraz chcesz je zastąpić z JSON,
+    // i schemat się nie zmienił, możesz zostawić lub podnieść dla pewności.
+    // Jeśli schemat się zmienił (jak w poprzednim kroku), wersja MUSI być podniesiona.
+    private static final int DATABASE_VERSION = 5; // Utrzymujemy wersję 4
 
     // Table names
     public static final String TABLE_COURSES = "courses";
     public static final String TABLE_WORDS = "words";
 
     // Common column names
-    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_ID = "id"; // Używane jako _id dla CursorAdapter, ale tutaj jako klucz główny
 
     // Course table columns
     public static final String COLUMN_COURSE_NAME = "name";
     public static final String COLUMN_COURSE_DESCRIPTION = "description";
-    public static final String COLUMN_COURSE_LANGUAGE_CODE = "language_code"; // Kolumna kodu języka
+    public static final String COLUMN_COURSE_LANGUAGE_CODE = "language_code";
 
     // Word table columns
     public static final String COLUMN_WORD_TEXT = "word_text";
     public static final String COLUMN_WORD_TRANSLATION = "translation";
     public static final String COLUMN_WORD_COURSE_ID = "course_id";
+    public static final String COLUMN_WORD_CATEGORY = "category";
+    public static final String COLUMN_WORD_DISTRACTORS = "distractors";
 
     // CREATE TABLE statements
     private static final String CREATE_COURSES_TABLE = "CREATE TABLE " + TABLE_COURSES + "("
-            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + COLUMN_COURSE_NAME + " TEXT NOT NULL, "
-            + COLUMN_COURSE_DESCRIPTION + " TEXT, "
-            + COLUMN_COURSE_LANGUAGE_CODE + " TEXT NOT NULL DEFAULT 'en');"; // Domyślnie 'en'
+            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_COURSE_NAME + " TEXT NOT NULL,"
+            + COLUMN_COURSE_DESCRIPTION + " TEXT,"
+            + COLUMN_COURSE_LANGUAGE_CODE + " TEXT"
+            + ")";
 
     private static final String CREATE_WORDS_TABLE = "CREATE TABLE " + TABLE_WORDS + "("
-            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + COLUMN_WORD_TEXT + " TEXT NOT NULL, "
-            + COLUMN_WORD_TRANSLATION + " TEXT NOT NULL, "
-            + COLUMN_WORD_COURSE_ID + " INTEGER, "
-            + "FOREIGN KEY(" + COLUMN_WORD_COURSE_ID + ") REFERENCES "
-            + TABLE_COURSES + "(" + COLUMN_ID + "));";
+            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_WORD_TEXT + " TEXT NOT NULL,"
+            + COLUMN_WORD_TRANSLATION + " TEXT NOT NULL,"
+            + COLUMN_WORD_COURSE_ID + " INTEGER NOT NULL,"
+            + COLUMN_WORD_CATEGORY + " TEXT,"
+            + COLUMN_WORD_DISTRACTORS + " TEXT,"
+            + "FOREIGN KEY(" + COLUMN_WORD_COURSE_ID + ") REFERENCES " + TABLE_COURSES + "(" + COLUMN_ID + ")"
+            + ")";
+
+    private Context context;
 
     public WordDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG, "Tworzenie tabel bazy danych...");
+        Log.d(TAG, "Creating database tables...");
         db.execSQL(CREATE_COURSES_TABLE);
         db.execSQL(CREATE_WORDS_TABLE);
-        Log.i(TAG, "Tabele utworzone, wstawianie przykładowych danych...");
-        insertSampleData(db);
-        Log.i(TAG, "Przykładowe dane wstawione.");
+        Log.d(TAG, "Database tables created. Inserting sample data from JSON.");
+        insertSampleDataFromJson(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(TAG, "Aktualizacja bazy danych z wersji " + oldVersion + " do " + newVersion);
-        // Prosta strategia migracji: usuń stare tabele i utwórz nowe
+        Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion + ". Old data will be lost.");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORDS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_COURSES);
         onCreate(db);
     }
 
-    // Updated sample data with German, Polish, Spanish, French
-    private void insertSampleData(SQLiteDatabase db) {
-        // === English Courses (IDs 1-5) ===
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Basic Vocabulary', 'Essential everyday English words for beginners', 'en')"); // ID 1
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Travel English', 'Useful words and phrases for travelers', 'en')");     // ID 2
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Business English', 'Professional vocabulary for workplace settings', 'en')"); // ID 3
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Academic English', 'Terms commonly used in educational contexts', 'en')");  // ID 4
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Idioms & Expressions', 'Common English idioms and their meanings', 'en')"); // ID 5
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.w(TAG, "Downgrading database from version " + oldVersion + " to " + newVersion + ". Old data will be lost.");
+        onUpgrade(db, oldVersion, newVersion); // Traktuj downgrade jak upgrade
+    }
 
-        // === German Course (ID 6) ===
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Grundwortschatz Deutsch', 'Wichtige deutsche Wörter für Anfänger', 'de')"); // ID 6
+    private void insertSampleDataFromJson(SQLiteDatabase db) {
+        try {
+            InputStream inputStream = context.getAssets().open("sample_data.json");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder jsonString = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonString.append(line);
+            }
+            reader.close();
+            inputStream.close();
 
-        // === Polish Course (ID 7) ===
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Podstawowe Słownictwo Polskie', 'Niezbędne polskie słowa na co dzień', 'pl')"); // ID 7
+            JSONObject root = new JSONObject(jsonString.toString());
+            JSONArray coursesArray = root.getJSONArray("courses");
 
-        // === Spanish Course (ID 8) ===
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Vocabulario Básico Español', 'Palabras esenciales en español para principiantes', 'es')"); // ID 8
+            db.beginTransaction();
+            try {
+                for (int i = 0; i < coursesArray.length(); i++) {
+                    JSONObject courseObject = coursesArray.getJSONObject(i);
+                    long courseIdFromJson = courseObject.getLong("id"); // Użyj ID z JSON
+                    String courseName = courseObject.getString("name");
+                    String courseDescription = courseObject.getString("description");
+                    String courseLangCode = courseObject.getString("language_code");
 
-        // === French Course (ID 9) ===
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Vocabulaire de Base Français', 'Mots français essentiels pour débutants', 'fr')"); // ID 9
+                    ContentValues courseValues = new ContentValues();
+                    // Wstawiamy z konkretnym ID z JSON, jeśli chcemy zachować spójność
+                    // Jeśli ID w tabeli jest AUTOINCREMENT i chcemy, aby baza sama nadała ID,
+                    // to nie wstawiamy COLUMN_ID. Jednak dla spójności z JSON lepiej wstawić.
+                    // Aby to działało, tabela nie powinna mieć AUTOINCREMENT dla ID,
+                    // lub musimy zarządzać tym inaczej. Dla uproszczenia, zakładam, że ID z JSON jest używane.
+                    // Jeśli COLUMN_ID jest AUTOINCREMENT, to nie podajemy go tutaj, a courseIdFromJson
+                    // będzie używane tylko do powiązania słów.
+                    // Zmieniam CREATE_COURSES_TABLE, aby ID nie było AUTOINCREMENT, jeśli chcemy używać ID z JSON.
+                    // LUB: pozwalamy bazie nadać ID i mapujemy courseIdFromJson na rzeczywiste ID z bazy.
+                    // Dla uproszczenia, pozwólmy bazie nadać ID i użyjmy zwróconego ID.
 
-        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Sentence with a gap', 'Choose the correct word that fits the sentence', 'en')"); // ID 10
+                    courseValues.put(COLUMN_COURSE_NAME, courseName);
+                    courseValues.put(COLUMN_COURSE_DESCRIPTION, courseDescription);
+                    courseValues.put(COLUMN_COURSE_LANGUAGE_CODE, courseLangCode);
+                    // Nie wstawiamy ID, jeśli jest AUTOINCREMENT. SQLite sam je nada.
+                    // long actualCourseId = db.insert(TABLE_COURSES, null, courseValues);
+                    // Jeśli chcemy użyć ID z JSON, tabela musi być odpowiednio zdefiniowana.
+                    // Dla tego przykładu, zakładam, że ID w JSON jest tylko dla referencji,
+                    // a baza danych sama generuje ID.
+                    // Poprawka: Aby zachować ID z JSON, musimy je wstawić.
+                    // Zmieniam definicję tabeli, aby ID było PRIMARY KEY, ale niekoniecznie AUTOINCREMENT
+                    // jeśli chcemy kontrolować ID.
+                    // W tym przypadku, jeśli ID jest AUTOINCREMENT, to `courseIdFromJson` jest tylko do referencji
+                    // dla słów. Zmodyfikujmy tak, aby używać ID z JSON jako klucza głównego.
+                    // W tym celu CREATE_COURSES_TABLE powinno mieć `COLUMN_ID + " INTEGER PRIMARY KEY,"`
+                    // a nie AUTOINCREMENT.
+                    // Aktualna definicja ma AUTOINCREMENT, więc będziemy używać zwróconego ID.
 
-        // === English Words (IDs 1-5) ===
-        // Basic Vocabulary words (Course ID: 1)0
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hello', 'A greeting used when meeting someone', 1)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Goodbye', 'A farewell used when leaving', 1)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Thank you', 'Expression of gratitude', 1)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Please', 'Used when requesting something politely', 1)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Sorry', 'Used to express regret or apologize', 1)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Friend', 'A person you like and enjoy spending time with', 1)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Family', 'A group of related people', 1)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Food', 'Things that people or animals eat', 1)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Water', 'Clear liquid that falls as rain and forms rivers and seas', 1)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('House', 'A building where people live', 1)");
+                    // Wstaw kurs i pobierz jego rzeczywiste ID z bazy
+                    ContentValues courseInsertValues = new ContentValues();
+                    courseInsertValues.put(COLUMN_COURSE_NAME, courseName);
+                    courseInsertValues.put(COLUMN_COURSE_DESCRIPTION, courseDescription);
+                    courseInsertValues.put(COLUMN_COURSE_LANGUAGE_CODE, courseLangCode);
+                    // Nie podajemy ID, jeśli jest AUTOINCREMENT. SQLite sam je nada.
+                    // Jeśli chcemy użyć ID z JSON, musimy zmodyfikować schemat tabeli
+                    // lub wstawiać ID bezpośrednio (co może być problematyczne z AUTOINCREMENT).
 
-        // Travel English words (Course ID: 2)
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Airport', 'A place where aircraft take off and land', 2)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hotel', 'A place providing accommodation and meals for travelers', 2)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Passport', 'An official document that identifies you as a citizen', 2)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Luggage', 'Bags and suitcases that travelers carry', 2)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Ticket', 'A document showing you''ve paid for a journey or event', 2)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Reservation', 'An arrangement to secure accommodation or a service', 2)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Sightseeing', 'Visiting places of interest as a tourist', 2)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Currency', 'Money used in a particular country', 2)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Tourist', 'A person who travels for pleasure', 2)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Map', 'A diagrammatic representation of an area', 2)");
+                    // Najprostsze podejście z AUTOINCREMENT:
+                    // Wstawiamy kurs, dostajemy ID, a następnie używamy tego ID dla słów.
+                    // To oznacza, że `courseIdFromJson` jest ignorowane jako klucz główny,
+                    // ale może być użyte do logiki aplikacji, jeśli potrzebne.
+                    // Dla tego przykładu, będziemy używać `courseIdFromJson` jako `course_id` dla słów,
+                    // zakładając, że kursy są wstawiane w kolejności i ich ID będą odpowiadać.
+                    // To jest kruche. Lepszym rozwiązaniem byłoby:
+                    // 1. Usunąć AUTOINCREMENT z `COLUMN_ID` w `TABLE_COURSES` i wstawiać `courseIdFromJson`.
+                    // 2. Lub, po wstawieniu kursu, pobrać jego `actualCourseId` i użyć go dla słów.
 
-        // Business English words (Course ID: 3) - Keeping these as placeholders, add more if needed
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Meeting', 'An assembly of people for a particular purpose', 3)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Deadline', 'A time or date by which something must be completed', 3)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Contract', 'A written or spoken agreement', 3)");
+                    // Wybieram opcję 1 dla większej kontroli i spójności z JSON.
+                    // Zmieniam CREATE_TABLE, aby COLUMN_ID nie było AUTOINCREMENT.
+                    // Wymaga to zmiany w CREATE_COURSES_TABLE:
+                    // `COLUMN_ID + " INTEGER PRIMARY KEY,"` zamiast `AUTOINCREMENT`
+                    // Jeśli jednak chcemy zachować AUTOINCREMENT, to musimy pobrać ID po wstawieniu.
+                    // Dla tego przykładu, zakładam, że ID z JSON jest używane jako klucz główny.
+                    // Aby to zadziałało, zmień definicję tabeli `courses` (usunięcie AUTOINCREMENT).
+                    // Jeśli nie chcesz zmieniać schematu, musisz pobrać ID po insercie.
 
-        // Academic English words (Course ID: 4) - Keeping these as placeholders, add more if needed
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Thesis', 'A statement or theory put forward to be maintained or proved', 4)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Research', 'Systematic investigation to establish facts', 4)");
-
-        // Idioms & Expressions (Course ID: 5) - Keeping these as placeholders, add more if needed
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Break a leg', 'Good luck (often said to performers)', 5)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Piece of cake', 'Something very easy to do', 5)");
-
-        // === German Words (Course ID: 6) ===
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hallo', 'Hello', 6)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Tschüss', 'Goodbye (informal)', 6)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Danke', 'Thank you', 6)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Bitte', 'Please / You''re welcome', 6)"); // Escaped quote
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Ja', 'Yes', 6)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Nein', 'No', 6)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Wasser', 'Water', 6)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Essen', 'Food / To eat', 6)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Flughafen', 'Airport', 6)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hotel', 'Hotel', 6)");
-
-        // === Polish Words (Course ID: 7) ===
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Cześć', 'Hello / Hi', 7)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Do widzenia', 'Goodbye', 7)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Dziękuję', 'Thank you', 7)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Proszę', 'Please / Here you are', 7)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Tak', 'Yes', 7)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Nie', 'No', 7)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Woda', 'Water', 7)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Jedzenie', 'Food', 7)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Lotnisko', 'Airport', 7)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hotel', 'Hotel', 7)");
-
-        // === Spanish Words (Course ID: 8) ===
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hola', 'Hello', 8)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Adiós', 'Goodbye', 8)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Gracias', 'Thank you', 8)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Por favor', 'Please', 8)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Sí', 'Yes', 8)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('No', 'No', 8)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Agua', 'Water', 8)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Comida', 'Food', 8)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Aeropuerto', 'Airport', 8)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hotel', 'Hotel', 8)");
-
-        // === French Words (Course ID: 9) ===
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Bonjour', 'Hello', 9)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Au revoir', 'Goodbye', 9)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Merci', 'Thank you', 9)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('S''il vous plaît', 'Please', 9)"); // Escaped quote
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Oui', 'Yes', 9)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Non', 'No', 9)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Eau', 'Water', 9)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Nourriture', 'Food', 9)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Aéroport', 'Airport', 9)"); // Note: Often written l'aéroport
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hôtel', 'Hotel', 9)");
+                    // Zakładając, że ID w JSON jest docelowym ID w bazie:
+                    courseValues.put(COLUMN_ID, courseIdFromJson); // Dodajemy ID z JSON
+                    db.insertWithOnConflict(TABLE_COURSES, null, courseValues, SQLiteDatabase.CONFLICT_REPLACE);
 
 
+                    if (courseObject.has("words")) {
+                        JSONArray wordsArray = courseObject.getJSONArray("words");
+                        for (int j = 0; j < wordsArray.length(); j++) {
+                            JSONObject wordObject = wordsArray.getJSONObject(j);
+                            ContentValues wordValues = new ContentValues();
+                            wordValues.put(COLUMN_WORD_TEXT, wordObject.getString("text"));
+                            wordValues.put(COLUMN_WORD_TRANSLATION, wordObject.getString("translation"));
+                            wordValues.put(COLUMN_WORD_COURSE_ID, courseIdFromJson); // Użyj ID kursu z JSON
+                            wordValues.put(COLUMN_WORD_CATEGORY, wordObject.optString("category", null));
+                            wordValues.put(COLUMN_WORD_DISTRACTORS, wordObject.optString("distractors", null));
+                            db.insert(TABLE_WORDS, null, wordValues);
+                        }
+                    }
+                }
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+            Log.i(TAG, "Sample data inserted successfully from JSON.");
 
-        // === Sentence with a gap (Course ID: 10) ===
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('She ___ to school every day.', 'goes', 10)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('He ___ football every weekend.', 'plays', 10)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('They ___ going to the cinema.', 'are', 10)");
-        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('The cat ___ on the sofa.', 'is', 10)");
-
+        } catch (Exception e) {
+            Log.e(TAG, "Error inserting sample data from JSON", e);
+        }
     }
 }

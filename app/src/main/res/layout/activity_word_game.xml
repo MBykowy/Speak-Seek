@@ -2,45 +2,75 @@
     android:orientation="vertical"
     android:padding="24dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/scoreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Punkty: 0"
+        android:textSize="20sp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="end" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/loadingProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="100" />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:max="100"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/wordTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Word"
-        android:textSize="24sp"
-        android:paddingTop="32dp" />
+        android:minHeight="80dp"
+        android:text=""
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="16dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/textview_border" />
 
     <Button
         android:id="@+id/option1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Option 1"
-        android:layout_marginTop="16dp" />
+        android:text="Opcja 1"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:padding="12dp"
+        android:textSize="18sp"/>
 
     <Button
         android:id="@+id/option2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Option 2" />
+        android:text="Opcja 2"
+        android:layout_marginBottom="8dp"
+        android:padding="12dp"
+        android:textSize="18sp"/>
 
     <Button
         android:id="@+id/option3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Option 3" />
+        android:text="Opcja 3"
+        android:layout_marginBottom="8dp"
+        android:padding="12dp"
+        android:textSize="18sp"/>
 
     <Button
         android:id="@+id/option4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Option 4" />
+        android:text="Opcja 4"
+        android:padding="12dp"
+        android:textSize="18sp"/>
 
 </LinearLayout>
