@@ -1,6 +1,20 @@
 {
   "courses": [
     {
+      "id": 10000,
+      "name": "Words to repeat",
+      "description": "Words that were answered incorrectly",
+      "language_code": "en",
+      "words": [
+        {
+          "text": "Hello",
+          "translation": "A greeting used when meeting someone",
+          "category": "greeting",
+          "distractors": "Goodbye,Thank you,Please"
+        }
+      ]
+    },
+    {
       "id": 1,
       "name": "Basic Vocabulary",
       "description": "Essential everyday English words for beginners",

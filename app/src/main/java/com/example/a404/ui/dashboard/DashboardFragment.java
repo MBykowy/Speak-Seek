@@ -2,6 +2,7 @@
 package com.example.a404.ui.dashboard;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,13 +15,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a404.R;
+import com.example.a404.data.dao.CourseDao;
 import com.example.a404.data.model.Achievement;
 import com.example.a404.data.model.Course;
 import com.example.a404.data.model.UserProfile;
 import com.example.a404.data.model.VocabularyItem;
+import com.example.a404.data.model.WordDbHelper;
 import com.example.a404.data.repository.GamificationRepository;
 import com.example.a404.data.repository.UserRepository;
 import com.example.a404.data.repository.VocabularyRepository;
@@ -44,16 +46,24 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
     private DashboardViewModel viewModel;
     private CourseAdapter courseAdapter;
     private AchievementsAdapter achievementAdapterDashboard;
+    private CourseDao courseDao;
+    private WordDbHelper dbHelper;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG_DASH_FRAG, "onCreate");
 
+
+
         FirebaseSource firebaseSource = new FirebaseSource();
         UserRepository userRepository = new UserRepository(firebaseSource);
         VocabularyRepository vocabularyRepository = new VocabularyRepository(firebaseSource);
         GamificationRepository gamificationRepository = new GamificationRepository(firebaseSource, requireActivity().getApplication());
+
+
+        dbHelper = new WordDbHelper(this.getContext());
+        courseDao = new CourseDao(dbHelper);
 
         viewModel = new ViewModelProvider(
                 this,
@@ -193,6 +203,10 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
         binding.buttonStartReview.setOnClickListener(v -> {
             Log.d(TAG_DASH_FRAG, "Button Start Review clicked");
             // TODO: Zaimplementuj nawigację do ekranu powtórki
+
+            Intent intent = new Intent(requireContext(), WordGameActivity.class);
+            intent.putExtra("COURSE_ID", 10000L);
+            startActivity(intent);
         });
     }
 
@@ -212,13 +226,16 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
     }
 
     private void updateReviewWordsUI(List<VocabularyItem> wordsForReview) {
-        if (wordsForReview != null) {
-            int reviewCount = wordsForReview.size();
+
+
+        long id = 10000;
+        if (courseDao.getWordCountForCourse(id) > 0) {
             binding.textReviewCount.setText(
-                    String.format(Locale.getDefault(), "%d słów czeka na powtórkę", reviewCount));
-            binding.buttonStartReview.setEnabled(reviewCount > 0);
+                    String.format(Locale.getDefault(), "%d słów czeka na powtórkę", courseDao.getWordCountForCourse(id)));
+            binding.buttonStartReview.setEnabled(true);
         } else {
             binding.textReviewCount.setText("0 słów czeka na powtórkę");
+
             binding.buttonStartReview.setEnabled(false);
         }
     }
