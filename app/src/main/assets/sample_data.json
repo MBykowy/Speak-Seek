@@ -10,181 +10,181 @@
           "text": "Hello",
           "translation": "A greeting used when meeting someone",
           "category": "greeting",
-          "distractors": "Goodbye,Thank you,Please"
+          "distractors": "A farewell expression used when parting,An expression of gratitude for a gift,A polite term for requesting something"
         },
         {
           "text": "Goodbye",
           "translation": "A farewell used when leaving",
           "category": "farewell",
-          "distractors": "Hello,Welcome,See you later"
+          "distractors": "A common way to start a conversation,A word to show appreciation or thanks,A term for a young human being"
         },
         {
           "text": "Thank you",
           "translation": "Expression of gratitude",
           "category": "gratitude",
-          "distractors": "Sorry,Please,Excuse me"
+          "distractors": "An apology for a mistake,A request for permission,A way to say no politely"
         },
         {
           "text": "Please",
           "translation": "Used when requesting something politely",
           "category": "politeness",
-          "distractors": "Thank you,Sorry,You're welcome"
+          "distractors": "A word to show thanks for a favor,A way to express sorrow or regret,A response when offered something"
         },
         {
           "text": "Sorry",
           "translation": "Used to express regret or apologize",
           "category": "apology",
-          "distractors": "Thank you,Please,Congratulations"
+          "distractors": "An expression of joy or happiness,A polite term to ask for something,A word indicating agreement"
         },
         {
           "text": "Friend",
           "translation": "A person you like and enjoy spending time with",
           "category": "people",
-          "distractors": "Enemy,Stranger,Colleague"
+          "distractors": "A person one works with professionally,An individual one does not know,A group consisting of parents and children"
         },
         {
           "text": "Family",
-          "translation": "A group of related people",
+          "translation": "A group of related people (e.g., parents, children, siblings)",
           "category": "people",
-          "distractors": "Team,Crowd,Audience"
+          "distractors": "A collection of individuals with a common interest,A person who teaches in a school,A place where people live"
         },
         {
           "text": "Food",
-          "translation": "Things that people or animals eat",
+          "translation": "Substances that people or animals eat to live and grow",
           "category": "food_drink",
-          "distractors": "Drink,Water,Book"
+          "distractors": "Clear liquid essential for life,A building used for residence,A vehicle for transportation"
         },
         {
           "text": "Water",
-          "translation": "Clear liquid that falls as rain and forms rivers and seas",
+          "translation": "Clear, odorless, tasteless liquid essential for all known forms of life",
           "category": "food_drink",
-          "distractors": "Juice,Milk,Soda"
+          "distractors": "Sweet, edible part of a plant, typically a fruit,Nourishment consumed to sustain life,A place where goods are sold"
         },
         {
           "text": "House",
-          "translation": "A building where people live",
+          "translation": "A building where people live, typically a single-family dwelling",
           "category": "place",
-          "distractors": "Car,Office,Park"
+          "distractors": "An institution for education of children,A vehicle with four wheels for road travel,A large outdoor area for recreation"
         },
         {
           "text": "Yes",
-          "translation": "Used to express affirmation or agreement",
+          "translation": "Used to express affirmation, agreement, or consent",
           "category": "affirmation",
-          "distractors": "No,Maybe,Perhaps"
+          "distractors": "Used to express negation or refusal,Indicates uncertainty or possibility,A greeting used upon arrival"
         },
         {
           "text": "No",
-          "translation": "Used to express negation or disagreement",
+          "translation": "Used to express negation, disagreement, or refusal",
           "category": "negation",
-          "distractors": "Yes,Alright,Okay"
+          "distractors": "Indicates agreement or acceptance,A polite expression of thanks,A word showing sorrow for an action"
         },
         {
           "text": "Big",
-          "translation": "Of considerable size or extent",
+          "translation": "Of considerable size, extent, or intensity",
           "category": "adjective_size",
-          "distractors": "Small,Tiny,Narrow"
+          "distractors": "Of less than average size or amount,Feeling pleasure or contentment,Moving or capable of moving at high speed"
         },
         {
           "text": "Small",
-          "translation": "Of less than average size",
+          "translation": "Of a size that is less than average or usual",
           "category": "adjective_size",
-          "distractors": "Big,Large,Huge"
+          "distractors": "Large in physical extent or bulk,Of a good or satisfactory quality,Occurring in a short time or at a fast pace"
         },
         {
           "text": "Good",
-          "translation": "To be desired or approved of",
+          "translation": "To be desired or approved of; of high quality",
           "category": "adjective_quality",
-          "distractors": "Bad,Poor,Awful"
+          "distractors": "Of poor quality or a low standard,Feeling or showing pleasure,Not large in size or amount"
         },
         {
           "text": "Bad",
-          "translation": "Of poor quality or a low standard",
+          "translation": "Of poor quality or a low standard; not good",
           "category": "adjective_quality",
-          "distractors": "Good,Excellent,Fine"
+          "distractors": "Excellent or desired; of high standard,Unhappy or expressing sorrow,Large in physical dimensions"
         },
         {
           "text": "Happy",
           "translation": "Feeling or showing pleasure or contentment",
           "category": "adjective_emotion",
-          "distractors": "Sad,Angry,Tired"
+          "distractors": "Feeling sorrow or unhappiness,Angry or annoyed,Tired or in need of sleep"
         },
         {
           "text": "Sad",
           "translation": "Feeling or showing sorrow; unhappy",
           "category": "adjective_emotion",
-          "distractors": "Happy,Excited,Joyful"
+          "distractors": "Joyful or pleased about something,Moving with quickness,Having a great size"
         },
         {
           "text": "Eat",
-          "translation": "Put food into the mouth and chew and swallow it",
+          "translation": "To put food into the mouth, chew, and swallow it",
           "category": "verb_action",
-          "distractors": "Drink,Sleep,Run"
+          "distractors": "To take liquid into the mouth and swallow,To rest in a state of reduced consciousness,To move at a speed faster than walking"
         },
         {
           "text": "Drink",
-          "translation": "Take (a liquid) into the mouth and swallow",
+          "translation": "To take (a liquid) into the mouth and swallow",
           "category": "verb_action",
-          "distractors": "Eat,Speak,Write"
+          "distractors": "To consume solid food by chewing and swallowing,To communicate using spoken words,To form letters or words on a surface"
         },
         {
           "text": "Sleep",
-          "translation": "A condition of body and mind such as that which typically recurs for several hours every night",
+          "translation": "To rest your mind and body by being unconscious",
           "category": "verb_action",
-          "distractors": "Wake up,Work,Play"
+          "distractors": "To become conscious after sleeping,To perform tasks, typically for payment,To engage in activities for enjoyment"
         },
         {
           "text": "Run",
-          "translation": "Move at a speed faster than a walk",
+          "translation": "To move at a speed faster than a walk, never having both or all feet on the ground at the same time",
           "category": "verb_action",
-          "distractors": "Walk,Sit,Stand"
+          "distractors": "To move at a regular and fairly slow pace,To rest in a seated position,To be in an upright position on one's feet"
         },
         {
           "text": "Walk",
-          "translation": "Move at a regular pace by lifting and setting down each foot in turn",
+          "translation": "To move at a regular pace by lifting and setting down each foot in turn, never having both feet off the ground at once",
           "category": "verb_action",
-          "distractors": "Run,Fly,Swim"
+          "distractors": "To move rapidly on foot,To travel through the air using wings,To propel oneself through water using limbs"
         },
         {
           "text": "Read",
-          "translation": "Look at and comprehend the meaning of (written or printed matter)",
+          "translation": "To look at and comprehend the meaning of (written or printed matter)",
           "category": "verb_activity",
-          "distractors": "Write,Listen,Speak"
+          "distractors": "To mark letters or symbols on a surface,To perceive sounds with the ears,To express thoughts or feelings by using voice"
         },
         {
           "text": "Write",
-          "translation": "Mark (letters, words, or other symbols) on a surface, typically paper, with a pen or pencil",
+          "translation": "To mark (letters, words, or other symbols) on a surface, typically paper, with a pen or pencil",
           "category": "verb_activity",
-          "distractors": "Read,Draw,Type"
+          "distractors": "To understand written or printed words,To create pictures with a pen or pencil,To input text using a keyboard"
         },
         {
           "text": "School",
-          "translation": "An institution for educating children",
+          "translation": "An institution for educating children or young people",
           "category": "place",
-          "distractors": "Hospital,Library,Market"
+          "distractors": "A place for treating sick or injured people,A building containing collections of books,A place where goods are bought and sold"
         },
         {
           "text": "Teacher",
-          "translation": "A person who teaches, especially in a school",
+          "translation": "A person who teaches, especially in a school or college",
           "category": "people_occupation",
-          "distractors": "Student,Doctor,Farmer"
+          "distractors": "A person studying at an educational institution,A qualified medical practitioner,A person who cultivates land or raises livestock"
         },
         {
           "text": "Student",
-          "translation": "A person who is studying at a school or college",
+          "translation": "A person who is studying at a school, college, or university",
           "category": "people_occupation",
-          "distractors": "Teacher,Principal,Librarian"
+          "distractors": "An individual who imparts knowledge,The head of a school,A person in charge of a library"
         },
         {
           "text": "Book",
-          "translation": "A written or printed work consisting of pages glued or sewn together along one side and bound in covers",
+          "translation": "A written or printed work consisting of pages glued or sewn together, bound in covers",
           "category": "object",
-          "distractors": "Magazine,Newspaper,Computer"
+          "distractors": "A periodical publication with articles and images,A daily printed publication of news,An electronic device for processing data"
         },
         {
           "text": "Pen",
-          "translation": "An instrument for writing or drawing with ink",
+          "translation": "An instrument for writing or drawing with ink, typically consisting of a point or nib",
           "category": "object",
-          "distractors": "Pencil,Crayon,Brush"
+          "distractors": "A thin stick of graphite for writing or drawing,A marker with colored felt tip,A brush used for painting"
         }
       ]
     },
@@ -196,93 +196,93 @@
       "words": [
         {
           "text": "Airport",
-          "translation": "A place where aircraft take off and land",
+          "translation": "A complex of runways and buildings for aircraft takeoff and landing",
           "category": "travel_place",
-          "distractors": "Train station,Bus station,Harbor"
+          "distractors": "A station for railway passenger services,A terminal for bus passenger services,A port or harbor for ships"
         },
         {
           "text": "Hotel",
-          "translation": "A place providing accommodation and meals for travelers",
+          "translation": "An establishment providing accommodation, meals, and other services for travelers",
           "category": "travel_place",
-          "distractors": "Hospital,School,Office"
+          "distractors": "A facility for medical treatment,An institution for learning,An office for business activities"
         },
         {
           "text": "Passport",
-          "translation": "An official document for international travel and identity",
+          "translation": "An official government document certifying identity and citizenship for international travel",
           "category": "travel_document",
-          "distractors": "Driver's license,Credit card,Library card"
+          "distractors": "A card permitting operation of a motor vehicle,A plastic card for making purchases on credit,A card allowing borrowing of books"
         },
         {
           "text": "Ticket",
-          "translation": "A paper or digital pass for travel or entry",
+          "translation": "A piece of paper or card giving a right to travel or enter a place",
           "category": "travel_document",
-          "distractors": "Receipt,Invoice,Map"
+          "distractors": "A written acknowledgment of payment received,A formal request for payment of goods,A diagram representing an area"
         },
         {
           "text": "Luggage",
-          "translation": "Suitcases and bags for belongings when traveling",
+          "translation": "Suitcases, bags, and containers holding a traveler's belongings",
           "category": "travel_item",
-          "distractors": "Groceries,Furniture,Equipment"
+          "distractors": "Food items bought from a store,Large items of household furniture,Tools and machinery for work"
         },
         {
           "text": "Flight",
-          "translation": "A journey made by air",
+          "translation": "A journey made by or in an aircraft",
           "category": "travel_transport",
-          "distractors": "Road trip,Cruise,Train ride"
+          "distractors": "A long journey involving driving,A voyage on a ship for pleasure,A trip made by train"
         },
         {
           "text": "Train",
-          "translation": "A form of rail transport",
+          "translation": "A form of rail transport consisting of connected vehicles running on a track",
           "category": "travel_transport",
-          "distractors": "Car,Bicycle,Boat"
+          "distractors": "A four-wheeled road vehicle,A two-wheeled vehicle propelled by pedals,A vessel for travel on water"
         },
         {
           "text": "Bus",
-          "translation": "A large motor vehicle for passengers by road",
+          "translation": "A large motor vehicle carrying passengers by road, typically on a fixed route",
           "category": "travel_transport",
-          "distractors": "Airplane,Motorcycle,Scooter"
+          "distractors": "A powered flying vehicle with fixed wings,A two-wheeled motor vehicle,A small, light, two-wheeled vehicle"
         },
         {
           "text": "Taxi",
-          "translation": "A car for hire with a driver",
+          "translation": "A motor vehicle licensed to transport passengers in return for payment of a fare",
           "category": "travel_transport",
-          "distractors": "Private car,Rental car,Limousine"
+          "distractors": "A car owned for personal use,A car hired for self-driving,A luxury chauffeured car"
         },
         {
           "text": "Reservation",
-          "translation": "An arrangement to have something kept for you",
+          "translation": "An arrangement to have a room, seat, or table kept for one's use",
           "category": "travel_booking",
-          "distractors": "Cancellation,Purchase,Inquiry"
+          "distractors": "The act of canceling a booking,The act of buying something,A formal question or doubt"
         },
         {
           "text": "Map",
-          "translation": "A diagrammatic representation of an area",
+          "translation": "A diagrammatic representation of an area of land or sea showing features",
           "category": "travel_navigation",
-          "distractors": "Book,Photo,Compass"
+          "distractors": "A bound set of printed pages,A visual representation captured by a camera,An instrument showing direction"
         },
         {
           "text": "Currency",
-          "translation": "The money system used in a particular country",
+          "translation": "The system of money in general use in a particular country",
           "category": "travel_money",
-          "distractors": "Language,Culture,Food"
+          "distractors": "The spoken communication system of a country,The customs and arts of a nation,The food typically eaten by a group"
         },
         {
           "text": "Restaurant",
-          "translation": "A place where meals are prepared and served to customers",
+          "translation": "A place where people pay to sit and eat meals cooked and served on premises",
           "category": "travel_food",
-          "distractors": "Supermarket,Kitchen,Bakery"
+          "distractors": "A large store selling food and household goods,A room where food is prepared,A shop that bakes and sells bread"
         },
         {
           "text": "Tourist",
-          "translation": "A person traveling for pleasure",
+          "translation": "A person who is traveling or visiting a place for pleasure and interest",
           "category": "travel_people",
-          "distractors": "Resident,Commuter,Employee"
+          "distractors": "A person living permanently in a place,A person who travels daily to work,A person employed in a business"
         },
         {
           "text": "Souvenir",
-          "translation": "A thing kept as a reminder of a place visited",
+          "translation": "A thing that is kept as a reminder of a person, place, or event",
           "category": "travel_item",
-          "distractors": "Necessity,Tool,Document"
+          "distractors": "Something essential for survival,An instrument or device for a task,An official paper or certificate"
         }
       ]
     },
@@ -296,31 +296,31 @@
           "text": "Hallo",
           "translation": "Hello",
           "category": "greeting",
-          "distractors": "Goodbye,Thank you,Water"
+          "distractors": "Goodbye,Thanks,Water"
         },
         {
           "text": "Tschüss",
           "translation": "Bye",
           "category": "farewell",
-          "distractors": "Hello,Please,Yes"
+          "distractors": "Hi,Please,Yes"
         },
         {
           "text": "Danke",
           "translation": "Thank you",
           "category": "gratitude",
-          "distractors": "Sorry,No,Good morning"
+          "distractors": "Sorry,No,Morning"
         },
         {
           "text": "Bitte",
           "translation": "Please / You're welcome",
           "category": "politeness",
-          "distractors": "Goodbye,Yes,Excuse me"
+          "distractors": "Farewell,Okay,Excuse me"
         },
         {
           "text": "Ja",
           "translation": "Yes",
           "category": "affirmation",
-          "distractors": "No,Maybe,Thank you"
+          "distractors": "No,Maybe,Thanks"
         },
         {
           "text": "Nein",
@@ -332,7 +332,7 @@
           "text": "Entschuldigung",
           "translation": "Excuse me / Sorry",
           "category": "apology",
-          "distractors": "Thank you,Hello,Goodbye"
+          "distractors": "Thank you,Greetings,Later"
         },
         {
           "text": "Mann",
@@ -398,13 +398,13 @@
           "text": "Guten Morgen",
           "translation": "Good morning",
           "category": "greeting",
-          "distractors": "Good night,Good evening,Hello"
+          "distractors": "Good night,Good evening,Hi there"
         },
         {
           "text": "Guten Abend",
           "translation": "Good evening",
           "category": "greeting",
-          "distractors": "Good morning,Good day,Goodbye"
+          "distractors": "Good morning,Good day,So long"
         },
         {
           "text": "Auf Wiedersehen",
@@ -436,7 +436,7 @@
           "text": "Do widzenia",
           "translation": "Goodbye (formal)",
           "category": "farewell",
-          "distractors": "Hello,Yes,Thank you"
+          "distractors": "Hello,Yes,Thanks"
         },
         {
           "text": "Dziękuję",
@@ -448,7 +448,7 @@
           "text": "Proszę",
           "translation": "Please / You're welcome",
           "category": "politeness",
-          "distractors": "Thank you,Goodbye,Yes"
+          "distractors": "Thanks,Farewell,Okay"
         },
         {
           "text": "Tak",
@@ -466,7 +466,7 @@
           "text": "Przepraszam",
           "translation": "Sorry / Excuse me",
           "category": "apology",
-          "distractors": "Thank you,You're welcome,Hello"
+          "distractors": "Thank you,Welcome,Hi"
         },
         {
           "text": "Mężczyzna",
@@ -546,7 +546,7 @@
           "text": "Adiós",
           "translation": "Goodbye",
           "category": "farewell",
-          "distractors": "Hello,Welcome,Yes"
+          "distractors": "Hi,Welcome,Yes"
         },
         {
           "text": "Gracias",
@@ -558,7 +558,7 @@
           "text": "Por favor",
           "translation": "Please",
           "category": "politeness",
-          "distractors": "Thank you,You're welcome,Goodbye"
+          "distractors": "Thanks,You're welcome,Farewell"
         },
         {
           "text": "De nada",
@@ -582,7 +582,7 @@
           "text": "Perdón",
           "translation": "Sorry / Excuse me",
           "category": "apology",
-          "distractors": "Hello,Thank you,Congratulations"
+          "distractors": "Hello,Thanks,Congrats"
         },
         {
           "text": "Hombre",
@@ -680,7 +680,7 @@
           "text": "S'il vous plaît",
           "translation": "Please",
           "category": "politeness",
-          "distractors": "Thank you,You're welcome,Excuse me"
+          "distractors": "Thanks,You're welcome,Excuse me"
         },
         {
           "text": "De rien",
@@ -778,19 +778,19 @@
           "text": "She ___ to school every day.",
           "translation": "goes",
           "category": "verb_present_simple",
-          "distractors": "go,going,went"
+          "distractors": "went,gone,going"
         },
         {
           "text": "He ___ football every weekend.",
           "translation": "plays",
           "category": "verb_present_simple",
-          "distractors": "play,playing,played"
+          "distractors": "played,play,playing"
         },
         {
           "text": "They ___ watching TV right now.",
           "translation": "are",
           "category": "verb_present_continuous",
-          "distractors": "is,am,be"
+          "distractors": "is,was,been"
         },
         {
           "text": "I ___ a great movie last night.",
@@ -802,13 +802,13 @@
           "text": "We ___ to the park tomorrow.",
           "translation": "will go",
           "category": "verb_future_simple",
-          "distractors": "go,went,are going"
+          "distractors": "went,go,are going"
         },
         {
           "text": "The cat is ___ the table.",
           "translation": "on",
           "category": "preposition_place",
-          "distractors": "in,at,under"
+          "distractors": "in,under,next"
         },
         {
           "text": "This is ___ apple.",
@@ -820,13 +820,13 @@
           "text": "My car is ___ than yours.",
           "translation": "faster",
           "category": "comparative_adjective",
-          "distractors": "fast,fastest,more fast"
+          "distractors": "fastest,fast,more fast"
         },
         {
           "text": "She sings ___.",
           "translation": "beautifully",
           "category": "adverb_manner",
-          "distractors": "beautiful,beauty,more beautiful"
+          "distractors": "beautiful,beauty,lovely"
         },
         {
           "text": "___ many people at the party.",
@@ -844,19 +844,19 @@
           "text": "This book is ___.",
           "translation": "hers",
           "category": "possessive_pronoun",
-          "distractors": "her,she,shes"
+          "distractors": "her,she,she's"
         },
         {
           "text": "If I ___ you, I would study more.",
           "translation": "were",
           "category": "conditional",
-          "distractors": "am,was,be"
+          "distractors": "was,am,be"
         },
         {
           "text": "He has ___ to London many times.",
           "translation": "been",
           "category": "verb_present_perfect",
-          "distractors": "went,gone,be"
+          "distractors": "gone,went,be"
         },
         {
           "text": "The window was ___ by the wind.",
@@ -874,75 +874,75 @@
       "words": [
         {
           "text": "Price",
-          "translation": "The amount of money for an item",
+          "translation": "The amount of money expected or given for something",
           "category": "shopping_term",
-          "distractors": "Size,Color,Weight"
+          "distractors": "The physical dimensions of an item,The shade or hue of an object,The heaviness or mass of a product"
         },
         {
           "text": "Discount",
-          "translation": "A reduction in price",
+          "translation": "A deduction from the usual cost of something",
           "category": "shopping_term",
-          "distractors": "Increase,Tax,Fee"
+          "distractors": "An addition to the normal price,A mandatory contribution to state revenue,A charge for a particular service"
         },
         {
           "text": "Cash",
-          "translation": "Money in coins or notes",
+          "translation": "Money in coins or notes, as distinct from checks or credit",
           "category": "payment_method",
-          "distractors": "Credit card,Check,Loan"
+          "distractors": "Payment using a bank-issued plastic card,A written order to a bank to pay a stated sum,Borrowed money that is expected to be paid back"
         },
         {
           "text": "Credit Card",
-          "translation": "A plastic card for buying on credit",
+          "translation": "A plastic card for making purchases on credit from a financial institution",
           "category": "payment_method",
-          "distractors": "Debit card,Gift card,Cash"
+          "distractors": "A card for direct bank account withdrawal,A prepaid card for specific store purchases,Physical currency in notes and coins"
         },
         {
           "text": "Receipt",
-          "translation": "Proof of purchase",
+          "translation": "A written statement confirming that something has been paid for or received",
           "category": "shopping_document",
-          "distractors": "Warranty,Manual,Advertisement"
+          "distractors": "A promise of repair for a faulty product,An instruction booklet for a device,A public notice promoting a product"
         },
         {
           "text": "Fitting Room",
-          "translation": "A room to try on clothes",
+          "translation": "A room in a shop where customers can try on clothes before purchase",
           "category": "shopping_place",
-          "distractors": "Stockroom,Cashier,Entrance"
+          "distractors": "A room where inventory is kept,The counter where payments are made,The main entrance of a store"
         },
         {
           "text": "Size",
-          "translation": "How large or small something is (S, M, L)",
+          "translation": "The dimensions or proportions of something (e.g., S, M, L for clothes)",
           "category": "clothing_attribute",
-          "distractors": "Color,Material,Brand"
+          "distractors": "The visual appearance (e.g., red, blue),The substance an item is made from,The maker or company of a product"
         },
         {
           "text": "Sale",
-          "translation": "A period of reduced prices",
+          "translation": "A period during which a shop sells goods at reduced prices",
           "category": "shopping_event",
-          "distractors": "New arrivals,Full price,Auction"
+          "distractors": "Newly stocked merchandise at regular cost,The standard or original cost of items,An event where items are sold to the highest bidder"
         },
         {
           "text": "Customer",
-          "translation": "A person buying goods or services",
+          "translation": "A person who buys goods or services from a shop or business",
           "category": "people",
-          "distractors": "Seller,Manager,Employee"
+          "distractors": "A person who sells goods or services,The person in charge of a business,An individual working for a company"
         },
         {
           "text": "Shop Assistant",
-          "translation": "A person who helps customers in a shop",
+          "translation": "A person employed in a shop to serve customers and sell goods",
           "category": "people",
-          "distractors": "Customer,Security guard,Owner"
+          "distractors": "A person making a purchase,A person responsible for store security,The proprietor of a retail business"
         },
         {
           "text": "Bargain",
-          "translation": "Something bought for a good price",
+          "translation": "A thing bought or offered for sale much more cheaply than is usual or expected",
           "category": "shopping_term",
-          "distractors": "Luxury item,Expensive,Overpriced"
+          "distractors": "An item of high quality and price,Something considered too costly,Priced higher than its actual worth"
         },
         {
           "text": "Refund",
-          "translation": "Money returned for a returned item",
+          "translation": "A repayment of a sum of money, typically to a dissatisfied customer",
           "category": "shopping_action",
-          "distractors": "Exchange,Purchase,Discount"
+          "distractors": "The act of swapping one item for another,The act of acquiring goods by payment,A reduction from the usual price"
         }
       ]
     },
@@ -992,19 +992,19 @@
           "text": "Arrivederci",
           "translation": "Goodbye (formal)",
           "category": "farewell",
-          "distractors": "Hello,Welcome,See you later"
+          "distractors": "Hello,Welcome,See you"
         },
         {
           "text": "Per favore",
           "translation": "Please",
           "category": "politeness",
-          "distractors": "Thank you,Sorry,You're welcome"
+          "distractors": "Thank you,Sorry,Welcome"
         },
         {
           "text": "Scusa / Scusi",
           "translation": "Sorry / Excuse me",
           "category": "apology",
-          "distractors": "Thank you,Hello,Congratulations"
+          "distractors": "Thanks,Hi,Congrats"
         },
         {
           "text": "Acqua",
@@ -1052,75 +1052,75 @@
       "words": [
         {
           "text": "Get up",
-          "translation": "To rise from bed",
+          "translation": "To rise from bed after sleeping",
           "category": "phrasal_verb_daily_routine",
-          "distractors": "Get down,Go to bed,Sit down"
+          "distractors": "To move to a lower position,To lie down for rest or sleep,To take a seated position"
         },
         {
           "text": "Look for",
-          "translation": "To try to find something",
+          "translation": "To try to find something or someone",
           "category": "phrasal_verb_action",
-          "distractors": "Look at,Discover,Ignore"
+          "distractors": "To direct one's gaze in a particular direction,To find something unexpectedly,To deliberately not pay attention to"
         },
         {
           "text": "Turn on",
-          "translation": "To start a device (e.g., light, TV)",
+          "translation": "To activate or start the flow of something (e.g., a light, a device)",
           "category": "phrasal_verb_operation",
-          "distractors": "Turn off,Break,Fix"
+          "distractors": "To deactivate or stop the flow,To cause something to stop working,To repair a broken item"
         },
         {
           "text": "Give up",
-          "translation": "To stop trying; to quit",
+          "translation": "To stop trying to do something; to surrender",
           "category": "phrasal_verb_decision",
-          "distractors": "Continue,Start,Achieve"
+          "distractors": "To persist in an activity or effort,To begin or commence an action,To succeed in reaching a goal"
         },
         {
           "text": "Put off",
-          "translation": "To postpone; to delay",
+          "translation": "To postpone an event or activity to a later time or date",
           "category": "phrasal_verb_scheduling",
-          "distractors": "Bring forward,Do now,Cancel"
+          "distractors": "To arrange for an event to take place sooner,To do something immediately,To decide not to do something planned"
         },
         {
           "text": "Take off (clothes)",
-          "translation": "To remove clothing",
+          "translation": "To remove an item of clothing from one's body",
           "category": "phrasal_verb_action",
-          "distractors": "Put on,Wear,Wash"
+          "distractors": "To dress oneself in an item of clothing,To be dressed in particular clothes,To clean clothes with water and soap"
         },
         {
           "text": "Take off (plane)",
-          "translation": "For an aircraft to leave the ground",
+          "translation": "For an aircraft to leave the ground and begin to fly",
           "category": "phrasal_verb_action",
-          "distractors": "Land,Crash,Fly"
+          "distractors": "For an aircraft to come down to the ground,To have an accident in an aircraft,To travel by air"
         },
         {
           "text": "Run out of",
-          "translation": "To have no more of something left",
+          "translation": "To use all of something and have no more left",
           "category": "phrasal_verb_quantity",
-          "distractors": "Have plenty,Stock up,Find more"
+          "distractors": "To possess a large amount of something,To buy and store a supply of something,To discover or obtain more of something"
         },
         {
           "text": "Work out (exercise)",
-          "translation": "To do physical exercise",
+          "translation": "To do physical exercise to improve fitness or health",
           "category": "phrasal_verb_activity",
-          "distractors": "Rest,Relax,Sit"
+          "distractors": "To take a period of inactivity,To be calm and free from disturbance,To remain in a seated posture"
         },
         {
           "text": "Work out (solve)",
-          "translation": "To find a solution to a problem",
+          "translation": "To find a solution to a problem by reasoning or calculation",
           "category": "phrasal_verb_solution",
-          "distractors": "Create a problem,Ignore,Complicate"
+          "distractors": "To make a new problem,To choose not to consider a problem,To make a situation more difficult"
         },
         {
           "text": "Come across",
-          "translation": "To find or meet by chance",
+          "translation": "To find something or meet someone by chance",
           "category": "phrasal_verb_discovery",
-          "distractors": "Search for,Avoid,Plan to meet"
+          "distractors": "To actively look for something or someone,To intentionally stay away from,To arrange a meeting with someone"
         },
         {
           "text": "Look forward to",
-          "translation": "To anticipate with pleasure",
+          "translation": "To feel pleased and excited about something that is going to happen",
           "category": "phrasal_verb_anticipation",
-          "distractors": "Dread,Regret,Forget"
+          "distractors": "To feel fear or anxiety about something,To feel sorry about something that happened,To fail to remember something"
         }
       ]
     },
@@ -1132,75 +1132,75 @@
       "words": [
         {
           "text": "Meeting",
-          "translation": "A formal assembly of people",
+          "translation": "An assembly of people, especially for formal discussion or decision-making",
           "category": "business_event",
-          "distractors": "Party,Holiday,Lunch break"
+          "distractors": "A social gathering for celebration,An official break from work,A midday meal break"
         },
         {
           "text": "Email",
-          "translation": "Electronic mail message",
+          "translation": "A system for sending messages from one computer to another",
           "category": "business_communication",
-          "distractors": "Phone call,Letter,Fax"
+          "distractors": "A spoken conversation over a distance,A written message sent by post,A document transmitted via telephone lines"
         },
         {
           "text": "Presentation",
-          "translation": "A formal talk to an audience",
+          "translation": "A formal speech or talk in which a new product, idea, or work is shown and explained",
           "category": "business_communication",
-          "distractors": "Conversation,Discussion,Debate"
+          "distractors": "An informal chat between individuals,An exchange of ideas or information,A formal argument about a subject"
         },
         {
           "text": "Deadline",
-          "translation": "A time limit for completion",
+          "translation": "The latest time or date by which something should be completed",
           "category": "business_term",
-          "distractors": "Starting time,Holiday,Proposal"
+          "distractors": "The designated hour for beginning a task,A period of time off from work,A formal plan or suggestion"
         },
         {
           "text": "Colleague",
-          "translation": "A person one works with",
+          "translation": "A person with whom one works, especially in a profession or business",
           "category": "business_people",
-          "distractors": "Client,Boss,Competitor"
+          "distractors": "A person or company that buys services,A person's superior in a workplace,A rival business or individual"
         },
         {
           "text": "Client",
-          "translation": "A customer or someone receiving services",
+          "translation": "A person or organization using the services of a professional person or company",
           "category": "business_people",
-          "distractors": "Employee,Supplier,Manager"
+          "distractors": "A person employed by a company,A business that provides goods or services,The head of an organization"
         },
         {
           "text": "Project",
-          "translation": "A planned piece of work with a specific aim",
+          "translation": "An individual or collaborative enterprise that is carefully planned to achieve a particular aim",
           "category": "business_work",
-          "distractors": "Routine task,Hobby,Meeting"
+          "distractors": "A regular, everyday duty or function,An activity done for pleasure in leisure time,A gathering for discussion"
         },
         {
           "text": "Agenda",
-          "translation": "A list of items for discussion at a meeting",
+          "translation": "A list of items to be discussed at a formal meeting",
           "category": "business_document",
-          "distractors": "Minutes,Report,Invoice"
+          "distractors": "The official record of a meeting's proceedings,A detailed account of an investigation,A formal request for payment"
         },
         {
           "text": "Contract",
-          "translation": "A legally binding agreement",
+          "translation": "A written or spoken agreement, especially one concerning employment or sales, enforceable by law",
           "category": "business_document",
-          "distractors": "Memo,Email,Suggestion"
+          "distractors": "A short official note within an organization,An electronic message,An idea put forward for consideration"
         },
         {
           "text": "Invoice",
-          "translation": "A bill for goods or services provided",
+          "translation": "A list of goods sent or services provided, with a statement of the sum due for these; a bill",
           "category": "business_finance",
-          "distractors": "Receipt,Quotation,Order form"
+          "distractors": "Proof of payment for goods or services,An estimate of costs for future work,A request for goods to be supplied"
         },
         {
           "text": "Salary",
-          "translation": "Fixed regular payment from an employer",
+          "translation": "A fixed regular payment, typically paid monthly, made by an employer to an employee",
           "category": "business_finance",
-          "distractors": "Bonus,Expense,Investment"
+          "distractors": "An extra payment for good performance,Money spent on business needs,Funds put into a business for profit"
         },
         {
           "text": "Marketing",
-          "translation": "Promoting and selling products or services",
+          "translation": "The action or business of promoting and selling products or services, including research and advertising",
           "category": "business_department",
-          "distractors": "Accounting,Human Resources,Production"
+          "distractors": "The management of financial records,The management of personnel and hiring,The creation and assembly of goods"
         }
       ]
     },
@@ -1212,75 +1212,75 @@
       "words": [
         {
           "text": "Recipe",
-          "translation": "Instructions for preparing a dish",
+          "translation": "A set of instructions for preparing a particular dish, including a list of ingredients",
           "category": "cooking_term",
-          "distractors": "Shopping list,Menu,Review"
+          "distractors": "A list of items needed from a store,A list of dishes available at a restaurant,A critical assessment of a meal"
         },
         {
           "text": "Ingredient",
-          "translation": "A food item used in a recipe",
+          "translation": "Any of the foods or substances that are combined to make a particular dish",
           "category": "food_item",
-          "distractors": "Utensil,Appliance,Dish"
+          "distractors": "A tool or implement used in cooking,A machine or device used in the kitchen,A prepared food item ready to eat"
         },
         {
           "text": "Kitchen",
-          "translation": "A room for preparing and cooking food",
+          "translation": "A room or area where food is prepared and cooked",
           "category": "place",
-          "distractors": "Dining room,Bedroom,Garden"
+          "distractors": "A room where meals are eaten,A private room for sleeping,An outdoor area with plants and grass"
         },
         {
           "text": "Oven",
-          "translation": "Appliance for baking or roasting",
+          "translation": "An enclosed compartment, as in a stove, for baking or heating food",
           "category": "kitchen_appliance",
-          "distractors": "Refrigerator,Microwave,Blender"
+          "distractors": "A device for keeping food cold,A device for quick cooking with radiation,A device for mixing ingredients"
         },
         {
           "text": "Fry",
-          "translation": "To cook in hot fat or oil",
+          "translation": "To cook (food) in hot fat or oil, typically in a shallow pan",
           "category": "cooking_method",
-          "distractors": "Boil,Bake,Steam"
+          "distractors": "To cook in simmering liquid,To cook with dry heat in an oven,To cook with vapor from boiling water"
         },
         {
           "text": "Boil",
-          "translation": "To cook in bubbling hot water",
+          "translation": "To cook (food) by immersing it in water that is heated to its boiling point",
           "category": "cooking_method",
-          "distractors": "Fry,Grill,Roast"
+          "distractors": "To cook in hot oil or fat,To cook over an open flame or heated bars,To cook by prolonged dry heat"
         },
         {
           "text": "Bake",
-          "translation": "To cook by dry heat in an oven",
+          "translation": "To cook (food) by dry heat without direct exposure to a flame, typically in an oven",
           "category": "cooking_method",
-          "distractors": "Boil,Steam,Sauté"
+          "distractors": "To cook in very hot water,To cook using steam,To cook quickly in a little hot fat"
         },
         {
           "text": "Vegetable",
-          "translation": "A plant or part of a plant used as food (e.g., carrot)",
+          "translation": "A plant or part of a plant used as food, such as a cabbage, potato, or carrot",
           "category": "food_type",
-          "distractors": "Fruit,Meat,Dairy"
+          "distractors": "The sweet, fleshy product of a tree,The flesh of animals used as food,Products made from milk"
         },
         {
           "text": "Fruit",
-          "translation": "Sweet, fleshy product of a tree or plant (e.g., apple)",
+          "translation": "The sweet and fleshy product of a tree or other plant that contains seed and can be eaten as food",
           "category": "food_type",
-          "distractors": "Vegetable,Grain,Nut"
+          "distractors": "A plant part used as food (e.g. root, leaf),Cereal crops like wheat or rice,A hard-shelled dry fruit or seed"
         },
         {
           "text": "Meat",
-          "translation": "Animal flesh as food (e.g., beef, chicken)",
+          "translation": "The flesh of animals, especially mammals, as food",
           "category": "food_type",
-          "distractors": "Fish,Vegetable,Fruit"
+          "distractors": "Aquatic vertebrates consumed as food,Edible plants like carrots or broccoli,Sweet plant products like apples"
         },
         {
           "text": "Spice",
-          "translation": "Aromatic substance to flavor food (e.g., cinnamon)",
+          "translation": "An aromatic or pungent vegetable substance used to flavor food, e.g., cinnamon or cumin",
           "category": "ingredient_type",
-          "distractors": "Herb,Sugar,Salt"
+          "distractors": "The leaves of a plant used in cooking,A crystalline substance used for seasoning,A sweet crystalline substance from plants"
         },
         {
           "text": "Dessert",
-          "translation": "Sweet course at the end of a meal",
+          "translation": "The sweet course eaten at the end of a meal, such as cake or fruit",
           "category": "meal_course",
-          "distractors": "Appetizer,Main course,Side dish"
+          "distractors": "A small dish served before the main course,The principal dish of a meal,A food item served alongside the main dish"
         }
       ]
     }

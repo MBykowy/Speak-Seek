@@ -1,0 +1,460 @@
+{
+  "courses": [
+    {
+      "id": 201,
+      "name": "English Sentences: Fill the Gaps Vol. 1",
+      "description": "Practice completing English sentences by filling in the blanks.",
+      "language_code": "en",
+      "words": [
+        {
+          "text": "The cat sat on the ____.",
+          "translation": "mat",
+          "category": "sentence_completion_nouns_common",
+          "distractors": "dog,log,hat"
+        },
+        {
+          "text": "She ____ to the store yesterday.",
+          "translation": "went",
+          "category": "sentence_completion_verbs_past",
+          "distractors": "goes,going,gone"
+        },
+        {
+          "text": "I am ____ forward to the weekend.",
+          "translation": "looking",
+          "category": "sentence_completion_phrasal_verbs",
+          "distractors": "seeing,waiting,hoping"
+        },
+        {
+          "text": "Could you please ____ the door?",
+          "translation": "close",
+          "category": "sentence_completion_verbs_requests",
+          "distractors": "open,hit,see"
+        },
+        {
+          "text": "My favorite color is ____.",
+          "translation": "blue",
+          "category": "sentence_completion_adjectives_colors",
+          "distractors": "happy,quickly,table"
+        },
+        {
+          "text": "He ____ a very tall man.",
+          "translation": "is",
+          "category": "sentence_completion_verbs_be",
+          "distractors": "are,am,be"
+        },
+        {
+          "text": "They ____ playing soccer in the park.",
+          "translation": "are",
+          "category": "sentence_completion_verbs_present_continuous",
+          "distractors": "is,was,been"
+        },
+        {
+          "text": "This book is ____ interesting than the last one.",
+          "translation": "more",
+          "category": "sentence_completion_comparatives",
+          "distractors": "most,very,less"
+        },
+        {
+          "text": "What time ____ it?",
+          "translation": "is",
+          "category": "sentence_completion_questions_time",
+          "distractors": "does,are,do"
+        },
+        {
+          "text": "I have ____ my homework already.",
+          "translation": "finished",
+          "category": "sentence_completion_verbs_present_perfect",
+          "distractors": "finish,finishing,finishes"
+        },
+        {
+          "text": "The sun shines ____ during the day.",
+          "translation": "brightly",
+          "category": "sentence_completion_adverbs_manner",
+          "distractors": "bright,brighter,brightness"
+        },
+        {
+          "text": "Can you ____ me with this problem?",
+          "translation": "help",
+          "category": "sentence_completion_verbs_modal_requests",
+          "distractors": "see,tell,give"
+        }
+      ]
+    },
+    {
+      "id": 202,
+      "name": "German Sentences: Fill the Gaps Vol. 1",
+      "description": "Üben Sie das Vervollständigen deutscher Sätze, indem Sie die Lücken füllen.",
+      "language_code": "de",
+      "words": [
+        {
+          "text": "Der Hund spielt im ____.",
+          "translation": "Garten",
+          "category": "sentence_completion_nouns_places_de",
+          "distractors": "Haus,Auto,Baum"
+        },
+        {
+          "text": "Sie ____ gestern ins Kino gegangen.",
+          "translation": "ist",
+          "category": "sentence_completion_verbs_perfect_de",
+          "distractors": "hat,war,wird"
+        },
+        {
+          "text": "Ich ____ gern Kaffee.",
+          "translation": "trinke",
+          "category": "sentence_completion_verbs_present_de",
+          "distractors": "esse,lese,schlafe"
+        },
+        {
+          "text": "Das Wetter ist heute sehr ____.",
+          "translation": "schön",
+          "category": "sentence_completion_adjectives_weather_de",
+          "distractors": "kalt,neu,schnell"
+        },
+        {
+          "text": "Wir fahren ____ dem Auto in den Urlaub.",
+          "translation": "mit",
+          "category": "sentence_completion_prepositions_de",
+          "distractors": "auf,unter,neben"
+        },
+        {
+          "text": "Er ____ ein Buch.",
+          "translation": "liest",
+          "category": "sentence_completion_verbs_present_de",
+          "distractors": "schreibt,malt,singt"
+        },
+        {
+          "text": "Meine Schwester ____ eine Ärztin.",
+          "translation": "ist",
+          "category": "sentence_completion_verbs_be_de",
+          "distractors": "hat,macht,wird"
+        },
+        {
+          "text": "Kannst du mir bitte ____ Salz geben?",
+          "translation": "das",
+          "category": "sentence_completion_articles_de",
+          "distractors": "ein,einen,dem"
+        },
+        {
+          "text": "Morgen ____ ich meine Freunde.",
+          "translation": "treffe",
+          "category": "sentence_completion_verbs_future_present_de",
+          "distractors": "traf,getroffen,trefft"
+        },
+        {
+          "text": "Das ist ____ teuer für mich.",
+          "translation": "zu",
+          "category": "sentence_completion_adverbs_degree_de",
+          "distractors": "sehr,etwas,nicht"
+        },
+        {
+          "text": "Ich habe ____ Hunger.",
+          "translation": "großen",
+          "category": "sentence_completion_adjective_declension_de",
+          "distractors": "groß,große,großem"
+        },
+        {
+          "text": "Wo ____ du?",
+          "translation": "wohnst",
+          "category": "sentence_completion_questions_verbs_de",
+          "distractors": "wohne,wohnt,wohnen"
+        }
+      ]
+    },
+    {
+      "id": 203,
+      "name": "Spanish Sentences: Fill the Gaps Vol. 1",
+      "description": "Practica completar frases en español rellenando los espacios en blanco.",
+      "language_code": "es",
+      "words": [
+        {
+          "text": "El gato está ____ la mesa.",
+          "translation": "sobre",
+          "category": "sentence_completion_prepositions_es",
+          "distractors": "debajo,en,con"
+        },
+        {
+          "text": "Ayer ____ al cine con mis amigos.",
+          "translation": "fui",
+          "category": "sentence_completion_verbs_past_es",
+          "distractors": "voy,iré,iba"
+        },
+        {
+          "text": "Me ____ mucho la música clásica.",
+          "translation": "gusta",
+          "category": "sentence_completion_verbs_gustar_es",
+          "distractors": "gustan,encanta,odio"
+        },
+        {
+          "text": "Mi color favorito es el ____.",
+          "translation": "azul",
+          "category": "sentence_completion_adjectives_colors_es",
+          "distractors": "rojo,grande,feliz"
+        },
+        {
+          "text": "Nosotros ____ estudiantes de español.",
+          "translation": "somos",
+          "category": "sentence_completion_verbs_ser_es",
+          "distractors": "estamos,tenemos,hacemos"
+        },
+        {
+          "text": "Ella ____ un libro muy interesante.",
+          "translation": "lee",
+          "category": "sentence_completion_verbs_present_es",
+          "distractors": "escribe,come,bebe"
+        },
+        {
+          "text": "¿Qué hora ____?",
+          "translation": "es",
+          "category": "sentence_completion_questions_time_es",
+          "distractors": "son,está,tienes"
+        },
+        {
+          "text": "Mañana ____ a la playa.",
+          "translation": "iremos",
+          "category": "sentence_completion_verbs_future_es",
+          "distractors": "vamos,fuimos,ibamos"
+        },
+        {
+          "text": "Este coche es ____ rápido que el tuyo.",
+          "translation": "más",
+          "category": "sentence_completion_comparatives_es",
+          "distractors": "menos,tan,muy"
+        },
+        {
+          "text": "Necesito ____ agua, por favor.",
+          "translation": "un poco de",
+          "category": "sentence_completion_quantifiers_es",
+          "distractors": "mucho,nada de,demasiada"
+        },
+        {
+          "text": "¿____ años tienes?",
+          "translation": "Cuántos",
+          "category": "sentence_completion_questions_quantity_es",
+          "distractors": "Cómo,Dónde,Cuándo"
+        }
+      ]
+    },
+    {
+      "id": 204,
+      "name": "French Sentences: Fill the Gaps Vol. 1",
+      "description": "Entraînez-vous à compléter des phrases en français en remplissant les blancs.",
+      "language_code": "fr",
+      "words": [
+        {
+          "text": "Le chat dort sur le ____.",
+          "translation": "lit",
+          "category": "sentence_completion_nouns_furniture_fr",
+          "distractors": "table,chaise,tapis"
+        },
+        {
+          "text": "Elle ____ allée à la boulangerie ce matin.",
+          "translation": "est",
+          "category": "sentence_completion_verbs_passe_compose_fr",
+          "distractors": "a,va,était"
+        },
+        {
+          "text": "J'____ beaucoup le chocolat.",
+          "translation": "aime",
+          "category": "sentence_completion_verbs_preferences_fr",
+          "distractors": "adore,déteste,mange"
+        },
+        {
+          "text": "Il fait ____ aujourd'hui.",
+          "translation": "beau",
+          "category": "sentence_completion_adjectives_weather_fr",
+          "distractors": "froid,chaud,grand"
+        },
+        {
+          "text": "Nous allons ____ parc cet après-midi.",
+          "translation": "au",
+          "category": "sentence_completion_prepositions_places_fr",
+          "distractors": "dans le,sur le,à la"
+        },
+        {
+          "text": "Tu ____ un bon élève.",
+          "translation": "es",
+          "category": "sentence_completion_verbs_etre_fr",
+          "distractors": "as,vas,fais"
+        },
+        {
+          "text": "Mon frère ____ plus grand que moi.",
+          "translation": "est",
+          "category": "sentence_completion_comparatives_fr",
+          "distractors": "a,fait,va"
+        },
+        {
+          "text": "Je voudrais ____ croissant, s'il vous plaît.",
+          "translation": "un",
+          "category": "sentence_completion_articles_fr",
+          "distractors": "le,du,des"
+        },
+        {
+          "text": "Où ____-tu?",
+          "translation": "habites",
+          "category": "sentence_completion_questions_verbs_fr",
+          "distractors": "habite,habitons,habitent"
+        },
+        {
+          "text": "Elle ____ les cheveux blonds.",
+          "translation": "a",
+          "category": "sentence_completion_verbs_avoir_fr",
+          "distractors": "est,fait,va"
+        },
+        {
+          "text": "C'est une ____ idée!",
+          "translation": "bonne",
+          "category": "sentence_completion_adjectives_feminine_fr",
+          "distractors": "bon,bien,meilleur"
+        }
+      ]
+    },
+    {
+      "id": 205,
+      "name": "Polish Sentences: Fill the Gaps Vol. 1",
+      "description": "Ćwicz uzupełnianie polskich zdań poprzez wypełnianie luk.",
+      "language_code": "pl",
+      "words": [
+        {
+          "text": "Kot śpi na ____.",
+          "translation": "łóżku",
+          "category": "sentence_completion_nouns_places_pl",
+          "distractors": "stole,krześle,podłodze"
+        },
+        {
+          "text": "Ona ____ wczoraj do sklepu.",
+          "translation": "poszła",
+          "category": "sentence_completion_verbs_past_pl",
+          "distractors": "idzie,pójdzie,była"
+        },
+        {
+          "text": "____ mi się ten film.",
+          "translation": "Podobał",
+          "category": "sentence_completion_verbs_opinions_pl",
+          "distractors": "Smakował,Chciał,Musiał"
+        },
+        {
+          "text": "Dzisiaj jest ____ pogoda.",
+          "translation": "ładna",
+          "category": "sentence_completion_adjectives_weather_pl",
+          "distractors": "zimna,nowa,szybka"
+        },
+        {
+          "text": "Idziemy ____ parku na spacer.",
+          "translation": "do",
+          "category": "sentence_completion_prepositions_pl",
+          "distractors": "na,w,przy"
+        },
+        {
+          "text": "On ____ książkę.",
+          "translation": "czyta",
+          "category": "sentence_completion_verbs_present_pl",
+          "distractors": "pisze,ogląda,słucha"
+        },
+        {
+          "text": "To ____ mój najlepszy przyjaciel.",
+          "translation": "jest",
+          "category": "sentence_completion_verbs_be_pl",
+          "distractors": "był,będzie,ma"
+        },
+        {
+          "text": "Mam ____ siostry.",
+          "translation": "dwie",
+          "category": "sentence_completion_numerals_pl",
+          "distractors": "dwa,dwoje,drugi"
+        },
+        {
+          "text": "Czy możesz mi ____?",
+          "translation": "pomóc",
+          "category": "sentence_completion_verbs_requests_pl",
+          "distractors": "powiedzieć,dać,zobaczyć"
+        },
+        {
+          "text": "Lubię ____ kawę rano.",
+          "translation": "pić",
+          "category": "sentence_completion_verbs_infinitives_pl",
+          "distractors": "jeść,spać,czytać"
+        },
+        {
+          "text": "Gdzie ____ twoje klucze?",
+          "translation": "są",
+          "category": "sentence_completion_questions_location_pl",
+          "distractors": "jest,były,będą"
+        }
+      ]
+    },
+    {
+      "id": 206,
+      "name": "Italian Sentences: Fill the Gaps Vol. 1",
+      "description": "Esercitati a completare frasi in italiano riempiendo gli spazi vuoti.",
+      "language_code": "it",
+      "words": [
+        {
+          "text": "Il gatto dorme ____ divano.",
+          "translation": "sul",
+          "category": "sentence_completion_prepositions_it",
+          "distractors": "sotto il,nel,con il"
+        },
+        {
+          "text": "Ieri Maria ____ andata al mercato.",
+          "translation": "è",
+          "category": "sentence_completion_verbs_passato_prossimo_it",
+          "distractors": "ha,era,fu"
+        },
+        {
+          "text": "Mi ____ la pizza margherita.",
+          "translation": "piace",
+          "category": "sentence_completion_verbs_piacere_it",
+          "distractors": "piacciono,amo,adoro"
+        },
+        {
+          "text": "Oggi il tempo è ____.",
+          "translation": "bello",
+          "category": "sentence_completion_adjectives_weather_it",
+          "distractors": "brutto,freddo,nuovo"
+        },
+        {
+          "text": "Noi ____ al cinema stasera.",
+          "translation": "andiamo",
+          "category": "sentence_completion_verbs_present_it",
+          "distractors": "siamo,facciamo,vediamo"
+        },
+        {
+          "text": "Questo libro ____ molto interessante.",
+          "translation": "è",
+          "category": "sentence_completion_verbs_essere_it",
+          "distractors": "ha,fa,sta"
+        },
+        {
+          "text": "Vorrei un caffè, ____.",
+          "translation": "per favore",
+          "category": "sentence_completion_phrases_politeness_it",
+          "distractors": "grazie,scusa,prego"
+        },
+        {
+          "text": "Loro ____ una casa grande.",
+          "translation": "hanno",
+          "category": "sentence_completion_verbs_avere_it",
+          "distractors": "sono,fanno,vanno"
+        },
+        {
+          "text": "Che cosa ____ stasera?",
+          "translation": "fai",
+          "category": "sentence_completion_questions_verbs_it",
+          "distractors": "faccio,fa,facciamo"
+        },
+        {
+          "text": "La mia macchina è ____.",
+          "translation": "rossa",
+          "category": "sentence_completion_adjectives_colors_it",
+          "distractors": "rosso,rosse,rossi"
+        },
+        {
+          "text": "Parlo italiano ____ bene.",
+          "translation": "abbastanza",
+          "category": "sentence_completion_adverbs_degree_it",
+          "distractors": "molto,poco,troppo"
+        }
+      ]
+    }
+  ]
+}
