@@ -1,0 +1,11 @@
+<!-- res/drawable/ic_achievement_points_1000.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#FF8F00"> <!-- Ciemniejszy złoty/żółty -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM12,17.5c-0.97,0 -1.75,-0.78 -1.75,-1.75V14h-1.5v1.75c0,1.79 1.46,3.25 3.25,3.25s3.25,-1.46 3.25,-3.25V14h-1.5v1.75C13.75,16.72 12.97,17.5 12,17.5zM12,12.5c-1.38,0 -2.5,-1.12 -2.5,-2.5S10.62,7.5 12,7.5s2.5,1.12 2.5,2.5S13.38,12.5 12,12.5z"/>
+</vector>

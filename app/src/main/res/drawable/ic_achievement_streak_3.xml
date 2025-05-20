@@ -1,0 +1,11 @@
+<!-- res/drawable/ic_achievement_streak_3.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24.0"
+    android:viewportHeight="24.0"
+    android:tint="#FFA726"> <!-- Pomarańczowy kolor płomienia -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M13.5,0.67s0.74,2.65 0.74,4.8c0,2.06 -1.35,3.73 -3.41,3.73 -2.07,0 -3.63,-1.67 -3.63,-3.73l0,-4.8C7.19,0.67 13.5,0.67 13.5,0.67zM10.75,12.25c0,0.76 0.23,1.46 0.61,2.05L6,19h12l-5.36,-4.7c0.38,-0.59 0.61,-1.29 0.61,-2.05C13.25,10.25 12.5,8.75 10.75,8.75S8.25,10.25 8.25,12.25L10.75,12.25z"/>
+</vector>

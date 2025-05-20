@@ -191,35 +191,62 @@ public class GamificationRepository {
             return;
         }
 
-        final String streakAchievementId = "streak_3_days"; // Upewnij się, że masz to ID w Firestore achievements
-
-        firebaseSource.getUserUnlockedAchievements(userId, (unlockedList, e) -> {
-            if (e != null) {
-                Log.e(TAG, "Error fetching unlocked achievements for specific check. User: " + userId, e);
+        // Pobierz WSZYSTKIE definicje osiągnięć, aby dynamicznie sprawdzać warunki
+        firebaseSource.getAllAchievementDefinitions((allDefinitions, defError) -> {
+            if (defError != null || allDefinitions == null || allDefinitions.isEmpty()) {
+                Log.e(TAG, "Could not fetch achievement definitions to check specific achievements.", defError);
                 return;
             }
 
-            // Sprawdź osiągnięcie za serię
-            if (userProfile.getCurrentStreak() >= 3 && !isAlreadyUnlocked(unlockedList, streakAchievementId)) {
-                Log.i(TAG, "User " + userId + " eligible for achievement: " + streakAchievementId + " (Streak: " + userProfile.getCurrentStreak() + ")");
-                firebaseSource.markAchievementAsUnlocked(userId, streakAchievementId, (success, error) -> {
-                    if (success) {
-                        Log.i(TAG, "Achievement " + streakAchievementId + " unlocked for user " + userId + " via GamificationRepository.");
-                        if (appContext != null) {
-                            Toast.makeText(appContext, "Osiągnięcie: Seria 3 dni!", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Log.e(TAG, "Failed to unlock " + streakAchievementId + " for user " + userId, error);
-                    }
-                });
-            }
+            // Pobierz już odblokowane osiągnięcia użytkownika
+            firebaseSource.getUserUnlockedAchievements(userId, (unlockedList, unlError) -> {
+                if (unlError != null) {
+                    Log.e(TAG, "Error fetching unlocked achievements for specific check. User: " + userId, unlError);
+                    return;
+                }
 
-            // Możesz dodać tutaj logikę dla innych specyficznych osiągnięć,
-            // np. za zdobycie X punktów, jeśli punkty są w UserProfile
-            // final String pointsAchievementId = "points_1000";
-            // if (userProfile.getPoints() >= 1000 && !isAlreadyUnlocked(unlockedList, pointsAchievementId)) {
-            //    firebaseSource.markAchievementAsUnlocked(userId, pointsAchievementId, (success, error) -> { ... });
-            // }
+                for (Achievement achievementDef : allDefinitions) {
+                    if (!isAlreadyUnlocked(unlockedList, achievementDef.getId())) {
+                        boolean shouldUnlockThis = false;
+                        String achievementIdToUnlock = achievementDef.getId();
+
+                        // Sprawdzanie warunków na podstawie triggerType
+                        switch (achievementDef.getTriggerType()) {
+                            case "STREAK_DAYS":
+                                if (achievementDef.getTriggerValue() instanceof Number) {
+                                    int requiredStreak = ((Number) achievementDef.getTriggerValue()).intValue();
+                                    if (userProfile.getCurrentStreak() >= requiredStreak) {
+                                        shouldUnlockThis = true;
+                                    }
+                                }
+                                break;
+                            case "POINTS_COLLECTED":
+                                if (achievementDef.getTriggerValue() instanceof Number) {
+                                    int requiredPoints = ((Number) achievementDef.getTriggerValue()).intValue();
+                                    if (userProfile.getPoints() >= requiredPoints) {
+                                        shouldUnlockThis = true;
+                                    }
+                                }
+                                break;
+                            // Możesz dodać inne specyficzne typy triggerów obsługiwane tutaj
+                        }
+
+                        if (shouldUnlockThis) {
+                            Log.i(TAG, "User " + userId + " eligible for achievement: " + achievementDef.getName() + " (ID: " + achievementIdToUnlock + ")");
+                            firebaseSource.markAchievementAsUnlocked(userId, achievementIdToUnlock, (success, error) -> {
+                                if (success) {
+                                    Log.i(TAG, "Achievement '" + achievementDef.getName() + "' unlocked for user " + userId);
+                                    if (appContext != null) {
+                                        Toast.makeText(appContext, "Osiągnięcie: " + achievementDef.getName() + "!", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Log.e(TAG, "Failed to unlock '" + achievementDef.getName() + "' for user " + userId, error);
+                                }
+                            });
+                        }
+                    }
+                }
+            });
         });
     }
 

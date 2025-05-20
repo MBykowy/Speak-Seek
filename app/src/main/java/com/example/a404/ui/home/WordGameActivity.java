@@ -10,16 +10,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull; // Upewnij się, że jest, jeśli UserRepository.UserOperationCallback tego wymaga
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.example.a404.R;
 import com.example.a404.data.dao.CourseDao;
+import com.example.a404.data.dao.WordDao; // Dodaj import dla WordDao
 import com.example.a404.data.model.Course;
 import com.example.a404.data.model.UserProfile;
 import com.example.a404.data.model.Word;
 import com.example.a404.data.model.WordDbHelper;
+import com.example.a404.data.repository.GamificationRepository; // <<< DODAJ IMPORT
 import com.example.a404.data.repository.UserRepository;
 import com.example.a404.data.source.FirebaseSource;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,14 +42,17 @@ public class WordGameActivity extends AppCompatActivity {
     private static final String TAG = "WordGameActivity";
     private List<Word> words = new ArrayList<>();
     private int currentIndex = 0;
-    private int currentScore = 0;
+    private int currentSessionScore = 0; // Zmieniono nazwę z currentScore
     private TextView wordTextView;
     private TextView scoreTextView;
-    private Button[] optionButtons = new Button[4];
+    private Button[] optionButtons = new Button[NUMBER_OF_OPTIONS]; // Użyj stałej
     private ProgressBar loadingProgressBar;
     private CourseDao courseDao;
     private WordDbHelper dbHelper;
+
+    private FirebaseSource firebaseSource;      // <<< DODAJ POLE
     private UserRepository userRepository;
+    private GamificationRepository gamificationRepository; // <<< DODAJ POLE
     private String currentUserId;
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -73,70 +79,46 @@ public class WordGameActivity extends AppCompatActivity {
         optionButtons[3] = findViewById(R.id.option4);
 
         dbHelper = new WordDbHelper(this);
-        courseDao = new CourseDao(dbHelper); // CourseDao również potrzebuje dbHelper
+        courseDao = new CourseDao(dbHelper);
 
-        FirebaseSource firebaseSource = new FirebaseSource();
+        firebaseSource = new FirebaseSource(); // Inicjalizacja
         userRepository = new UserRepository(firebaseSource);
+        gamificationRepository = new GamificationRepository(firebaseSource, getApplicationContext()); // Inicjalizacja
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
             currentUserId = firebaseUser.getUid();
-            fetchInitialUserScore();
+            // fetchInitialUserScore(); // Można pominąć
         } else {
             Toast.makeText(this, "Błąd: Użytkownik niezalogowany.", Toast.LENGTH_LONG).show();
+            Log.e(TAG, "User not logged in. Finishing activity.");
             finish();
             return;
         }
 
-        updateScoreDisplay();
+        updateScoreDisplay(); // Pokaż początkowy wynik sesji (0)
 
         long courseId = getIntent().getLongExtra("COURSE_ID", -1);
         if (courseId != -1) {
-            Log.d(TAG, "Otrzymano COURSE_ID: " + courseId);
-            if (wordTextView != null) {
-                wordTextView.setText(""); // Wyczyść tekst na początku
-            }
-            for (Button btn : optionButtons) {
-                if (btn != null) {
-                    btn.setVisibility(View.INVISIBLE); // Ukryj przyciski na początku
-                }
-            }
-            if (loadingProgressBar != null) {
-                loadingProgressBar.setVisibility(View.VISIBLE); // Pokaż pasek ładowania
-            }
+            // ... (reszta logiki ładowania)
+            if (wordTextView != null) wordTextView.setText("");
+            for (Button btn : optionButtons) if (btn != null) btn.setVisibility(View.INVISIBLE);
+            if (loadingProgressBar != null) loadingProgressBar.setVisibility(View.VISIBLE);
             loadWordsForCourseAsync(courseId);
         } else {
-            Log.e(TAG, "Nieprawidłowy COURSE_ID (-1)");
-            Toast.makeText(this, "Błąd: Nieprawidłowy ID kursu.", Toast.LENGTH_LONG).show();
-            finish();
+            // ... (obsługa błędu)
         }
     }
 
     private void updateScoreDisplay() {
         if (scoreTextView != null) {
-            scoreTextView.setText("Punkty: " + currentScore);
+            scoreTextView.setText("Punkty sesji: " + currentSessionScore); // Zmieniono etykietę
         }
     }
 
-    private void fetchInitialUserScore() {
-        if (currentUserId == null || userRepository == null) return;
+    // fetchInitialUserScore() jest opcjonalne, jeśli nie wyświetlasz całkowitych punktów na bieżąco
+    // private void fetchInitialUserScore() { ... }
 
-        LiveData<UserProfile> userProfileLiveData = userRepository.getUserProfile(currentUserId);
-        userProfileLiveData.observe(this, new Observer<UserProfile>() {
-            @Override
-            public void onChanged(UserProfile userProfile) {
-                if (userProfile != null) {
-                    // Możesz chcieć zaktualizować currentScore o punkty użytkownika,
-                    // jeśli gra ma kontynuować poprzedni wynik,
-                    // ale dla nowej sesji gry zwykle zaczyna się od 0.
-                    // currentScore = userProfile.getPoints();
-                    // updateScoreDisplay();
-                    Log.d(TAG, "Początkowe punkty użytkownika (nieużywane w sesji gry): " + userProfile.getPoints());
-                }
-                userProfileLiveData.removeObserver(this); // Usuń obserwatora po pierwszym odczycie
-            }
-        });
-    }
 
     private void loadWordsForCourseAsync(long courseId) {
         Log.d(TAG, "Rozpoczynanie asynchronicznego ładowania słów dla kursu: " + courseId);
@@ -146,26 +128,21 @@ public class WordGameActivity extends AppCompatActivity {
         }
         executorService.execute(() -> {
             final List<Word> loadedWords = getWordsForCourseFromDb(courseId);
-            Log.d(TAG, "Wątek tła: Załadowano " + (loadedWords != null ? loadedWords.size() : 0) + " słów.");
             mainThreadHandler.post(() -> {
                 if (loadingProgressBar != null) {
                     loadingProgressBar.setIndeterminate(false);
-                    loadingProgressBar.setVisibility(View.GONE); // Ukryj po załadowaniu
+                    loadingProgressBar.setVisibility(View.GONE);
                 }
                 if (loadedWords != null && !loadedWords.isEmpty()) {
                     words = loadedWords;
-                    Collections.shuffle(words); // Pomieszaj słowa na początku kursu
+                    Collections.shuffle(words);
                     currentIndex = 0;
-                    currentScore = 0; // Resetuj wynik dla nowej gry
+                    currentSessionScore = 0; // Resetuj wynik dla nowej gry
                     updateScoreDisplay();
                     showNextWord();
-                    for (Button btn : optionButtons) {
-                        if (btn != null) {
-                            btn.setVisibility(View.VISIBLE); // Pokaż przyciski po załadowaniu słów
-                        }
-                    }
+                    for (Button btn : optionButtons) if (btn != null) btn.setVisibility(View.VISIBLE);
                 } else {
-                    Log.e(TAG, "Nie załadowano słów lub lista jest pusta.");
+                    Log.e(TAG, "Nie załadowano słów lub lista jest pusta dla kursu ID: " + courseId);
                     Toast.makeText(WordGameActivity.this, "Nie udało się załadować słów dla tego kursu.", Toast.LENGTH_LONG).show();
                     finish();
                 }
@@ -175,35 +152,15 @@ public class WordGameActivity extends AppCompatActivity {
 
     private List<Word> getWordsForCourseFromDb(long courseId) {
         Log.d(TAG, "Pobieranie słów z DB dla kursu: " + courseId);
-        // CourseDao jest używany do pobierania informacji o kursie,
-        // ale słowa są pobierane przez WordDao.
-        // Zakładając, że CourseDao.getCourseById(courseId) zwraca obiekt Course,
-        // który zawiera listę słów (być może pobranych przez WordDao wewnątrz CourseDao).
-        // Jeśli CourseDao nie ładuje słów, musisz użyć WordDao bezpośrednio.
-
-        // Poprawka: Użyj WordDao do pobrania słów bezpośrednio, jeśli CourseDao tego nie robi.
-        // Dla uproszczenia, zakładam, że CourseDao.getCourseById() zwraca kurs ZE słowami.
-        // Jeśli nie, musisz to zmienić:
-        // WordDao wordDao = new WordDao(dbHelper);
-        // List<Word> courseWords = wordDao.getWordsByCourseId(courseId);
-        // wordDao.close(); // Pamiętaj o zamknięciu DAO
-        // return courseWords;
-
-        Course course = courseDao.getCourseById(courseId); // Ta metoda powinna ładować słowa do obiektu Course
-        if (course != null && course.getWords() != null && !course.getWords().isEmpty()) {
-            Log.d(TAG, "Znaleziono kurs i słowa. Liczba słów: " + course.getWords().size());
-            return course.getWords();
-        }
-        Log.w(TAG, "Nie znaleziono kursu lub kurs nie ma słów dla ID: " + courseId + ". Próba pobrania przez WordDao.");
-        // Fallback, jeśli CourseDao nie załadował słów
-        com.example.a404.data.dao.WordDao wordDao = new com.example.a404.data.dao.WordDao(dbHelper);
+        WordDao wordDao = new WordDao(dbHelper); // Użyj WordDao
         List<Word> courseWords = wordDao.getWordsByCourseId(courseId);
-        wordDao.close(); // Zamknij WordDao po użyciu
-        if (!courseWords.isEmpty()) {
+        // wordDao.close(); // DAO powinno być zarządzane przez helper lub nie zamykane tutaj, jeśli dbHelper jest singletonem
+        // Jeśli dbHelper nie jest singletonem, a WordDao otwiera i zamyka połączenie, to jest OK.
+        // Bezpieczniej jest nie zamykać tutaj, chyba że wiesz dokładnie, jak działa WordDao.
+        if (courseWords != null && !courseWords.isEmpty()) {
             Log.d(TAG, "Pobrano słowa przez WordDao. Liczba słów: " + courseWords.size());
             return courseWords;
         }
-
         Log.w(TAG, "Ostatecznie nie znaleziono słów dla kursu ID: " + courseId);
         return new ArrayList<>();
     }
@@ -212,101 +169,129 @@ public class WordGameActivity extends AppCompatActivity {
     private void showNextWord() {
         if (words == null || words.isEmpty()) {
             Log.e(TAG, "showNextWord: lista słów jest null lub pusta.");
-            Toast.makeText(this, "Brak słów do wyświetlenia.", Toast.LENGTH_LONG).show();
-            updateUserScoreInFirebase(currentScore); // Zapisz wynik nawet jeśli nie ma słów (choć to dziwny przypadek)
-            finish();
+            // finalizeScoreAndCheckAchievements(currentSessionScore); // Można wywołać, jeśli coś zdobyto
+            if (!isFinishing()) finish();
             return;
         }
 
         if (currentIndex >= words.size()) {
-            Log.d(TAG, "Kurs ukończony. Punkty przed bonusem: " + currentScore);
-            currentScore += POINTS_COURSE_COMPLETION;
+            Log.d(TAG, "Kurs ukończony. Punkty sesji przed bonusem: " + currentSessionScore);
+            currentSessionScore += POINTS_COURSE_COMPLETION;
             updateScoreDisplay();
-            Toast.makeText(this, "Kurs Ukończony! Zdobyłeś " + currentScore + " pkt w tej sesji.", Toast.LENGTH_LONG).show();
-            Log.d(TAG, "Dodano punkty za ukończenie. Łączne punkty sesji: " + currentScore);
-            updateUserScoreInFirebase(currentScore);
-            finish();
+            Toast.makeText(this, "Kurs Ukończony! Zdobyłeś " + currentSessionScore + " pkt w tej sesji.", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "Dodano punkty za ukończenie. Łączne punkty sesji: " + currentSessionScore);
+            finalizeScoreAndCheckAchievements(currentSessionScore); // <<< ZMIENIONO WYWOŁANIE
             return;
         }
 
         updateScoreDisplay();
-
         Word currentWord = words.get(currentIndex);
-        Log.d(TAG, "Wyświetlanie słowa: " + currentWord.getText() + " (index: " + currentIndex + "), Kategoria: " + currentWord.getCategory());
+        // ... (reszta logiki showNextWord - wyświetlanie słowa, opcji, progress bar) ...
         if (wordTextView != null) {
-            // Zmiana formatu pytania, jeśli słowo zawiera placeholder "___"
             if (currentWord.getText() != null && currentWord.getText().contains("___")) {
                 wordTextView.setText(currentWord.getText().replace("___", " _____ "));
             } else {
                 wordTextView.setText("Co to znaczy: " + currentWord.getText());
             }
         }
-
         List<String> options = getRandomOptions(currentWord);
         for (int i = 0; i < optionButtons.length; i++) {
             if (optionButtons[i] != null) {
+                optionButtons[i].setEnabled(true);
                 if (i < options.size()) {
-                    optionButtons[i].setText(options.get(i));
-                    int finalI = i;
+                    final String selectedOption = options.get(i);
+                    optionButtons[i].setText(selectedOption);
                     optionButtons[i].setOnClickListener(v -> {
-                        // Sprawdź, czy kliknięta opcja to poprawne tłumaczenie
-                        handleAnswer(options.get(finalI).equals(currentWord.getTranslation()));
+                        for (Button btn : optionButtons) btn.setEnabled(false);
+                        handleAnswer(selectedOption.equals(currentWord.getTranslation()));
                     });
-                    optionButtons[i].setEnabled(true);
+                    optionButtons[i].setVisibility(View.VISIBLE);
                 } else {
-                    optionButtons[i].setText(""); // Wyczyść tekst, jeśli mniej niż 4 opcje
-                    optionButtons[i].setEnabled(false);
+                    optionButtons[i].setVisibility(View.GONE);
                 }
             }
         }
         int progress = (int) (((float) (currentIndex + 1) / words.size()) * 100);
         if (loadingProgressBar != null) {
             loadingProgressBar.setProgress(progress);
-            loadingProgressBar.setVisibility(View.VISIBLE); // Upewnij się, że jest widoczny jako pasek postępu
-            loadingProgressBar.setIndeterminate(false); // Nie jest już nieokreślony
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            loadingProgressBar.setIndeterminate(false);
         }
     }
 
     private void handleAnswer(boolean isCorrect) {
         if (isCorrect) {
-            Log.d(TAG, "Odpowiedź poprawna.");
-            currentScore += POINTS_CORRECT_ANSWER;
+            currentSessionScore += POINTS_CORRECT_ANSWER;
             Toast.makeText(this, "Dobrze! +" + POINTS_CORRECT_ANSWER + " pkt", Toast.LENGTH_SHORT).show();
-            currentIndex++;
-            showNextWord();
         } else {
-            Log.d(TAG, "Odpowiedź niepoprawna.");
-            currentScore += POINTS_WRONG_ANSWER;
+            currentSessionScore += POINTS_WRONG_ANSWER;
             Toast.makeText(this, "Źle! " + POINTS_WRONG_ANSWER + " pkt", Toast.LENGTH_SHORT).show();
-            // Użytkownik pozostaje na tym samym pytaniu lub przechodzi dalej - tutaj przechodzi dalej
-            // currentIndex++;
-            // showNextWord();
-            // Jeśli chcesz, aby użytkownik pozostał na tym samym pytaniu, usuń powyższe dwie linie
-            // i ewentualnie zablokuj przyciski na chwilę lub zmień ich kolor.
         }
         updateScoreDisplay();
-        Log.d(TAG, "Aktualne punkty sesji: " + currentScore);
+        Log.d(TAG, "Aktualne punkty sesji: " + currentSessionScore);
+        currentIndex++;
+
+        new Handler(Looper.getMainLooper()).postDelayed(this::showNextWord, 300);
     }
 
-    private void updateUserScoreInFirebase(int pointsToAdd) {
-        if (currentUserId == null || userRepository == null || pointsToAdd == 0) {
-            Log.d(TAG, "updateUserScoreInFirebase: Nie ma potrzeby aktualizacji lub brak danych użytkownika/repo.");
+    // Zmieniono nazwę metody i dodano logikę sprawdzania osiągnięć
+    private void finalizeScoreAndCheckAchievements(int pointsToAddThisSession) {
+        if (currentUserId == null || userRepository == null) {
+            Log.e(TAG, "finalizeScore: currentUserId lub userRepository jest null. Cannot update score.");
+            if (currentIndex >= words.size() && !isFinishing()) finish();
             return;
         }
-        Log.d(TAG, "Aktualizowanie punktów użytkownika w Firebase o: " + pointsToAdd);
-        userRepository.updatePoints(currentUserId, pointsToAdd);
+        // Jeśli nie ma punktów do dodania, a gra się zakończyła, po prostu zakończ.
+        if (pointsToAddThisSession == 0 && currentIndex >= words.size()) {
+            Log.d(TAG, "No points to add from session, game finished.");
+            if (!isFinishing()) finish();
+            return;
+        }
+        // Jeśli nie ma punktów do dodania, ale gra trwa (co nie powinno się zdarzyć przy wywołaniu tej metody)
+        if (pointsToAddThisSession == 0) {
+            Log.d(TAG, "No points to add from session, but game not formally finished by reaching end of words.");
+            return; // Nie rób nic, jeśli nie ma punktów do zapisania, a gra nie doszła do końca
+        }
+
+        Log.d(TAG, "Finalizowanie wyniku. Aktualizowanie punktów użytkownika ("+currentUserId+") w Firebase o: " + pointsToAddThisSession);
+        userRepository.updatePoints(currentUserId, pointsToAddThisSession, (success, e) -> {
+            if (success) {
+                Log.i(TAG, "Punkty użytkownika pomyślnie zaktualizowane w Firebase.");
+                // Po pomyślnej aktualizacji punktów, pobierz zaktualizowany profil i sprawdź osiągnięcia
+                firebaseSource.getUserProfile(currentUserId, (updatedProfile, profileError) -> {
+                    if (profileError == null && updatedProfile != null) {
+                        Log.d(TAG, "Pobrano zaktualizowany profil, punkty: " + updatedProfile.getPoints() + ", seria: " + updatedProfile.getCurrentStreak());
+                        // === WYWOŁANIE SPRAWDZANIA OSIĄGNIĘĆ ===
+                        gamificationRepository.checkAndUnlockSpecificAchievements(currentUserId, updatedProfile);
+                    } else {
+                        Log.e(TAG, "Błąd pobierania zaktualizowanego profilu po aktualizacji punktów.", profileError);
+                    }
+                    // Zakończ aktywność, jeśli gra została formalnie ukończona (wszystkie słowa przerobione)
+                    if (currentIndex >= words.size() && !isFinishing()) {
+                        Log.d(TAG, "Gra ukończona, zamykanie WordGameActivity.");
+                        finish();
+                    }
+                });
+            } else {
+                Toast.makeText(WordGameActivity.this, "Błąd zapisu punktów.", Toast.LENGTH_SHORT).show();
+                if (currentIndex >= words.size() && !isFinishing()) {
+                    Log.d(TAG, "Gra ukończona (z błędem zapisu punktów), zamykanie WordGameActivity.");
+                    finish();
+                }
+            }
+        });
     }
 
     private List<String> getRandomOptions(Word correctWord) {
+        // ... (kod tej metody bez zmian z poprzedniej wersji) ...
         List<String> options = new ArrayList<>();
         if (correctWord == null || correctWord.getTranslation() == null) {
             Log.e(TAG, "getRandomOptions: correctWord lub jego tłumaczenie jest null");
-            for (int i = 0; i < NUMBER_OF_OPTIONS; i++) options.add("Błąd opcji " + (i + 1));
+            for (int i = 0; i < NUMBER_OF_OPTIONS; i++) options.add("Opcja " + (i + 1));
             return options;
         }
         options.add(correctWord.getTranslation());
 
-        // 1. Użyj predefiniowanych dystraktorów, jeśli są dostępne
         List<String> predefined = correctWord.getPredefinedDistractorsList();
         if (predefined != null && !predefined.isEmpty()) {
             for (String distractor : predefined) {
@@ -314,17 +299,12 @@ public class WordGameActivity extends AppCompatActivity {
                     options.add(distractor);
                 }
             }
-            Collections.shuffle(options); // Wmieszaj predefiniowane z poprawną odpowiedzią
-            Log.d(TAG, "Użyto predefiniowanych dystraktorów: " + options);
-            // Jeśli mamy już wystarczająco opcji, zwróć je
             if (options.size() == NUMBER_OF_OPTIONS) {
-                Collections.shuffle(options); // Upewnij się, że poprawna odpowiedź jest wmieszana
+                Collections.shuffle(options);
                 return options;
             }
         }
 
-
-        // 2. Spróbuj znaleźć dystraktory z tej samej kategorii
         if (correctWord.getCategory() != null && !correctWord.getCategory().isEmpty() && words != null) {
             List<Word> sameCategoryWords = words.stream()
                     .filter(word -> correctWord.getCategory().equals(word.getCategory()) && !correctWord.equals(word) && !options.contains(word.getTranslation()))
@@ -335,60 +315,41 @@ public class WordGameActivity extends AppCompatActivity {
                     options.add(word.getTranslation());
                 }
             }
-            Log.d(TAG, "Po dodaniu z tej samej kategorii: " + options);
         }
 
-        // 3. Jeśli nadal brakuje opcji, dobierz losowe z całego kursu (inne niż już dodane i poprawna)
         if (words != null) {
             List<Word> tempList = new ArrayList<>(words);
-            tempList.remove(correctWord); // Usuń poprawne słowo, aby go nie wylosować jako dystraktor
+            tempList.remove(correctWord);
             Collections.shuffle(tempList);
-
             for (Word word : tempList) {
                 if (options.size() < NUMBER_OF_OPTIONS && !options.contains(word.getTranslation())) {
                     options.add(word.getTranslation());
                 }
             }
-            Log.d(TAG, "Po dodaniu losowych z kursu: " + options);
         }
 
-
-        // 4. Jeśli nadal brakuje (np. bardzo mały kurs), dodaj opcje zastępcze
         int optionSuffix = 1;
         while (options.size() < NUMBER_OF_OPTIONS) {
             String tempOption = "Opcja " + optionSuffix++;
-            // Upewnij się, że opcja zastępcza nie jest przypadkiem poprawnym tłumaczeniem
-            // lub już istniejącą opcją (mało prawdopodobne, ale dla pewności)
             if (!options.contains(tempOption) && (correctWord.getTranslation() == null || !correctWord.getTranslation().equalsIgnoreCase(tempOption))) {
                 options.add(tempOption);
-            } else if (optionSuffix > 100) { // Zabezpieczenie przed nieskończoną pętlą
-                Log.e(TAG, "Nie można wygenerować unikalnych opcji zastępczych.");
-                break;
-            }
+            } else if (optionSuffix > 100) break;
         }
-        Log.d(TAG, "Po dodaniu opcji zastępczych (jeśli potrzebne): " + options);
-
-
         Collections.shuffle(options);
-        Log.d(TAG, "Wygenerowane ostateczne opcje: " + options.toString());
-        return options.subList(0, Math.min(options.size(), NUMBER_OF_OPTIONS)); // Upewnij się, że zwracamy dokładnie tyle opcji ile trzeba
+        return options.subList(0, Math.min(options.size(), NUMBER_OF_OPTIONS));
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy wywołane");
+        Log.d(TAG, "onDestroy wywołane. Aktywność kończy się: " + isFinishing());
         if (executorService != null && !executorService.isShutdown()) {
+            Log.d(TAG, "Zamykanie executorService.");
             executorService.shutdownNow();
         }
-        if (courseDao != null) {
-            courseDao.close(); // Zamknij CourseDao
-        }
-        if (dbHelper != null) {
-            // dbHelper jest zamykany przez DAO, które go używają,
-            // ale jeśli WordDao nie jest zamykane gdzie indziej, można to zrobić tutaj.
-            // Jednak WordDao jest teraz zamykane w getWordsForCourseFromDb.
-        }
+        // Nie zamykaj DAO tutaj, jeśli dbHelper jest współdzielony lub zarządzany inaczej.
+        // if (courseDao != null) courseDao.close();
+        // dbHelper jest prawdopodobnie zamykany przez DAO.
     }
 }

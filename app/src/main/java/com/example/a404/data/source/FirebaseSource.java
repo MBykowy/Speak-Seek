@@ -332,4 +332,30 @@ public class FirebaseSource {
         Query builtQuery = queryBuilder.apply(baseQuery);
         builtQuery.get().addOnCompleteListener(listener);
     }
+
+    public void updateUserPoints(String userId, int pointsToAdd, FirestoreOperationCallback callback) {
+        if (userId == null || userId.isEmpty()) {
+            if (callback != null) callback.onCallback(false, new IllegalArgumentException("User ID cannot be null or empty."));
+            return;
+        }
+        // Jeśli nie ma punktów do dodania, można od razu zwrócić sukces,
+        // ale dla spójności z innymi operacjami, które mogą mieć efekt uboczny nawet przy 0,
+        // pozwalamy na wywołanie update (Firestore zignoruje increment(0) lub nie zmieni wartości).
+        // if (pointsToAdd == 0 && callback != null) {
+        //    callback.onCallback(true, null);
+        //    return;
+        // }
+
+        Log.d(TAG, "FirebaseSource: Attempting to update points by " + pointsToAdd + " for user: " + userId);
+        db.collection(USERS_COLLECTION).document(userId)
+                .update("points", FieldValue.increment(pointsToAdd)) // Użyj FieldValue.increment
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "FirebaseSource: User points updated successfully by: " + pointsToAdd + " for user: " + userId);
+                    if (callback != null) callback.onCallback(true, null);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "FirebaseSource: Failed to update user points for user: " + userId, e);
+                    if (callback != null) callback.onCallback(false, e);
+                });
+    }
 }
