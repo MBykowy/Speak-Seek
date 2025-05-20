@@ -108,9 +108,7 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
     private void setupRecyclerViews() {
         // Adapter dla kursów/kategorii
         courseAdapter = new CourseAdapter(new ArrayList<>(), this);
-        binding.recyclerCategories.setAdapter(courseAdapter);
-        binding.recyclerCategories.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.recyclerCategories.setHasFixedSize(true);
+
 
         // Adapter dla osiągnięć
         achievementAdapterDashboard = new AchievementsAdapter(getContext(), new ArrayList<>(), new HashSet<>());
@@ -129,12 +127,10 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
             Log.d(TAG_DASH_FRAG, "Recent courses updated in observer. Count: " + (courses != null ? courses.size() : 0));
             if (courses != null) {
                 courseAdapter.updateCourses(courses);
-                binding.textEmptyCategories.setVisibility(courses.isEmpty() ? View.VISIBLE : View.GONE); // <<< POPRAWKA ID
-                binding.recyclerCategories.setVisibility(courses.isEmpty() ? View.GONE : View.VISIBLE);
+
             } else {
                 courseAdapter.updateCourses(new ArrayList<>());
-                binding.textEmptyCategories.setVisibility(View.VISIBLE); // <<< POPRAWKA ID
-                binding.recyclerCategories.setVisibility(View.GONE);
+
             }
         });
 
@@ -180,9 +176,9 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
             Log.d(TAG_DASH_FRAG, "isLoading state changed: " + isLoading);
             binding.progressLoading.setVisibility(isLoading ? View.VISIBLE : View.GONE);
             if (isLoading) {
-                binding.recyclerCategories.setVisibility(View.GONE);
+
                 binding.recyclerAchievements.setVisibility(View.GONE);
-                binding.textEmptyCategories.setVisibility(View.GONE); // <<< POPRAWKA ID
+
                 binding.textNoAchievements.setVisibility(View.GONE);
             }
         });
@@ -195,10 +191,7 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
         binding.buttonViewProfile.setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_navigation_dashboard_to_navigation_profile));
 
-        binding.buttonAllCategories.setOnClickListener(v -> {
-            Log.d(TAG_DASH_FRAG, "Button All Categories clicked");
-            // TODO: Zaimplementuj nawigację do pełnej listy kategorii/kursów
-        });
+
 
         binding.buttonStartReview.setOnClickListener(v -> {
             Log.d(TAG_DASH_FRAG, "Button Start Review clicked");
