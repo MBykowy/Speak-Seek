@@ -14,13 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a404.R;
+import com.example.a404.data.dao.CourseDao;
 import com.example.a404.data.model.Achievement;
 import com.example.a404.data.model.Course;
 import com.example.a404.data.model.UserProfile;
 import com.example.a404.data.model.VocabularyItem;
+import com.example.a404.data.model.WordDbHelper;
 import com.example.a404.data.repository.GamificationRepository;
 import com.example.a404.data.repository.UserRepository;
 import com.example.a404.data.repository.VocabularyRepository;
@@ -49,6 +50,8 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG_DASH_FRAG, "onCreate");
+
+
 
         FirebaseSource firebaseSource = new FirebaseSource();
         UserRepository userRepository = new UserRepository(firebaseSource);
@@ -193,6 +196,10 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
         binding.buttonStartReview.setOnClickListener(v -> {
             Log.d(TAG_DASH_FRAG, "Button Start Review clicked");
             // TODO: Zaimplementuj nawigację do ekranu powtórki
+
+            Intent intent = new Intent(requireContext(), WordGameActivity.class);
+            intent.putExtra("COURSE_ID", 10000);
+            startActivity(intent);
         });
     }
 
@@ -212,13 +219,17 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
     }
 
     private void updateReviewWordsUI(List<VocabularyItem> wordsForReview) {
-        if (wordsForReview != null) {
+
+        WordDbHelper dbHelper = new WordDbHelper(requireContext());
+        CourseDao courseDao = new CourseDao(dbHelper);
+        if (!courseDao.getCourseById(10000).getWords().isEmpty()) {
             int reviewCount = wordsForReview.size();
             binding.textReviewCount.setText(
                     String.format(Locale.getDefault(), "%d słów czeka na powtórkę", reviewCount));
-            binding.buttonStartReview.setEnabled(reviewCount > 0);
+            binding.buttonStartReview.setEnabled(true);
         } else {
             binding.textReviewCount.setText("0 słów czeka na powtórkę");
+
             binding.buttonStartReview.setEnabled(false);
         }
     }

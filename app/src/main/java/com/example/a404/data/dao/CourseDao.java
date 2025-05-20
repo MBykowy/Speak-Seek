@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.a404.data.model.Course;
+import com.example.a404.data.model.Word;
 import com.example.a404.data.model.WordDbHelper;
 
 import java.util.ArrayList;
@@ -43,6 +44,25 @@ public class CourseDao {
                 }
             }
         }
+    }
+
+    public boolean addWordToCourse(long courseId, Word word) {
+        if (database == null || !database.isOpen()) {
+            open();
+            if (database == null || !database.isOpen()) {
+                Log.e(TAG, "Database is not open for writing in addWordsToCourse.");
+                return false;
+            }
+        }
+
+        boolean success = true;
+        WordDao wordDao = new WordDao(dbHelper); // Assuming WordDao takes the same dbHelper
+
+        word.setCourseId(courseId); // Ensure word is linked to the correct course
+        wordDao.insertWord(word);
+
+        wordDao.close();
+        return success;
     }
 
 

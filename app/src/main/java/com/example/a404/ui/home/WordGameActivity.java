@@ -99,6 +99,7 @@ public class WordGameActivity extends AppCompatActivity {
         updateScoreDisplay(); // Pokaż początkowy wynik sesji (0)
 
         long courseId = getIntent().getLongExtra("COURSE_ID", -1);
+        Log.e(TAG, String.valueOf(courseId));
         if (courseId != -1) {
             // ... (reszta logiki ładowania)
             if (wordTextView != null) wordTextView.setText("");
@@ -203,7 +204,7 @@ public class WordGameActivity extends AppCompatActivity {
                     optionButtons[i].setText(selectedOption);
                     optionButtons[i].setOnClickListener(v -> {
                         for (Button btn : optionButtons) btn.setEnabled(false);
-                        handleAnswer(selectedOption.equals(currentWord.getTranslation()));
+                        handleAnswer(selectedOption.equals(currentWord.getTranslation()), currentWord);
                     });
                     optionButtons[i].setVisibility(View.VISIBLE);
                 } else {
@@ -219,20 +220,37 @@ public class WordGameActivity extends AppCompatActivity {
         }
     }
 
-    private void handleAnswer(boolean isCorrect) {
+
+    private void handleAnswer(boolean isCorrect, Word currentWord) {
+        String[] correctResponses = {
+                "Well done!", "Nice job!", "Correct!", "You're right!", "Great work!"
+        };
+        String[] incorrectResponses = {
+                "Oops!", "Not quite.", "Try again.", "Incorrect.", "Better luck next time!"
+        };
+
+        Random random = new Random();
+        String message;
+
         if (isCorrect) {
             currentSessionScore += POINTS_CORRECT_ANSWER;
-            Toast.makeText(this, "Dobrze! +" + POINTS_CORRECT_ANSWER + " pkt", Toast.LENGTH_SHORT).show();
+            message = correctResponses[random.nextInt(correctResponses.length)]
+                    + " +" + POINTS_CORRECT_ANSWER + " pts";
         } else {
             currentSessionScore += POINTS_WRONG_ANSWER;
-            Toast.makeText(this, "Źle! " + POINTS_WRONG_ANSWER + " pkt", Toast.LENGTH_SHORT).show();
+            courseDao.addWordToCourse(10000, currentWord);
+            message = incorrectResponses[random.nextInt(incorrectResponses.length)]
+                    + " " + POINTS_WRONG_ANSWER + " pts";
         }
+
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         updateScoreDisplay();
-        Log.d(TAG, "Aktualne punkty sesji: " + currentSessionScore);
+        Log.d(TAG, "Current session score: " + currentSessionScore);
         currentIndex++;
 
         new Handler(Looper.getMainLooper()).postDelayed(this::showNextWord, 300);
     }
+
 
     // Zmieniono nazwę metody i dodano logikę sprawdzania osiągnięć
     private void finalizeScoreAndCheckAchievements(int pointsToAddThisSession) {
