@@ -58,4 +58,6 @@
         tools:layout="@layout/fragment_profile" />
     <!-- Dodaj te akcje w elemencie fragmentu navigation_dashboard w mobile_navigation.xml -->
 
+
 </navigation>
+

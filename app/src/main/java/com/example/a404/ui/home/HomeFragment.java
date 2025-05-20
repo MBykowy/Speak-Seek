@@ -133,13 +133,30 @@ public class HomeFragment extends Fragment implements CourseAdapter.OnCourseClic
 
     // === IMPLEMENTACJA METOD Z CourseAdapter.OnCourseClickListener ===
     @Override
+
     public void onCourseClicked(Course course) {
         Log.d(TAG, "Course card clicked: " + course.getName() + " with ID: " + course.getId());
-        Intent intent = new Intent(requireContext(), WordGameActivity.class);
-        intent.putExtra("COURSE_ID", course.getId());
-        // Możesz dodać więcej danych, jeśli WordGameActivity ich potrzebuje
-        // intent.putExtra("COURSE_NAME", course.getName());
-        startActivity(intent);
+
+        // Створення AlertDialog
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Wybierz rodzaj gry")
+                .setItems(new CharSequence[]{"Gra słowami", "Gra zdań"}, (dialog, which) -> {
+                    Intent intent;
+                    switch (which) {
+                        case 0: // Гра зі словами
+                            intent = new Intent(requireContext(), WordGameActivity.class);
+                            break;
+                        case 1: // Гра з реченнями
+                            intent = new Intent(requireContext(), SentenceGameActivity.class);
+                            break;
+                        default:
+                            return;
+                    }
+                    intent.putExtra("COURSE_ID", course.getId());
+                    startActivity(intent);
+                })
+                .setNegativeButton("Anulować", null)
+                .show();
     }
 
     @Override

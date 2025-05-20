@@ -87,6 +87,7 @@ public class WordDbHelper extends SQLiteOpenHelper {
         // === French Course (ID 9) ===
         db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Vocabulaire de Base Français', 'Mots français essentiels pour débutants', 'fr')"); // ID 9
 
+        db.execSQL("INSERT INTO " + TABLE_COURSES + " (" + COLUMN_COURSE_NAME + ", " + COLUMN_COURSE_DESCRIPTION + ", " + COLUMN_COURSE_LANGUAGE_CODE + ") VALUES ('Sentence with a gap', 'Choose the correct word that fits the sentence', 'en')"); // ID 10
 
         // === English Words (IDs 1-5) ===
         // Basic Vocabulary words (Course ID: 1)0
@@ -173,5 +174,14 @@ public class WordDbHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Nourriture', 'Food', 9)");
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Aéroport', 'Airport', 9)"); // Note: Often written l'aéroport
         db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('Hôtel', 'Hotel', 9)");
+
+
+
+        // === Sentence with a gap (Course ID: 10) ===
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('She ___ to school every day.', 'goes', 10)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('He ___ football every weekend.', 'plays', 10)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('They ___ going to the cinema.', 'are', 10)");
+        db.execSQL("INSERT INTO " + TABLE_WORDS + " (" + COLUMN_WORD_TEXT + ", " + COLUMN_WORD_TRANSLATION + ", " + COLUMN_WORD_COURSE_ID + ") VALUES ('The cat ___ on the sofa.', 'is', 10)");
+
     }
 }

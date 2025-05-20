@@ -58,6 +58,11 @@
             android:exported="true"
             android:label="Password reset" />
 
+        <activity
+            android:name=".ui.home.SentenceGameActivity"
+            android:exported="true"
+            android:label="Sentence Game" />
+
     </application>
 
 </manifest>
