@@ -205,7 +205,7 @@ public class DashboardFragment extends Fragment implements CourseAdapter.OnCours
             // TODO: Zaimplementuj nawigację do ekranu powtórki
 
             Intent intent = new Intent(requireContext(), WordGameActivity.class);
-            intent.putExtra("COURSE_ID", 10000);
+            intent.putExtra("COURSE_ID", 10000L);
             startActivity(intent);
         });
     }
